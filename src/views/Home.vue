@@ -78,7 +78,6 @@ export default {
       backPath:"",
       isPcTitle: false,
       topBackgroundImage: require("@/assets/images/top-image-sp.jpg"),
-      fe:1,
     }
   },
   methods:{
