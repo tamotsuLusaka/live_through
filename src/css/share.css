@@ -1,0 +1,899 @@
+
+/* 基本的に上下のマージンは10px、左右は16px */
+/* コンテナーの上部に22pxのマージン */
+
+:root{
+  --black:#363636;
+  --gray-low:#4a4a4a;
+  --gray-hi:#848484;
+  --placeholder:#acacac;
+  --white: #ffffff;
+  --bg:#e9eef2;
+  --white-line:#ededed;
+  --yellow:#ded728;
+  --red:#a20000;
+  --red-bg:#f9c7ca;
+  --blue:#0069a2;
+  --blue-hi:#67afd6;
+  --blue-low:#0e3584;
+}
+
+/* Toggleのカスタム */
+:root{
+  --toggle-width: 3.6rem;
+  --toggle-height: 2.3rem;
+  --toggle-border: 0.4rem;
+  --toggle-bg-on: var(--blue);
+  --toggle-border-on: var(--blue);
+}
+.toggle-handle{
+  width: 2.3rem;
+  height: 2.3rem;
+}
+
+
+
+html{
+  font-size: 62.5%;
+}
+
+body{
+  font-size: 1.5rem;
+  font-family: 'Noto Sans JP', sans-serif;
+  color: #131313;
+}
+a{
+  text-decoration: none;
+}
+
+/* スマホのみ有効 */
+._SP{
+  display: block;
+}
+/* PC、タブレットのみ有効 */
+._PC{
+  display: none;
+}
+
+._base{
+  width: 100%;
+  margin: 0 auto;
+  background-color: var(--bg);
+  min-height: 100vh;
+}
+._content{
+  width: 90%;
+  min-height: calc(100% - 50px);
+  padding:90px 0 0;
+  margin: 0 auto;
+}
+
+._base-s{
+  width: 100%;
+  margin: 0 auto;
+  background-color: var(--blue);
+  min-height: 100vh;
+}
+._content-s{
+  width: 90%;
+  min-height: calc(100% - 50px);
+  padding:90px 0 0;
+  margin: 0 auto;
+}
+
+
+
+._arrow{
+  width: 18px;
+  height: 18px;
+}
+
+._button-container{
+  padding: 30px 0 60px;
+}
+
+._button-s{
+  height: 42px;
+  background-color: var(--blue);
+  color: var(--white);
+  font-weight: 700;
+  line-height: 42px;
+  letter-spacing: 1px;
+  display: block;
+  text-align: center;
+  border-radius: 30px;
+  width: 200px;
+  border: none;
+  outline: none;
+  transition: 0.3s;
+  margin: 0 auto;
+}
+
+
+._button-a{
+  height: 42px;
+  border: 3px solid var(--blue);
+  background-color: var(--white);
+  box-sizing: border-box;
+  color: var(--blue);
+  font-weight: 700;
+  line-height: 38px;
+  letter-spacing: 1px;
+  display: block;
+  text-align: center;
+  border-radius: 30px;
+  width: 200px;
+  transition: 0.3s;
+  margin: 0 auto;
+}
+
+
+._button-red{
+  height: 42px;
+  background-color: var(--red);
+  color: var(--white);
+  font-weight: 700;
+  line-height: 42px;
+  letter-spacing: 1px;
+  display: block;
+  text-align: center;
+  border-radius: 30px;
+  width: 200px;
+  border: none;
+  outline: none;
+  transition: 0.3s;
+  margin: 0 auto;
+}
+
+._margin20{
+  margin-bottom: 20px;
+}
+._margin30{
+  margin-bottom: 30px;
+}
+._margin40{
+  margin-bottom: 40px;
+}
+._margin60{
+  margin-bottom: 60px;
+}
+
+._label{
+  font-size: 1.3rem;
+  color: var(--gray-hi);
+  margin-bottom: 5px;
+  text-align: left;
+  display: inline-block;
+}
+._label-white{
+  font-size: 1.3rem;
+  color: var(--white);
+  margin-bottom: 5px;
+  text-align: left;
+  display: inline-block;
+}
+
+._container{
+  margin-bottom: 30px;
+  text-align: left;
+}
+._box{
+  width: 100%;
+  margin: 0 auto;
+  background-color: var(--white);
+  border-radius: 4px;
+}
+
+._error-message{
+  margin-bottom: 30px;
+  color: var(--red);
+}
+
+/* 中身に高さを依存させるコンテンツ用*/
+._inner{
+  padding: 10px 16px;
+}
+
+/* 一行用 */ /*アイコン入れる場合はをアイコン側をabsolute にする */
+._text-inner{
+  height: 45px;
+  position: relative;
+  width: calc(100% - 32px);
+  margin: 0 auto;
+}
+/* 一行を入れるインナー内pタグ用  */
+._text{
+  line-height: 45px;
+}
+/* 複数行を入れるインナー内pタグ用  */
+._textarea{
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+._icon{
+  position: absolute;
+  top: 50%;
+  right: 0;
+  -webkit-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  pointer-events: none;
+}
+/* ホバー */
+._hover-box{
+  
+}
+._hover-box:hover{
+  background-color: var(--white-line);
+}
+
+
+/* 入力用フォーム */
+
+
+/* rudio,fileなどの不要inputを隠す */
+._hide-input{
+  display: none;
+}
+
+/* テキストフォーム */
+._input-text{
+  display: block;
+  width: calc(100% - 32px);
+  height: 45px;
+  padding: 0 16px;
+  border-radius: 4px;
+  border: none;
+}
+._input-text::placeholder{
+  color: var(--placeholder);
+}
+/* スイッチ付きテキストフォーム */
+._input-icon-box{
+  position: relative;
+}
+._input-icon-image{
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+}
+
+/* テキストエリア */
+._input-textarea{
+  display: block;
+  text-align: justify;
+  width: calc(100% - 32px);
+  height: 90px;
+  padding: 10px 16px;
+  border-radius: 4px;
+  border: none;
+  resize: none;
+}
+._input-textarea::placeholder{
+  color: var(--placeholder);
+}
+
+/* フォームエラーメッセージ */
+._input-error{
+  background-color: var(--red-bg);
+}
+._input-error-message{
+  font-size: 1.3rem;
+  color: var(--red);
+}
+
+/* 分割テキストホーム */
+._plural-input-box{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+._plural-input-3{
+  display: block;
+  width: 20%;
+  height: 45px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: none;
+}
+._plural-input-3::placeholder{
+  color: var(--placeholder);
+}
+._plural-input-4{
+  display: block;
+  width: 12%;
+  height: 45px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: none;
+}
+._plural-input-4::placeholder{
+  color: var(--placeholder);
+}
+._plural-input-hyphen{
+  font-size: 1.4rem;
+}
+
+/* セレクトフォーム */
+._input-select{
+  display: block;
+  width: 100%;
+  height: 45px;
+  padding: 0 16px;
+  border-radius: 4px;
+  border: none;
+  color: var(--placeholder);
+  background-color: var(--white);
+}
+._select-box{
+  position: relative;
+}
+._select-icon{
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  -webkit-transform: translate(0, -40%);
+  transform: translate(0, -40%);
+  pointer-events: none;
+}
+
+
+/* ラジオフォーム */
+._input-radio{
+  display: none;
+}
+
+
+
+
+
+/* 複数フォーム */
+._multi-box{
+  display: block;
+  background-color: var(--white);
+  /* height: 45px; */
+}
+._multi-box-start{
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+._multi-box-end{
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+._multi-inner{
+  display: block;
+  height: 45px;
+  width: calc(100% - 32px);
+  margin: 0 auto;
+  border-bottom: 1px solid var(--white-line);
+  box-sizing: border-box;
+  position: relative;
+}
+/* 高さをコンテンツに依存させるとき */
+._flex-multi-inner{
+  display: block;
+  height: auto;
+  padding: 10px 0;
+  width: calc(100% - 32px);
+  margin: 0 auto;
+  border-bottom: 1px solid var(--white-line);
+  box-sizing: border-box;
+  position: relative;
+}
+._multi-inner-end{
+  border: none;
+}
+._multi-inner-add-top-border{
+  border-top: 1px solid var(--white-line);
+}
+._multi-sub_title-gray{
+  font-size: 1.2rem;
+  color: var(--gray-hi);
+  margin-bottom: 6px;
+}
+._multi-text{
+  line-height: 45px;
+  color: var(--black);
+}
+._multi-input-text{
+  display: block;
+  width: 100%;
+  height: 45px;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+}
+._multi-input-text::placeholder{
+  color: var(--placeholder);
+}
+._multi-input-textarea{
+  display: block;
+  background-color: rgba(0, 0, 0, 0);
+  text-align: justify;
+  width: 100%;
+  height: 90px;
+  border: none;
+  resize: none;
+}
+._multi-input-textarea::placeholder{
+  color: var(--placeholder);
+}
+._multi-icon{
+  position: absolute;
+  top: 50%;
+  right: 0;
+  -webkit-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  pointer-events: none;
+}
+._multi-select{
+  display: block;
+  width: 100%;
+  height: 45px;
+  box-sizing: border-box;
+  border: none;
+  color: var(--placeholder);
+  background-color: rgba(0,0,0,0);
+}
+/* multi-boxにエラーとバインド */
+._multi-box-error{
+  background-color: var(--red-bg);
+}
+
+/* selectの選択後の色を指定。このclassはmixinで指定いている。使わなくなったけど */
+._SELECT-COLOR{
+  color: var(--black);
+}
+/* 編集時に既に選ばれているselectを黒に。上記だけでは編集時に対応できないのでこっち使うことにした。 */
+._input-select-exist{
+  color: var(--black);
+}
+._multi-toggle{
+  position: absolute;
+  top: 50%;
+  right: 0;
+  -webkit-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+}
+
+
+
+
+
+
+._link{
+  background-color: var(--white);
+  width: 100%;
+  height: 120px;
+  border-radius: 4px;
+  display: block;
+}
+._link-container{
+  width: 100%;
+  height: 70px;
+  margin: 0 auto;
+  padding: 25px 0;
+  display: flex;
+}
+._link-icon{
+  width: 70px;
+  height: 70px;
+  margin-left: 16px;
+}
+._link-box{
+  width: calc(100% - 102px);
+  margin:0 16px;
+  position: relative;
+}
+/* 説明文無し */
+._link-p{
+  width: 100%;
+  color: var(--blue);
+  font-size: 1.8rem;
+  font-weight: 600;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+}
+/* 説明文あり */
+._link-title{
+  width: 100%;
+  color: var(--blue);
+  font-size: 1.8rem;
+  font-weight: 600;
+  position: absolute;
+  top: 0;
+}
+._link-text{
+  width: 100%;
+  color: var(--black);
+  font-size: 1.2rem;
+  position: absolute;
+  bottom: 0;
+}
+
+._link-mini-white{
+  display: block;
+  text-align: center;
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border-radius: 4px;
+  background-color: var(--white);
+  color: var(--blue)
+}
+._link-mini-red{
+  display: block;
+  text-align: center;
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border-radius: 4px;
+  background-color: var(--red);
+  color: var(--white)
+}
+._link-mini-blue{
+  display: block;
+  text-align: center;
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border-radius: 4px;
+  background-color: var(--blue);
+  color: var(--white)
+}
+._link-mini-line-blue{
+  display: block;
+  text-align: center;
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border-radius: 4px;
+  background-color: var(--white);
+  color: var(--blue);
+  border: 4px solid var(--blue);
+  box-sizing: border-box;
+}
+._link-mini-line-white{
+  display: block;
+  text-align: center;
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border-radius: 4px;
+  background-color: var(--blue);
+  color: var(--white);
+  border: 4px solid var(--white);
+  box-sizing: border-box;
+}
+._link-mini-icon{
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  left: 16px;
+  top: 50%;
+  -webkit-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+}
+._link-mini-text{
+  display: block;
+  width: 80%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+
+._invalid-button{
+  opacity: 0.5;
+}
+._error-message{
+  color: var(--red);
+  text-align: left;
+  padding-top: 30px;
+}
+
+
+
+
+/* show用 */
+._show-top{
+  width: 100%;
+  background-color: var(--white);
+}
+._show-top-content{
+  width: 90%;
+  padding:110px 0 60px;
+  margin: 0 auto;
+}
+._show-logo{
+  text-align: center;
+  margin-bottom: 40px;
+}
+._show-icon{
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+}
+._show-name{
+  font-size: 1.6rem;
+}
+._show-bottom-content{
+  width: 90%;
+  padding:60px 0 60px;
+  margin: 0 auto;
+}
+
+
+
+/* PDF用 */
+
+._pdf{
+  position: fixed;
+  top: 105%;
+  left: 0;
+  z-index: 100;
+  width: 2000px;
+  height: 2970px;
+  /* position: relative; */
+}
+._PDF-name{
+  text-align: center;
+  font-size: 36px;
+  margin:60px 0 60px;
+}
+._PDF-day{
+  text-align: right;
+  font-size: 22px;
+}
+._PDF-table{
+  width: 100%;
+  text-align: center;
+}
+._PDF-head{
+  text-align: center;
+  padding: 3px 0;
+}
+._PDF-list{
+  height: 160px;
+}
+._PDF-text-ss{
+  font-size: 14px;
+}
+._PDF-text-s{
+  font-size: 18px;
+}
+._PDF-text-m{
+  font-size: 24px;
+}
+._PDF-text-l{
+  font-weight: 700;
+  font-size: 36px;
+}
+._PDF-no{
+  width: 4%;
+}
+._PDF-title{
+  width: 20%;
+}
+._PDF-source{
+  width: 6%;
+}
+._PDF-tune{
+  width: 4%;
+}
+._PDF-time{
+  width: 4%;
+}
+._PDF-request{
+  width: 30%;
+  text-align: left;
+  padding: 10px 10px;
+}
+._PDF-output{
+  font-size: 24px;
+  margin-top: 10px;
+}
+._PDF-output span{
+  margin-right: 40px;
+}
+._PDF-bottom{
+  position: absolute;
+  width: 100%;
+  bottom:0;
+}
+._PDF-note{
+  width: 100%;
+  height: 175px;
+  font-size: 22px;
+  padding: 20px;
+  box-sizing: border-box;
+  border: 1px solid var(--black);
+  margin-bottom: 20px;
+}
+._PDF-footer{
+  position: relative;
+  text-align: center;
+  width: 100%;
+  height: 50px;
+}
+._PDF-page{
+  display: block;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+._PDF-logo{
+  width: 308px;
+  height: 50px;
+  position: absolute;
+  right: 0;
+  top: 0;
+
+}
+
+/* manager用 */
+._manager-base{
+  width: 90%;
+  margin: 0 auto;
+  padding: 40px 0;
+  min-width: 630px;
+  max-width: 1000px;
+}
+._manager-container{
+  margin: 22px auto 0;
+  min-width: 630px;
+  max-width: 1000px;
+}
+._manager-flex{
+  min-width: 630px;
+  max-width: 1000px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+._manager-flex-container{
+  margin: 22px 0 0 0;
+  width: calc(50% - 11px);
+}
+._manager-container-line{
+  display: block;
+  width: 100%;
+  height: 1px;
+  border-top: 1px solid var(--placeholder);
+  box-sizing: border-box;
+  margin: 42px auto 20px;
+}
+
+._search-tag{
+  display: flex;
+  margin-bottom: 10px;
+}
+._search-tag-box{
+  display: flex;
+  position: relative;
+  margin-right: 30px;
+}
+._search-tag-label{
+  display: block;
+  width: 24px;
+  height: 24px;
+  box-sizing: border-box;
+  border: 1px solid var(--white-line);
+  border-radius: 12px;
+  background-color: var(--white);
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+}
+._search-tag-active{
+  display: block;
+  width: 12px;
+  height: 12px;
+  background-color: var(--yellow);
+  border-radius: 6px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+._search-tag-text{
+  margin-left: 25px;
+}
+
+._search{
+  width: calc(100% - 16px);
+  height: 45px;
+  position: relative;
+}
+._search-input{
+  width: 100%;
+  height: 45px;
+  border: none;
+  background-color: var(--white);
+  border-radius: 20px;
+  padding-left: 16px;
+}
+._search img{
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  -webkit-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+}
+._no-data{
+  color: var(--red);
+  margin-top: 5px;
+}
+
+
+
+@media screen and (min-width:600px){
+
+  /* スマホのみ有効 */
+  ._SP{
+    display: none;
+  }
+  /* PC、タブレットのみ有効 */
+  ._PC{
+    display: block;
+  }
+
+  ._content-for-home{
+    max-width: 1024px;
+    height: auto;
+  }
+  
+  ._content{
+    padding:50px 0 0;
+    max-width: 600px;
+    height:auto;
+    margin-bottom: 100px;
+    min-height: calc(100vh - 450px);
+  }
+  
+  ._content-s{
+    padding:160px 0 0;
+    max-width: 600px;
+    height:auto;
+    margin-bottom: 100px;
+    min-height: calc(100vh - 360px);
+  }
+
+  ._container{
+    margin: 22px auto 0;
+    max-width: 800px;
+  }
+  ._plural-input-3{
+    width: 25%;
+  }
+  ._plural-input-4{
+    width: 16%;
+  }
+
+
+  ._error-message{
+    text-align: center;
+  }
+
+  ._show-top-content{
+    max-width: 800px
+  }
+  ._show-bottom-content{
+    max-width: 800px
+  }
+}
