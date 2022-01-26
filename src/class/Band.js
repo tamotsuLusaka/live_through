@@ -3,7 +3,7 @@ export default class Band{
   id = null
   type = null //"band" or "idol"
   name = null
-  lists = []
+  lists = [] //instrumentのIDを持つ
   text = null
   userId = null
   createdAt = null

@@ -15,15 +15,15 @@
               </div>
             </div>
           </router-link>
-          <div class="_link">
+          <router-link :to="{name: 'StagePlot'}" class="_link">
             <div class="_link-container">
               <img src="@/assets/images/icon-stage-blue-t.png" class="_link-icon" alt="セットリスト">
               <div class="_link-box">
-                <p class="_link-title">セットリスト</p>
+                <p class="_link-title">ステージプロット</p>
                 <p class="_link-text">セットリストの説明。セットリストの説明。セットリストの説明。</p>
               </div>
             </div>
-          </div>
+          </router-link>
         </div>
 
         <div class="sub">

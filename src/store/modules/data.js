@@ -2,12 +2,15 @@ export default{
   namespaced: true,
   state:{
     myMusicLists: [],
-    exportSetList: null
+    exportSetList: null,
+
+    band: null,
 
   },
   getters:{
     myMusicLists: state => state.myMusicLists,
     exportSetList: state => state.exportSetList,
+    band: state => state.band,
   },
   mutations:{
     setMyMusicLists(state, payload){
@@ -15,6 +18,9 @@ export default{
     },
     setExportSetList(state, payload){
       state.exportSetList = payload
+    },
+    setBand(state, payload){
+      state.band = payload
     },
 
   },

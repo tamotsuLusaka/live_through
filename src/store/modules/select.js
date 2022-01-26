@@ -89,6 +89,35 @@ export default{
     site:[
       {text: "right"},
       {text: "left"},
+    ],
+    instrument:[
+      {value: "Vo", plot: "Vocal", text: "ボーカル"},
+      {value: "Cho", plot: "Cho", text: "コーラス"},
+      {value: "Gt", plot: "Guitar", text: "ギター"},
+      {value: "Ba", plot: "Bass", text: "ベース"},
+      {value: "Dr", plot: "Drums", text: "ドラム"},
+      {value: "AG", plot: "AG", text: "アコースティックギター"},
+      {value: "Key", plot: "Keyboard", text: "キーボード"},
+      {value: "Per", plot: "Per", text: "パーカッション"},
+      {value: "Sax", plot: "Sax", text: "サックス"},
+      {value: "Tp", plot: "Trumpet", text: "トランペット"},
+      {value: "Tb", plot: "Trombone", text: "トロンボーン"},
+      {value: "Vl", plot: "Violin", text: "バイオリン"},
+      {value: "DJ", plot: "DJ", text: "DJ"},
+      {value: "etc", plot: "", text: "その他"},
+    ],
+    typeOfVocal:[
+      {text: "ボーカル"},
+      {text: "コーラス"},
+      {text: "MC"},
+    ],
+    amp:[
+      {id: "rent", text: "レンタル"},
+      {id: "rentCombo", text: "コンボレンタル"},
+      {id: "head", text: "ヘッド持ち込み・キャビレンタル"},
+      {id: "cab", text: "ヘッドレンタル・キャビ持ち込み"},
+      {id: "head&cab", text: "ヘッド&キャビ持ち込み"},
+      {id: "combo", text: "コンボアンプ持ち込み"}
     ]
 
   },
@@ -99,6 +128,11 @@ export default{
     terminal: state => state.terminal,
     channel: state => state.channel,
     twoChannel: state => state.twoChannel,
+    line: state => state.line,
+    site: state => state.site,
+    instrument:state => state.instrument,
+    typeOfVocal:state => state.typeOfVocal,
+    amp:state => state.amp,
 
     // selectの文章を呼び出す用
     getText: () => (stateName, id) =>{
@@ -109,7 +143,18 @@ export default{
         }
       })
       return text
-    } 
+    } ,
+
+    // 楽器の名称を呼び出す用
+    getInstrumentValue: (state) => (text) =>{
+      let name = ""
+      state.instrument.forEach((object)=>{
+        if(object.text === text){
+          name = object.value
+        }
+      })
+      return name
+    } ,
   },
   mutations:{
 

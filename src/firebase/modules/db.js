@@ -10,9 +10,11 @@ import {
   getDocs,
   getDoc,
   deleteDoc,
-  updateDoc
+  updateDoc,
 
 } from "firebase/firestore"
+import router from '@/router/index.js'
+
 
 const db = getFirestore(firebaseApp)
 
@@ -75,4 +77,28 @@ export default {
     const docRef = doc(db, 'setList', id)
     return deleteDoc(docRef)
   },
+  async createBand(band){
+    band.createdAt = serverTimestamp()
+    band.updatedAt = serverTimestamp()
+    const bandRef = doc(collection(db, "band"))
+    band.id = await bandRef.id
+    return  setDoc(bandRef,{...band})
+    .then(()=>{
+      router.push({name: 'EditBand', params:{id: band.id}})
+    })
+  },
+  editBand(band){
+    band.updatedAt = serverTimestamp()
+    const docRef = doc(db, 'band', band.id)
+    return updateDoc(docRef, {...band})
+  },
+  getBand(id){
+    const docRef = doc(db, "band", id)
+    return getDoc(docRef)
+  },
+  getBands(userId){
+    const q = query(collection(db, "band"), where("userId", "==", userId))
+    return getDocs(q)
+  },
+
 }

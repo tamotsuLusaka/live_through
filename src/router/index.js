@@ -9,6 +9,11 @@ import CreateSetList from '@/views/setList/CreateSetList.vue'
 import ShowSetList from '@/views/setList/ShowSetList.vue'
 import Complement from '@/views/setList/Complement.vue'
 import ExportSetList from '@/views/setList/ExportSetList.vue'
+import StagePlot from '@/views/stagePlot/StagePlot.vue'
+import CreateStagePlot from '@/views/stagePlot/CreateStagePlot.vue'
+import CreateBand from '@/views/stagePlot/CreateBand.vue'
+import SelectInstrument from '@/views/stagePlot/SelectInstrument.vue'
+import CreateInstrument from '@/views/stagePlot/CreateInstrument.vue'
 
 const routes = [
   {
@@ -83,6 +88,43 @@ const routes = [
     component: ExportSetList,
     props: true
   },
+  {
+    path: '/stage_plot',
+    name: 'StagePlot',
+    component: StagePlot,
+    props: true
+  },
+  {
+    path: '/stage_plot/create',
+    name: 'CreateStagePlot',
+    component: CreateStagePlot,
+    props: true
+  },
+  {
+    path: '/stage_plot/band/:id/edit',
+    name: 'EditBand',
+    component: CreateBand,
+    props: true
+  },
+  {
+    path: '/stage_plot/band/:id/select',
+    name: 'SelectInstrument',
+    component: SelectInstrument,
+    props: true
+  },
+  {
+    path: '/stage_plot/band/:id/instrument/create',
+    name: 'CreateInstrument',
+    component: CreateInstrument,
+    props: true
+  },
+  {
+    path: '/stage_plot/band/:id/instrument/:instrumentId/edit',
+    name: 'EditInstrument',
+    component: CreateInstrument,
+    props: true
+  },
+  
 ]
 
 const router = createRouter({

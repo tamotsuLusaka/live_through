@@ -1,0 +1,377 @@
+<template>
+  <div class="_base">
+    <Spinner v-if="inactiveButton"></Spinner>
+    <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :backPath="backPath" :isPcTitle="isPcTitle"></SubHeader>
+    <div class="_content">
+      <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
+      <div class="_container">
+        <label for="name" class="_label">メンバー名</label><Helper :helperObject="helper.tune"></Helper>
+        <input type="text" v-model="instrument.member" @blur="v$.instrument.member.$touch()" placeholder="10文字以内で入力" :class="{'_input-error': v$.instrument.member.$error}" class="_input-text">
+        <p v-if="v$.instrument.member.$error" class="_input-error-message">10文字以内で入力してください。</p>
+      </div>
+
+      <div v-if="tag !== 'VOCAL'" class="_container">
+        <p class="_label">ボーカル・コーラス・/MC</p>
+        <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isVocal}">
+          <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.isVocal}">
+            <p class="_multi-text">有り</p>
+            <Toggle v-model="instrument.isVocal" @click="_clearObject(instrument.vocal), _clearObject(instrument.mic), offMic()" class="_multi-toggle" />
+          </div>
+        </div>
+        <div v-if="instrument.isVocal" class="_multi-box _multi-box-end">
+          <div class="_multi-inner _multi-box-end">
+            <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
+            <select v-model="instrument.vocal.part" @blur="v$.instrument.vocal.part.$touch()" required :class="{'_input-select-exist': instrument.vocal.part !== null}" class="_multi-select" >
+              <option :value="null" disabled >パートを選択</option>
+              <option v-for="select in $store.getters['select/typeOfVocal']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >パートの種類：{{select.text}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="instrument.isVocal" class="_container">
+        <p class="_label">マイク</p>
+        <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isBroughtMic}">
+          <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.isVocal}">
+            <p class="_multi-text">持ち込み有り</p>
+            <Toggle v-model="instrument.isBroughtMic" @click="_clearObject(instrument.mic)" class="_multi-toggle" />
+          </div>
+        </div>
+        <div v-if="instrument.isBroughtMic"  class="_multi-box" :class="{'_multi-box-error': v$.instrument.mic.type.$error}">
+          <div class="_multi-inner">
+            <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
+            <select v-model="instrument.mic.type" @blur="v$.instrument.mic.type.$touch()" required :class="{'_input-select-exist': instrument.mic.type !== null}" class="_multi-select" >
+              <option :value="null" disabled >持ち込み機材を選択</option>
+              <option v-for="select in $store.getters['select/line']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >{{select.text}}</option>
+            </select>
+          </div>
+        </div>
+        <div v-if="instrument.isBroughtMic" class="_multi-box" :class="{'_multi-box-error': v$.instrument.mic.brand.$error}">
+          <div class="_multi-inner">
+            <input type="text" v-model="instrument.mic.brand" @blur="v$.instrument.mic.brand.$touch()" placeholder="メーカー名を10字以内で入力" class="_multi-input-text">
+          </div>
+        </div>
+        <div v-if="instrument.isBroughtMic" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.instrument.mic.model.$error}">
+          <div class="_multi-inner _multi-inner-end">
+            <input type="text" v-model="instrument.mic.model" @blur="v$.instrument.mic.model.$touch()" placeholder="型番を10字以内で入力" class="_multi-input-text">
+          </div>
+        </div>
+        <p v-if="v$.instrument.mic.brand.$error || v$.instrument.mic.model.$error" class="_input-error-message">10文字以内で入力してください。</p>
+      </div>
+
+      <div v-if="instrument.isAmp" class="_container">
+        <p class="_label">アンプ</p>
+        <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': instrument.amp.type === null || instrument.amp.type === 'rent' || instrument.amp.type === 'rentCombo'}">
+          <div class="_multi-inner" :class="{'_multi-inner-end': instrument.amp.type === null || instrument.amp.type === 'rent' || instrument.amp.type === 'rentCombo'}">
+            <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
+            <select v-model="instrument.amp.type" @blur="v$.instrument.amp.type.$touch()" required :class="{'_input-select-exist': instrument.amp.type !== null}" class="_multi-select" >
+              <option :value="null" disabled >レンタル・持ち込み機材を選択</option>
+              <option v-for="select in $store.getters['select/amp']" :key="select.id" :value="select.id" :style="{'color': '#131313'}" >{{select.text}}</option>
+            </select>
+          </div>
+        </div>
+        <div v-if="instrument.amp.type === 'head' || instrument.amp.type === 'head&cab'"  class="_multi-box" :class="{'_multi-box-error': v$.instrument.amp.brandOfHead.$error, '_multi-box-end': instrument.amp.type === 'head'}">
+          <div class="_multi-inner" :class="{'_multi-inner-end': instrument.amp.type === 'head'}">
+            <input type="text" v-model="instrument.amp.brandOfHead" @blur="v$.instrument.amp.brandOfHead.$touch()" placeholder="ヘッドメーカー名を10字以内で入力" class="_multi-input-text">
+          </div>
+        </div>
+        <div v-if="instrument.amp.type === 'cab' || instrument.amp.type === 'head&cab'" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.instrument.amp.brandOfCab.$error}">
+          <div class="_multi-inner _multi-inner-end">
+            <input type="text" v-model="instrument.amp.brandOfCab" @blur="v$.instrument.amp.brandOfCab.$touch()" placeholder="キャビメーカー名を10字以内で入力" class="_multi-input-text">
+          </div>
+        </div>
+        <div v-if="instrument.amp.type === 'combo'" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.instrument.amp.brandOfCombo.$error}">
+          <div class="_multi-inner _multi-inner-end">
+            <input type="text" v-model="instrument.amp.brandOfCombo" @blur="v$.instrument.amp.brandOfCombo.$touch()" placeholder="コンボメーカー名を10字以内で入力" class="_multi-input-text">
+          </div>
+        </div>
+        <p v-if="v$.instrument.amp.brandOfHead.$error || v$.instrument.amp.brandOfCab.$error || v$.instrument.amp.brandOfCombo.$error" class="_input-error-message">10文字以内で入力してください。</p>
+      </div>
+
+
+
+      <div class="_container">
+        <p class="_label">イヤモニ</p>
+        <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isBroughtMonitor}">
+          <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.isBroughtMonitor}">
+            <p class="_multi-text">持ち込み有り</p>
+            <Toggle v-model="instrument.isBroughtMonitor" @click="_clearObject(instrument.monitor)" class="_multi-toggle" />
+          </div>
+        </div>
+        <div v-if="instrument.isBroughtMonitor"  class="_multi-box" :class="{'_multi-box-error': v$.instrument.monitor.type.$error}">
+          <div class="_multi-inner">
+            <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
+            <select v-model="instrument.monitor.type" @blur="v$.instrument.monitor.type.$touch()" required :class="{'_input-select-exist': instrument.monitor.type !== null}" class="_multi-select" >
+              <option :value="null" disabled >種類を選択</option>
+              <option v-for="select in $store.getters['select/line']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >{{select.text}}</option>
+            </select>
+          </div>
+        </div>
+        <div v-if="instrument.isBroughtMonitor" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.instrument.monitor.channel.$error}">
+          <div class="_multi-inner _multi-inner-end">
+            <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
+            <select v-model="instrument.monitor.channel" @blur="v$.instrument.monitor.channel.$touch()" required :class="{'_input-select-exist': instrument.monitor.channel !== null}" class="_multi-select" >
+              <option :value="null" disabled >チャンネル数を選択</option>
+              <option v-for="select in $store.getters['select/twoChannel']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >{{select.text}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="_container">
+        <p class="_label">足元電源（100V）</p>
+        <div class="_box">
+          <div class="_text-inner">
+            <p class="_text">必要</p>
+            <Toggle v-model="instrument.isPower" class="_multi-toggle"></Toggle>
+          </div>
+        </div>
+      </div>
+
+      <div class="_container">
+        <label for="textForLighting" class="_label">備考</label>
+        <textarea v-model="instrument.text" @blur="v$.instrument.text.$touch()" placeholder="50文字以内で入力 任意" :class="{'_input-error': v$.instrument.text.$error}" class="_input-textarea"></textarea>
+        <p v-if="v$.instrument.text.$error" class="_input-error-message">50文字以内で入力してください。</p>
+      </div>
+
+      
+      <div v-if="this.mode === 'create'" class="_button-container">
+        <button  :disabled="v$.instrument.$invalid || inactiveButton" @click="createInstrument()" :class="{'_invalid-button': v$.instrument.$invalid}" class="_button-s">登録</button>
+      </div>
+      <div v-if="this.mode === 'edit'" class="_button-container">
+        <button  :disabled="v$.instrument.$invalid || inactiveButton" @click="editInstrument()" :class="{'_invalid-button': v$.instrument.$invalid}" class="_button-s _margin30">編集</button>
+        <button  :disabled="inactiveButton" @click="deleteInstrument()"  class="_button-red">削除</button>
+      </div>
+    </div>
+    <Footer></Footer>
+  </div>
+</template>
+
+<script>
+
+import SubHeader from '@/components/SubHeader.vue'
+import Helper from '@/components/Helper.vue'
+import Spinner from '@/components/Spinner.vue'
+import Mixin from '@/mixin/mixin.js'
+import Footer from '@/components/Footer.vue'
+
+import Band from '@/class/Band.js'
+import Instrument from '@/class/Instrument.js'
+
+import db from '@/firebase/modules/db.js'
+import Toggle from '@vueform/toggle'
+import useVuelidate from '@vuelidate/core'
+import { required, maxLength, helpers} from '@vuelidate/validators'
+const contains = (param) => helpers.withParams(
+  { type: 'isChecked', value: param},
+  (value) => {
+    if(param){
+      return helpers.req(value)
+    }else{
+      return true
+    }
+  }
+)
+  
+
+export default {
+  name: 'CreateInstrument',
+  components: {
+    Spinner,
+    SubHeader,
+    Helper,
+    Footer,
+    Toggle
+  },
+  mixins:[
+    Mixin
+  ],
+  setup(){
+    return { v$: useVuelidate()}
+  },
+  data(){
+    return{
+      pageType: "stagePlot",
+      pageTitle: "",
+      backPath: `/stage_plot/band/${this.$route.params.id}/edit`,
+      isPcTitle: true,
+      inactiveButton: false,
+      mode: "create", //"create", "edit"
+      errorMessage: "",
+
+      band: new Band(),
+      instrument: new Instrument(),
+      listIndex: null, //編集時に使う楽器リストのインデックス番号
+      tag: null, //楽器の大グループ "VOCAL",
+
+
+      helper:{
+        tune:{
+          id:"tune",
+          text:"説明文をここに入力。説明文をここに入力。説明文をここに入力。\n説明文をここに入力。"
+        }
+      },
+
+    }
+  },
+  async created(){
+    await db.getBand(this.$route.params.id)
+    .then((doc)=>{
+      this.band = doc.data()
+    })
+    .catch((error)=>{
+      this.errorMessage = "データの取得に失敗しました。"
+      console.log(error.message)
+    })
+
+    if(this.$route.params.instrumentId){
+      this.mode = "edit"
+      this.listIndex = this.band.lists.findIndex((part)=> part.id === this.$route.params.instrumentId)
+      this.instrument = this.band.lists.find((part)=> part.id === this.$route.params.instrumentId)
+    }else{
+      this.instrument.type = this.$route.query.instrument
+    }
+    this.pageTitle = this.instrument.type
+
+    if(this.instrument.type === "ボーカル" || this.instrument.type === "コーラス" || this.instrument.type === "MC"){
+      this.tag = "VOCAL"
+      this.instrument.isVocal = true
+      if(this.instrument.type === "ボーカル"){
+        this.instrument.vocal.part = "ボーカル"
+      }else if(this.instrument.type === "コーラス"){
+        this.instrument.vocal.part = "コーラス"
+      }
+      else if(this.instrument.type === "MC"){
+        this.instrument.vocal.part = "MC"
+      }
+    }
+
+    if(this.instrument.type === "ギター" || this.instrument.type === "ベース"){
+      this.instrument.isAmp = true
+    }
+
+    
+  },
+  mounted(){
+    
+  },
+  methods:{
+
+    createInstrument(){
+      this.inactiveButton = true
+      this.instrument.id = this._generateId("inst")
+      this.band.lists.push({...this.instrument})
+      db.editBand(this.band)
+      .then(()=>{
+        this.inactiveButton = false
+        this.$router.push({name:'EditBand', params:{id: this.band.id}})
+      })
+      .catch((error)=>{
+        this.inactiveButton = false
+        console.log(error.message)
+        this.errorMessage = "保存に失敗しました。もう一度やり直して下さい。"
+        this._goToTop()
+      })
+    },
+    editInstrument(){
+      this.inactiveButton = true
+      this.band.lists[this.listIndex] = this.instrument
+      db.editBand(this.band)
+      .then(()=>{
+        this.inactiveButton = false
+        this.$router.push({name:'EditBand', params:{id: this.band.id}})
+      })
+      .catch((error)=>{
+        this.inactiveButton = false
+        console.log(error.message)
+        this.errorMessage = "保存に失敗しました。もう一度やり直して下さい。"
+        this._goToTop()
+      })
+    },
+    deleteInstrument(){
+      this.inactiveButton = true
+      this.band.lists.splice(this.listIndex, 1)
+      db.editBand(this.band)
+      .then(()=>{
+        this.inactiveButton = false
+        this.$router.push({name:'EditBand', params:{id: this.band.id}})
+      })
+      .catch((error)=>{
+        this.inactiveButton = false
+        console.log(error.message)
+        this.errorMessage = "削除に失敗しました。もう一度やり直して下さい。"
+        this._goToTop()
+      })
+    },
+
+    offMic(){
+     this.instrument.isBroughtMic = false
+    }
+
+  },
+	
+
+
+  validations(){
+    return{
+      instrument:{
+        member:{
+          required,
+          maxLength: maxLength(10)
+        },
+        vocal:{
+          part:{
+            isChecked: contains(this.instrument.isVocal)
+          },
+        },
+        mic:{
+          type:{
+            isChecked: contains(this.instrument.isBroughtMic)
+          },
+          brand:{
+            isChecked: contains(this.instrument.isBroughtMic),
+            maxLength: maxLength(10)
+          },
+          model:{
+            isChecked: contains(this.instrument.isBroughtMic),
+            maxLength: maxLength(10)
+          }
+        },
+        amp:{
+          type:{
+            isChecked: contains(this.instrument.isAmp)
+          },
+          brandOfHead:{
+            maxLength: maxLength(10)
+          },
+          brandOfCab:{
+            maxLength: maxLength(10)
+          },
+          brandOfCombo:{
+            maxLength: maxLength(10)
+          },
+        },
+
+        monitor:{
+          type:{
+            isChecked: contains(this.instrument.isBroughtMonitor)
+          },
+          channel:{
+            isChecked: contains(this.instrument.isBroughtMonitor),
+          },
+        },
+
+        text:{
+          maxLength: maxLength(50)
+        },
+
+
+      }
+    }
+  },
+}
+</script>
+<style src="@vueform/toggle/themes/default.css"></style>
+<style scoped>
+
+</style>
