@@ -35,9 +35,9 @@ export default class Instrument{
   // isLineOutForViolin = false
   lineOutForViolin = {terminal: null, isDi: false} //terminal: (terminal), isDi: Bool
   isSync = false
-  sync = {channel: null, terminal: null} //channel: (twoChannel), terminal: (terminal)
+  sync = {type: null, channel: null, terminal: null} //type: (sync), channel: (twoChannel), terminal: (terminal)
   isSyncForDrum = false
-  syncForDrum = {channel: null, terminal: null, site: null} //channel: (twoChannel), terminal: (terminal), site: (site), 
+  syncForDrum = {type: null, channel: null, terminal: null, site: null} //type: (sync), channel: (twoChannel), terminal: (terminal), site: (site), 
   // isMonitor = false
   isBroughtMonitor = false
   monitor = {type: null, channel: null}//type: (line), channel: (twoChannel)

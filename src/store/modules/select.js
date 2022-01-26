@@ -66,6 +66,11 @@ export default{
       {text: "RCA（ピン）"},
       {text: "ステレオミニプラグ"}
     ],
+    terminalMini:[
+      {text: "XLR"},
+      {text: "フォン"},
+      {text: "RCA（ピン）"},
+    ],
     channel:[
       {text: "モノ"},
       {text: "ステレオ"},
@@ -118,7 +123,12 @@ export default{
       {id: "cab", text: "ヘッドレンタル・キャビ持ち込み"},
       {id: "head&cab", text: "ヘッド&キャビ持ち込み"},
       {id: "combo", text: "コンボアンプ持ち込み"}
-    ]
+    ],
+    sync:[
+      {text: "PC"},
+      {text: "MTR"},
+      {text: "その他"},
+    ],
 
   },
   getters:{
@@ -126,6 +136,7 @@ export default{
     tune: state => state.tune,
     typeOfSource: state => state.typeOfSource,
     terminal: state => state.terminal,
+    terminalMini: state => state.terminalMini,
     channel: state => state.channel,
     twoChannel: state => state.twoChannel,
     line: state => state.line,
@@ -133,6 +144,7 @@ export default{
     instrument:state => state.instrument,
     typeOfVocal:state => state.typeOfVocal,
     amp:state => state.amp,
+    sync:state => state.sync,
 
     // selectの文章を呼び出す用
     getText: () => (stateName, id) =>{

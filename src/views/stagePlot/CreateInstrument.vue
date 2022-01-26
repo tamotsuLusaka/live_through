@@ -89,6 +89,42 @@
       </div>
 
 
+      <div v-if="tag === 'VOCAL' || instrument.type === 'パーカッション'" class="_container">
+        <p class="_label">同期</p>
+        <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isSync}">
+          <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.isSync}">
+            <p class="_multi-text">有り</p>
+            <Toggle v-model="instrument.isSync" @click="_clearObject(instrument.sync)" class="_multi-toggle" />
+          </div>
+        </div>
+        <div v-if="instrument.isSync"  class="_multi-box" :class="{'_multi-box-error': v$.instrument.sync.type.$error}">
+          <div class="_multi-inner">
+            <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
+            <select v-model="instrument.sync.type" @blur="v$.instrument.sync.type.$touch()" required :class="{'_input-select-exist': instrument.sync.type !== null}" class="_multi-select" >
+              <option :value="null" disabled >種類を選択</option>
+              <option v-for="select in $store.getters['select/sync']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >{{select.text}}</option>
+            </select>
+          </div>
+        </div>
+        <div v-if="instrument.isSync" class="_multi-box" :class="{'_multi-box-error': v$.instrument.sync.channel.$error}">
+          <div class="_multi-inner">
+            <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
+            <select v-model="instrument.sync.channel" @blur="v$.instrument.sync.channel.$touch()" required :class="{'_input-select-exist': instrument.sync.channel !== null}" class="_multi-select" >
+              <option :value="null" disabled >チャンネル数を選択</option>
+              <option v-for="select in $store.getters['select/channel']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >{{select.text}}</option>
+            </select>
+          </div>
+        </div>
+        <div v-if="instrument.isSync" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.instrument.sync.terminal.$error}">
+          <div class="_multi-inner _multi-inner-end">
+            <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
+            <select v-model="instrument.sync.terminal" @blur="v$.instrument.sync.terminal.$touch()" required :class="{'_input-select-exist': instrument.sync.terminal !== null}" class="_multi-select" >
+              <option :value="null" disabled >アウト端子を選択</option>
+              <option v-for="select in $store.getters['select/terminalMini']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >{{select.text}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
       <div class="_container">
         <p class="_label">イヤモニ</p>
@@ -352,6 +388,17 @@ export default {
           },
         },
 
+        sync:{
+          type:{
+            isChecked: contains(this.instrument.isSync)
+          },
+          channel:{
+            isChecked: contains(this.instrument.isSync),
+          },
+          terminal:{
+            isChecked: contains(this.instrument.isSync),
+          },
+        },
         monitor:{
           type:{
             isChecked: contains(this.instrument.isBroughtMonitor)
@@ -360,7 +407,6 @@ export default {
             isChecked: contains(this.instrument.isBroughtMonitor),
           },
         },
-
         text:{
           maxLength: maxLength(50)
         },
