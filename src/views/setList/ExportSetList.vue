@@ -2,7 +2,7 @@
   <div class="_base">
     <Spinner v-if="inactiveButton"></Spinner>
     <SubHeader :pageType="pageType" :pageTitle="pageTitle" :backPath="backPath" :isPcTitle="isPcTitle"></SubHeader>
-    <div class="_content">
+    <div class="content">
       <img src="@/assets/images/logo-c.png" alt="" class="logo">
       <div class="_container">
         <p class="_label">作成日</p>
@@ -49,6 +49,10 @@
       <div class="_button-container">
         <button :disabled="v$.exportPreparation.$invalid || inactiveButton" @click="exportPDF()" :class="{'_invalid-button': v$.exportPreparation.$invalid}" class="_button-s">PDF書き出し</button>
       </div>
+
+      <a id="download" target="_blank">ダウンロードスイッチ</a>
+      <!-- <iframe id="renderSpace" frameborder="0"></iframe> -->
+      <img id="renderSpace" :src="renderPDF">
 
       <!-- 1ページ構成 -->
       <div id="pdf-single" class="_pdf">
@@ -182,7 +186,7 @@ import Footer from '@/components/Footer.vue'
 import SetList from '@/class/SetList.js'
 
 import db from '@/firebase/modules/db.js'
-import { jsPDF } from 'jspdf'
+// import { jsPDF } from 'jspdf'
 import * as html2canvas from 'html2canvas'
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
@@ -227,7 +231,8 @@ export default {
         },
         type: null
       },
-      isTurnOver: false
+      isTurnOver: false,
+      renderPDF: null
 
     }
   },
@@ -263,52 +268,225 @@ export default {
     
   },
   methods:{
-    async exportPDF(){
+    // async exportPDF(){
+    //   this.inactiveButton = true
+    //   if(this.exportPreparation.type === "normal"){
+    //     if(this.sheetType === "single"){
+    //       const source = document.getElementById('pdf-single')
+    //       html2canvas(source).then(capture => {
+    //         const imgData = capture.toDataURL('image/png')
+    //         const doc = new jsPDF()
+    //         const width = doc.internal.pageSize.width
+    //         doc.addImage(imgData, 'PNG', 10, 10, width * 0.9, 0)
+    //         doc.save("set_list.pdf")
+    //         this.inactiveButton = false
+    //       })
+    //     }else if(this.sheetType === "double"){
+    //       const source1 = document.getElementById('pdf-double-1')
+    //       const source2 = document.getElementById('pdf-double-2')
+    //       let imgData1
+    //       let imgData2
+    //       await html2canvas(source1).then(capture => {
+    //         imgData1 = capture.toDataURL('image/png')
+    //       })
+    //       await html2canvas(source2).then(capture => {
+    //         imgData2 = capture.toDataURL('image/png')
+    //       })
+    //       const doc = new jsPDF()
+    //       const width = doc.internal.pageSize.width
+    //       doc.addImage(imgData1, 'PNG', 10, 10, width * 0.9, 0)
+    //       doc.addPage()
+    //       doc.addImage(imgData2, 'PNG', 10, 10, width * 0.9, 0)
+    //       doc.save("set_list.pdf")
+    //       this.inactiveButton = false
+    //     }
+    //   }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
+    //     const source = document.getElementById('pdf-stage')
+    //     html2canvas(source).then(capture => {
+    //       const imgData = capture.toDataURL('image/png')
+    //       const doc = new jsPDF()
+    //       const width = doc.internal.pageSize.width
+    //       doc.addImage(imgData, 'PNG', 10, 10, width * 0.9, 0)
+    //       doc.save("set_list_stage.pdf")
+    //       this.inactiveButton = false
+    //     })
+    //   }
+    // },
+
+    // 画像化
+    exportPDF(){
       this.inactiveButton = true
       if(this.exportPreparation.type === "normal"){
         if(this.sheetType === "single"){
           const source = document.getElementById('pdf-single')
           html2canvas(source).then(capture => {
-            const imgData = capture.toDataURL('image/png')
-            const doc = new jsPDF()
-            const width = doc.internal.pageSize.width
-            doc.addImage(imgData, 'PNG', 10, 10, width * 0.9, 0)
-            doc.save("set_list.pdf")
-            this.inactiveButton = false
+ 
+          const renderPDF = capture.toDataURL('image/jpeg')
+          // let downloadButton = document.getElementById("download")
+          // downloadButton.href = renderPDF
+          // downloadButton.download = "aaa.jpeg"
+
+          let aaa = document.getElementById("renderSpace")
+          aaa.src = renderPDF
+          this.inactiveButton = false
           })
         }else if(this.sheetType === "double"){
           const source1 = document.getElementById('pdf-double-1')
           const source2 = document.getElementById('pdf-double-2')
           let imgData1
           let imgData2
-          await html2canvas(source1).then(capture => {
+          html2canvas(source1).then(capture => {
             imgData1 = capture.toDataURL('image/png')
-          })
-          await html2canvas(source2).then(capture => {
-            imgData2 = capture.toDataURL('image/png')
-          })
-          const doc = new jsPDF()
-          const width = doc.internal.pageSize.width
-          doc.addImage(imgData1, 'PNG', 10, 10, width * 0.9, 0)
-          doc.addPage()
-          doc.addImage(imgData2, 'PNG', 10, 10, width * 0.9, 0)
-          doc.save("set_list.pdf")
+                    let downloadButton = document.getElementById("download")
+          downloadButton.href = imgData1
           this.inactiveButton = false
+          })
+          html2canvas(source2).then(capture => {
+            imgData2 = capture.toDataURL('image/png')
+                    let downloadButton = document.getElementById("download")
+          downloadButton.href = imgData2
+          this.inactiveButton = false
+          })
+
         }
       }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
         const source = document.getElementById('pdf-stage')
         html2canvas(source).then(capture => {
-          const imgData = capture.toDataURL('image/png')
-          const doc = new jsPDF()
-          const width = doc.internal.pageSize.width
-          doc.addImage(imgData, 'PNG', 10, 10, width * 0.9, 0)
-          doc.save("set_list_stage.pdf")
+          const renderPDF = capture.toDataURL()
+          let downloadButton = document.getElementById("download")
+          downloadButton.href = renderPDF
           this.inactiveButton = false
         })
       }
 
 
     },
+
+    
+    // async exportPDF(){
+    //   this.inactiveButton = true
+    //   const doc = new jsPDF()
+    //   const width = doc.internal.pageSize.width
+    //   let fileName = "pdf"
+
+    //   if(this.exportPreparation.type === "normal"){
+    //     fileName = "set_list.pdf"
+    //     if(this.sheetType === "single"){
+    //       const source = document.getElementById('pdf-single')
+    //       await html2canvas(source).then(capture => {
+    //         const imgData = capture.toDataURL('image/jpeg')
+    //         doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
+    //       })
+    //     }else if(this.sheetType === "double"){
+    //       const source1 = document.getElementById('pdf-double-1')
+    //       const source2 = document.getElementById('pdf-double-2')
+    //       let imgData1
+    //       let imgData2
+    //       await html2canvas(source1).then(capture => {
+    //         imgData1 = capture.toDataURL('image/jpeg')
+    //       })
+    //       await html2canvas(source2).then(capture => {
+    //         imgData2 = capture.toDataURL('image/jpeg')
+    //       })
+    //       doc.addImage(imgData1, 'JPEG', 10, 10, width * 0.9, 0)
+    //       doc.addPage()
+    //       doc.addImage(imgData2, 'JPEG', 10, 10, width * 0.9, 0)
+    //     }
+    //   }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
+    //     fileName = "set_list_stage.pdf"
+    //     const source = document.getElementById('pdf-stage')
+    //     await html2canvas(source).then(capture => {
+    //       const imgData = capture.toDataURL('image/jpeg')
+    //       doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
+    //     })
+    //   }
+
+    //   // const renderPDF = doc.output("datauristring", { filename: fileName })
+    //   // var img = document.getElementById('renderSpace')
+    //   // img.setAttribute('src', renderPDF)
+
+    //   const renderPDF = doc.output("bloburl", { filename: fileName })
+    //   let downloadButton = document.getElementById("download")
+    //   downloadButton.href = renderPDF
+
+
+    //   this.inactiveButton = false
+    //   // OS別対応で書き出し
+    //   // if (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase())) {
+    //   //   window.open(doc.output('bloburl', { filename: fileName }))
+    //   //   this.inactiveButton = false
+    //   // } else {
+    //   //   doc.save(fileName)
+    //   //   this.inactiveButton = false
+    //   // }
+    // },
+
+
+    // exportPDF(){
+    //   this.inactiveButton = true
+    //   const doc = new jsPDF()
+    //   const width = doc.internal.pageSize.width
+    //   let fileName = "pdf"
+
+    //   if(this.exportPreparation.type === "normal"){
+    //     fileName = "set_list.pdf"
+    //     if(this.sheetType === "single"){
+    //       const source = document.getElementById('pdf-single')
+    //       html2canvas(source).then(capture => {
+    //         const imgData = capture.toDataURL('image/jpeg')
+    //         doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
+
+    //         // const renderPDF = doc.output("datauristring", { filename: fileName })
+    //         // var img = document.getElementById('renderSpace')
+    //         // img.setAttribute('src', renderPDF)
+            
+    //               const renderPDF = doc.output("bloburl", { filename: fileName })
+    //   let downloadButton = document.getElementById("download")
+    //   downloadButton.href = renderPDF
+    //   this.inactiveButton = false
+    //       })
+    //     }else if(this.sheetType === "double"){
+    //       const source1 = document.getElementById('pdf-double-1')
+    //       const source2 = document.getElementById('pdf-double-2')
+    //       let imgData1
+    //       let imgData2
+    //       html2canvas(source1).then(capture => {
+    //         imgData1 = capture.toDataURL('image/jpeg')
+    //         html2canvas(source2).then(capture => {
+    //           imgData2 = capture.toDataURL('image/jpeg')
+    //           doc.addImage(imgData1, 'JPEG', 10, 10, width * 0.9, 0)
+    //           doc.addPage()
+    //           doc.addImage(imgData2, 'JPEG', 10, 10, width * 0.9, 0)
+
+    //           const renderPDF = doc.output("datauristring", { filename: fileName })
+    //           var img = document.getElementById('renderSpace')
+    //           img.setAttribute('src', renderPDF)
+    //           this.inactiveButton = false
+    //         })
+    //       })
+    //     }
+    //   }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
+    //     fileName = "set_list_stage.pdf"
+    //     const source = document.getElementById('pdf-stage')
+    //     html2canvas(source).then(capture => {
+    //       const imgData = capture.toDataURL('image/jpeg')
+    //       doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
+    //       const renderPDF = doc.output("datauristring", { filename: fileName })
+    //       var img = document.getElementById('renderSpace')
+    //       img.setAttribute('src', renderPDF)
+    //       this.inactiveButton = false
+    //     })
+    //   }
+
+    //   // OS別対応で書き出し
+    //   // if (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase())) {
+    //   //   window.open(doc.output('bloburl', { filename: fileName }))
+    //   //   this.inactiveButton = false
+    //   // } else {
+    //   //   doc.save(fileName)
+    //   //   this.inactiveButton = false
+    //   // }
+    // },
   },
   computed:{
 
@@ -355,6 +533,12 @@ export default {
 </script>
 
 <style scoped>
+.content{
+  width: 90%;
+  min-height: calc(100% - 50px);
+  padding:90px 0 0;
+  margin: 0 auto;
+}
 .logo{
   display: block;
   margin: 100px auto;
@@ -387,5 +571,25 @@ export default {
   right: 100px;
   bottom: 100px;
 }
+
+#renderSpace{
+  width: 100%;
+  height: 800px;
+  background-color: blue;
+}
+#pdf-single{
+    font-family: Helvetica, Tahoma, Arial, sans-serif, 'PingFang SC';
+}
+@media screen and (min-width:600px){
+  .content{
+    padding:50px 0 0;
+    max-width: 600px;
+    height:auto;
+    margin-bottom: 100px;
+    min-height: calc(100vh - 250px);
+  }
+
+}
+
 </style>
 

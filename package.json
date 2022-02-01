@@ -14,7 +14,7 @@
     "core-js": "^3.6.5",
     "firebase": "^9.6.1",
     "google-fonts-webpack-plugin": "^0.4.4",
-    "html2canvas": "^1.4.0",
+    "html2canvas": "^1.4.1",
     "jspdf": "^2.5.0",
     "labelmake": "^2.0.21",
     "vue": "^3.0.0",

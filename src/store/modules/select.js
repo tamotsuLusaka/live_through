@@ -92,8 +92,8 @@ export default{
       {text: "ワイヤレスWS帯"},
     ],
     site:[
-      {text: "right"},
-      {text: "left"},
+      {text: "右側"},
+      {text: "左側"},
     ],
     instrument:[
       {value: "Vo", plot: "Vocal", text: "ボーカル"},

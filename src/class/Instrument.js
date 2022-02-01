@@ -22,7 +22,7 @@ export default class Instrument{
     bring: {cajon: false, djembe: false, conga: false, cowbell: false, splash: false, windChime: false},
     other: null
   }
-  // isAcousticGuitar = false
+  isLineOutForAcousticGuitar = false
   acousticGuitar = {type: null, text: null} //type: "マイク", "ライン", "ライン&マイク"
   isRentedKeyboard = false
   rentKeyboard = {number: null}
@@ -63,7 +63,7 @@ export default class Instrument{
     this.drum = instrument.drum
     // this.isPercussion = instrument.isPercussion
     this.percussion = instrument.percussion
-    // this.isAcousticGuitar = instrument.isAcousticGuitar
+    this.isLineOutForAcousticGuitar = instrument.isLineOutForAcousticGuitar
     this.acousticGuitar = instrument.acousticGuitar
     this.isRentedKeyboard = instrument.isRentedKeyboard
     this.bringKeyboardLists = instrument.bringKeyboardLists
