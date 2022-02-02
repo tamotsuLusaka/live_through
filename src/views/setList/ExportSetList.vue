@@ -187,7 +187,9 @@ import SetList from '@/class/SetList.js'
 
 import db from '@/firebase/modules/db.js'
 // import { jsPDF } from 'jspdf'
-import * as html2canvas from 'html2canvas'
+// import * as html2canvas from 'html2canvas'
+import * as htmlToImage from 'html-to-image';
+// import {toJpeg} from 'html-to-image';
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 
@@ -313,56 +315,104 @@ export default {
     //   }
     // },
 
-    // 画像化
+    // 画像化 HTMLToImage
     exportPDF(){
       this.inactiveButton = true
       if(this.exportPreparation.type === "normal"){
         if(this.sheetType === "single"){
+          console.log("1")
           const source = document.getElementById('pdf-single')
-          html2canvas(source).then(capture => {
- 
-          const renderPDF = capture.toDataURL('image/jpeg')
-          // let downloadButton = document.getElementById("download")
-          // downloadButton.href = renderPDF
-          // downloadButton.download = "aaa.jpeg"
+          htmlToImage.toJpeg(source, { quality: 0.95 })
+          .then(capture => {
+ console.log("2")
+          const renderPDF = capture
+          let downloadButton = document.getElementById("download")
+          downloadButton.href = renderPDF
+          downloadButton.download = "aaa.jpeg"
 
           let aaa = document.getElementById("renderSpace")
           aaa.src = renderPDF
           this.inactiveButton = false
           })
-        }else if(this.sheetType === "double"){
-          const source1 = document.getElementById('pdf-double-1')
-          const source2 = document.getElementById('pdf-double-2')
-          let imgData1
-          let imgData2
-          html2canvas(source1).then(capture => {
-            imgData1 = capture.toDataURL('image/png')
-                    let downloadButton = document.getElementById("download")
-          downloadButton.href = imgData1
-          this.inactiveButton = false
-          })
-          html2canvas(source2).then(capture => {
-            imgData2 = capture.toDataURL('image/png')
-                    let downloadButton = document.getElementById("download")
-          downloadButton.href = imgData2
-          this.inactiveButton = false
-          })
-
         }
-      }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
-        const source = document.getElementById('pdf-stage')
-        html2canvas(source).then(capture => {
-          const renderPDF = capture.toDataURL()
-          let downloadButton = document.getElementById("download")
-          downloadButton.href = renderPDF
-          this.inactiveButton = false
-        })
+      //   else if(this.sheetType === "double"){
+      //     const source1 = document.getElementById('pdf-double-1')
+      //     const source2 = document.getElementById('pdf-double-2')
+      //     let imgData1
+      //     let imgData2
+      //     html2canvas(source1).then(capture => {
+      //       imgData1 = capture.toDataURL('image/png')
+      //               let downloadButton = document.getElementById("download")
+      //     downloadButton.href = imgData1
+      //     this.inactiveButton = false
+      //     })
+      //     html2canvas(source2).then(capture => {
+      //       imgData2 = capture.toDataURL('image/png')
+      //               let downloadButton = document.getElementById("download")
+      //     downloadButton.href = imgData2
+      //     this.inactiveButton = false
+      //     })
+
+      //   }
+      // }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
+      //   const source = document.getElementById('pdf-stage')
+      //   html2canvas(source).then(capture => {
+      //     const renderPDF = capture.toDataURL()
+      //     let downloadButton = document.getElementById("download")
+      //     downloadButton.href = renderPDF
+      //     this.inactiveButton = false
+      //   })
       }
-
-
     },
 
-    
+    // 画像化 HTML2Canvas
+    // exportPDF(){
+    //   this.inactiveButton = true
+    //   if(this.exportPreparation.type === "normal"){
+    //     if(this.sheetType === "single"){
+    //       const source = document.getElementById('pdf-single')
+    //       html2canvas(source).then(capture => {
+ 
+    //       const renderPDF = capture.toDataURL('image/jpeg')
+    //       // let downloadButton = document.getElementById("download")
+    //       // downloadButton.href = renderPDF
+    //       // downloadButton.download = "aaa.jpeg"
+
+    //       let aaa = document.getElementById("renderSpace")
+    //       aaa.src = renderPDF
+    //       this.inactiveButton = false
+    //       })
+    //     }else if(this.sheetType === "double"){
+    //       const source1 = document.getElementById('pdf-double-1')
+    //       const source2 = document.getElementById('pdf-double-2')
+    //       let imgData1
+    //       let imgData2
+    //       html2canvas(source1).then(capture => {
+    //         imgData1 = capture.toDataURL('image/png')
+    //                 let downloadButton = document.getElementById("download")
+    //       downloadButton.href = imgData1
+    //       this.inactiveButton = false
+    //       })
+    //       html2canvas(source2).then(capture => {
+    //         imgData2 = capture.toDataURL('image/png')
+    //                 let downloadButton = document.getElementById("download")
+    //       downloadButton.href = imgData2
+    //       this.inactiveButton = false
+    //       })
+
+    //     }
+    //   }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
+    //     const source = document.getElementById('pdf-stage')
+    //     html2canvas(source).then(capture => {
+    //       const renderPDF = capture.toDataURL()
+    //       let downloadButton = document.getElementById("download")
+    //       downloadButton.href = renderPDF
+    //       this.inactiveButton = false
+    //     })
+    //   }
+    // },
+
+
     // async exportPDF(){
     //   this.inactiveButton = true
     //   const doc = new jsPDF()

@@ -1,8 +1,9 @@
 <template>
   <div class="_base">
+    <Spinner v-if="inactiveButton"></Spinner>
     <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :backPath="backPath" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content">
-      <p v-if="emailErrorMessage !== ''" class="_error-message">{{emailErrorMessage}}</p>
+      <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
       <div class="_container">
         <label for="name" class="_label">アーティスト名</label>
         <input type="text" v-model="user.name" @blur="v$.user.name.$touch()" id="name" placeholder="18字以内で入力" :class="{'_input-error': v$.user.name.$error}" class="_input-text">
@@ -53,6 +54,7 @@
 import SubHeader from '@/components/SubHeader.vue'
 import Mixin from '@/mixin/mixin.js'
 import Footer from '@/components/Footer.vue'
+import Spinner from '@/components/Spinner.vue'
 
 import User from '@/class/User.js'
 
@@ -65,7 +67,8 @@ export default {
   name: 'SignUp',
   components: {
     SubHeader,
-    Footer
+    Footer,
+    Spinner
   },
   mixins:[
     Mixin
@@ -80,7 +83,7 @@ export default {
       backPath: "/",
       isPcTitle: true,
       inactiveButton: false,
-      emailErrorMessage:"",
+      errorMessage:"",
       user: new User(),
       // パスワードの表示切り替えステータス
       passwordInputType: "password",
@@ -115,9 +118,9 @@ export default {
         console.log(error.message)
         this.inactiveButton = false
         if(error.message === "Firebase: Error (auth/email-already-in-use)."){
-          this.emailErrorMessage = "このメールアドレスはすでに使用されています。"
+          this.errorMessage = "このメールアドレスはすでに使用されています。"
         }else{
-          this.emailErrorMessage = "アカウント作成に失敗しました。再度やり直して下さい。"
+          this.errorMessage = "アカウント作成に失敗しました。再度やり直して下さい。"
         }
          
       })

@@ -1,8 +1,9 @@
 <template>
   <div class="_base">
+    <Spinner v-if="inactiveButton"></Spinner>
     <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :backPath="backPath" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content">
-      <p v-if="emailErrorMessage !== ''" class="_error-message">{{emailErrorMessage}}</p>
+      <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
       <div class="_container">
         <label for="email" class="_label">メールアドレス</label>
         <input type="text" v-model="user.email" @blur="v$.user.email.$touch()" id="email" placeholder="半角英数字で入力" :class="{'_input-error': v$.user.email.$error}" class="_input-text">
@@ -29,6 +30,7 @@
 import SubHeader from '@/components/SubHeader.vue'
 import Mixin from '@/mixin/mixin.js'
 import Footer from '@/components/Footer.vue'
+import Spinner from '@/components/Spinner.vue'
 
 import auth from '@/firebase/modules/auth.js'
 import useVuelidate from '@vuelidate/core'
@@ -38,7 +40,8 @@ export default {
   name: 'SignIn',
   components: {
     SubHeader,
-    Footer
+    Footer,
+    Spinner
   },
   mixins:[
     Mixin
@@ -53,7 +56,7 @@ export default {
       backPath: "/",
       isPcTitle: true,
       inactiveButton: false,
-      emailErrorMessage:"",
+      errorMessage:"",
       user:{
         email:"",
         password:"",
@@ -74,14 +77,27 @@ export default {
       }
     },
     signIn(){
+      this.inactiveButton = true
       auth.signIn(this.user.email, this.user.password)
       .then(()=>{
+        this.inactiveButton = false
         this.$router.push({name: 'Home'})
-        console.log("成功")
       })
       .catch((error)=>{
-        console.log(error.message)
-        console.log("失敗")
+        this.inactiveButton = false
+        if(error.code === "auth/wrong-password"){
+          this.errorMessage = "パスワードが間違っています。"
+        }else if(error.code === "auth/user-not-found"){
+          this.errorMessage = "アカウントが存在しません。"
+        }else if(error.code === "auth/user-disabled"){
+          this.errorMessage = "アカウントが無効です。"
+        }else if(error.code === "auth/invalid-email"){
+          this.errorMessage = "メールアドレスが間違っています。"
+        }else if(error.code === "auth/too-many-requests"){
+          this.errorMessage = "間違ったパスワードが複数回入力されたのでログインがブロックされました。"
+        }else{
+          this.errorMessage = "ログインに失敗しました。"
+        }
       })
     }
   },
