@@ -51,16 +51,16 @@
       </div>
 
       <a id="download" target="_blank">ダウンロードスイッチ</a>
-      <!-- <iframe id="renderSpace" frameborder="0"></iframe> -->
-      <img id="renderSpace" :src="renderPDF">
+      <img id="renderSpace" :src="renderImage">
+      <!-- <canvas id="canvas" width="2000" height="2970" :style="{'display': 'none'}" ></canvas> -->
 
       <!-- 1ページ構成 -->
-      <div id="pdf-single" class="_pdf">
+      <div id="pdf-single" class="_pdf" >
         <div class="_PDF-name">{{userName}}</div>
         <div class="_PDF-day">{{exportPreparation.date.year}}.{{exportPreparation.date.month}}.{{exportPreparation.date.day}}</div>
-        <table border="1" class="_PDF-table">
+        <table border="1" class="_PDF-table" id="my-table">
           <tr>
-            <th class="_PDF-head _PDF-text-m">No</th>
+            <th class="_PDF-head _PDF-text-m" >No</th>
             <th class="_PDF-head _PDF-text-m">TITLE</th>
             <th class="_PDF-head _PDF-text-m">音源Tr.</th>
             <th class="_PDF-head _PDF-text-m">曲調</th>
@@ -119,7 +119,7 @@
       <div id="pdf-double-2" class="_pdf">
         <div class="_PDF-name">{{userName}}</div>
         <div class="_PDF-day">{{exportPreparation.date.year}}.{{exportPreparation.date.month}}.{{exportPreparation.date.day}}</div>
-        <table border="1" class="_PDF-table">
+        <table border="1" class="_PDF-table" >
           <tr>
             <th class="_PDF-head _PDF-text-m">No</th>
             <th class="_PDF-head _PDF-text-m">TITLE</th>
@@ -175,6 +175,7 @@
   </div>
 </template>
 
+
 <script>
 import Mixin from '@/mixin/mixin.js'
 import SubHeader from '@/components/SubHeader.vue'
@@ -187,9 +188,15 @@ import SetList from '@/class/SetList.js'
 
 import db from '@/firebase/modules/db.js'
 // import { jsPDF } from 'jspdf'
-// import * as html2canvas from 'html2canvas'
-import * as htmlToImage from 'html-to-image';
+// import autoTable from 'jspdf-autotable'
+// import koruri from '@/assets/font/Koruri-Regular-normal.js'
+
+import * as html2canvas from 'html2canvas'
+
+// import * as htmlToImage from 'html-to-image';
 // import {toJpeg} from 'html-to-image';
+// import * as rasterizeHTML from 'rasterizehtml';
+
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 
@@ -234,7 +241,9 @@ export default {
         type: null
       },
       isTurnOver: false,
-      renderPDF: null
+      renderImage: null,
+
+      topBackgroundImage: require("@/assets/images/top-image-sp.jpg"),
 
     }
   },
@@ -315,26 +324,71 @@ export default {
     //   }
     // },
 
-    // 画像化 HTMLToImage
-    exportPDF(){
-      this.inactiveButton = true
-      if(this.exportPreparation.type === "normal"){
-        if(this.sheetType === "single"){
-          console.log("1")
-          const source = document.getElementById('pdf-single')
-          htmlToImage.toJpeg(source, { quality: 0.95 })
-          .then(capture => {
- console.log("2")
-          const renderPDF = capture
-          let downloadButton = document.getElementById("download")
-          downloadButton.href = renderPDF
-          downloadButton.download = "aaa.jpeg"
+    // jsPDF-autotableで
+    // exportPDF(){
+    //   this.inactiveButton = true
+    //   const doc = new jsPDF()
+    //   doc.text(40, 30, "こんにちは")
+    //   autoTable(doc, {
+    //     theme: 'grid',
+    //     html:"#my-table",
+    //     styles:{
+    //       fontSize: 6,
+    //       font: 'Koruri-Regular',
+    //       fontStyle: 'normal',
+    //       cellWidth: '10', rowPageBreak: 'auto', halign: 'justify'
+    //     },
 
-          let aaa = document.getElementById("renderSpace")
-          aaa.src = renderPDF
-          this.inactiveButton = false
-          })
-        }
+    //   })
+    //   doc.save('doc.pdf')
+    //   this.inactiveButton = false
+    // },
+
+    // rasterizeHTMLで
+    // exportPDF(){
+    //   this.inactiveButton = true
+    //   var canvas = document.getElementById("canvas")
+    //   let html_container = document.getElementById("pdf-single")
+    //   let html = html_container.innerHTML
+    //   rasterizeHTML.drawHTML(html, canvas)
+    //   .then(()=>{
+    //     const doc = new jsPDF()
+    //     const width = doc.internal.pageSize.width
+    //     const image = canvas.toDataURL("image/jpeg", 1.0)
+    //     doc.addImage(image, 'JPEG', 10, 10, width * 0.9, 0)
+    //     // doc.save("set_list.pdf")
+    //     let fileName = "set_list.jpeg"
+    //     window.open(doc.output('bloburl', { filename: fileName }))
+    //     let downloadButton = document.getElementById("download")
+    //     downloadButton.href = image
+    //     downloadButton.download = "aaa.jpeg"
+
+    //     let aaa = document.getElementById("renderSpace")
+    //     aaa.src = image
+    //     this.inactiveButton = false
+    //   })
+    // },
+
+    // 画像化 HTMLToImage
+//     exportPDF(){
+//       this.inactiveButton = true
+//       if(this.exportPreparation.type === "normal"){
+//         if(this.sheetType === "single"){
+//           console.log("1")
+//           const source = document.getElementById('pdf-single')
+//           htmlToImage.toJpeg(source, { quality: 0.95 })
+//           .then(capture => {
+//  console.log("2")
+//           const renderPDF = capture
+//           let downloadButton = document.getElementById("download")
+//           downloadButton.href = renderPDF
+//           downloadButton.download = "aaa.jpeg"
+
+//           let aaa = document.getElementById("renderSpace")
+//           aaa.src = renderPDF
+//           this.inactiveButton = false
+//           })
+//         }
       //   else if(this.sheetType === "double"){
       //     const source1 = document.getElementById('pdf-double-1')
       //     const source2 = document.getElementById('pdf-double-2')
@@ -362,55 +416,24 @@ export default {
       //     downloadButton.href = renderPDF
       //     this.inactiveButton = false
       //   })
-      }
-    },
-
-    // 画像化 HTML2Canvas
-    // exportPDF(){
-    //   this.inactiveButton = true
-    //   if(this.exportPreparation.type === "normal"){
-    //     if(this.sheetType === "single"){
-    //       const source = document.getElementById('pdf-single')
-    //       html2canvas(source).then(capture => {
- 
-    //       const renderPDF = capture.toDataURL('image/jpeg')
-    //       // let downloadButton = document.getElementById("download")
-    //       // downloadButton.href = renderPDF
-    //       // downloadButton.download = "aaa.jpeg"
-
-    //       let aaa = document.getElementById("renderSpace")
-    //       aaa.src = renderPDF
-    //       this.inactiveButton = false
-    //       })
-    //     }else if(this.sheetType === "double"){
-    //       const source1 = document.getElementById('pdf-double-1')
-    //       const source2 = document.getElementById('pdf-double-2')
-    //       let imgData1
-    //       let imgData2
-    //       html2canvas(source1).then(capture => {
-    //         imgData1 = capture.toDataURL('image/png')
-    //                 let downloadButton = document.getElementById("download")
-    //       downloadButton.href = imgData1
-    //       this.inactiveButton = false
-    //       })
-    //       html2canvas(source2).then(capture => {
-    //         imgData2 = capture.toDataURL('image/png')
-    //                 let downloadButton = document.getElementById("download")
-    //       downloadButton.href = imgData2
-    //       this.inactiveButton = false
-    //       })
-
-    //     }
-    //   }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
-    //     const source = document.getElementById('pdf-stage')
-    //     html2canvas(source).then(capture => {
-    //       const renderPDF = capture.toDataURL()
-    //       let downloadButton = document.getElementById("download")
-    //       downloadButton.href = renderPDF
-    //       this.inactiveButton = false
-    //     })
     //   }
     // },
+
+    // 画像化 HTML2Canvas
+    exportPDF(){
+      this.inactiveButton = true
+      const source = document.getElementById('pdf-single')
+      html2canvas(source).then(capture => {
+      const renderImage = capture.toDataURL('image/jpeg')
+      let downloadButton = document.getElementById("download")
+      downloadButton.href = renderImage
+      downloadButton.download = "aaa.jpeg"
+
+      let aaa = document.getElementById("renderSpace")
+      aaa.src = renderImage
+      this.inactiveButton = false
+      })
+    },
 
 
     // async exportPDF(){
@@ -627,9 +650,7 @@ export default {
   height: 800px;
   background-color: blue;
 }
-#pdf-single{
-    font-family: Helvetica, Tahoma, Arial, sans-serif, 'PingFang SC';
-}
+
 @media screen and (min-width:600px){
   .content{
     padding:50px 0 0;

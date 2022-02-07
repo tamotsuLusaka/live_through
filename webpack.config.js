@@ -7,6 +7,7 @@ module.exports = {
         new GoogleFontsPlugin({
             fonts: [
                 { family: "Noto Sans JP", variants: [ "300", "700" ]},
+                { family: "Yusei Magic"},
            /*ここにフォントを追加していく．もちろん上のRobotoとSourse sans proは消してよい*/
             ]
             /* ...options */

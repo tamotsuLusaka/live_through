@@ -39,7 +39,7 @@ html{
 
 body{
   font-size: 1.6rem;
-  font-family: 'Noto Sans JP', sans-serif, 'PingFang SC';
+  
   color: #131313;
 }
 a{
@@ -642,6 +642,7 @@ a{
   z-index: 100;
   width: 2000px;
   height: 2970px;
+
   /* position: relative; */
 
 }

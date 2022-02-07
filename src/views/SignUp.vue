@@ -111,6 +111,7 @@ export default {
           this.$router.push({name: 'Home'})
         })
         .catch((error)=>{
+          this.inactiveButton = false
           console.log(error.message)
         })
       })

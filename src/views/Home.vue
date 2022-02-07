@@ -77,7 +77,7 @@ export default {
       pageTitle:"home",
       backPath:"",
       isPcTitle: false,
-      topBackgroundImage: require("@/assets/images/top-image-sp.jpg"),
+      topBackgroundImage: require("@/assets/images/top-image.jpg"),
     }
   },
   methods:{
