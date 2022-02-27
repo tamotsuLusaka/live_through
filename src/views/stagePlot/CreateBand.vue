@@ -24,6 +24,11 @@
       </div>
 
       <div class="_container">
+        <label class="_label">パート配置図</label><Helper :helperObject="helper.tune"></Helper>
+        <StageLayout v-if="isBandFetched" mode="display" :band="band" class="_margin20"></StageLayout>
+      </div>
+
+      <div class="_container">
         <label for="textForLighting" class="_label">備考</label>
         <textarea v-model="band.text" @blur="v$.band.text.$touch()" placeholder="200文字以内で入力 任意" :class="{'_input-error': v$.band.text.$error}" class="_input-textarea"></textarea>
         <p v-if="v$.band.text.$error" class="_input-error-message">200文字以内で入力してください。</p>
@@ -49,6 +54,7 @@ import Helper from '@/components/Helper.vue'
 import Spinner from '@/components/Spinner.vue'
 import Mixin from '@/mixin/mixin.js'
 import Footer from '@/components/Footer.vue'
+import StageLayout from '@/components/stagePlot/StageLayout.vue'
 
 import Band from '@/class/Band.js'
 
@@ -65,7 +71,8 @@ export default {
     Spinner,
     SubHeader,
     Helper,
-    Footer
+    Footer,
+    StageLayout
   },
   mixins:[
     Mixin
@@ -84,6 +91,7 @@ export default {
       errorMessage: "",
 
       band: new Band(),
+      isBandFetched: false,
 
       helper:{
         tune:{
@@ -100,6 +108,8 @@ export default {
       .then((doc)=>{
         this.band = doc.data()
         this.band
+
+        this.isBandFetched = true
       })
       .catch((error)=>{
         this.errorMessage = "データの取得に失敗しました。"

@@ -96,20 +96,20 @@ export default{
       {text: "左側"},
     ],
     instrument:[
-      {value: "Vo", plot: "Vocal", text: "ボーカル"},
-      {value: "Cho", plot: "Cho", text: "コーラス"},
-      {value: "Gt", plot: "Guitar", text: "ギター"},
-      {value: "Ba", plot: "Bass", text: "ベース"},
-      {value: "Dr", plot: "Drums", text: "ドラム"},
-      {value: "AG", plot: "AG", text: "アコースティックギター"},
-      {value: "Key", plot: "Keyboard", text: "キーボード"},
-      {value: "Per", plot: "Per", text: "パーカッション"},
-      {value: "Sax", plot: "Sax", text: "サックス"},
-      {value: "Tp", plot: "Trumpet", text: "トランペット"},
-      {value: "Tb", plot: "Trombone", text: "トロンボーン"},
-      {value: "Vl", plot: "Violin", text: "バイオリン"},
-      {value: "DJ", plot: "DJ", text: "DJ"},
-      {value: "etc", plot: "", text: "その他"},
+      {value: "Vo", plot: "Vocal", text: "ボーカル", xSpan: 3, ySpan: 3},
+      {value: "Cho", plot: "Cho", text: "コーラス", xSpan: 3, ySpan: 3},
+      {value: "Gt", plot: "Guitar", text: "ギター", xSpan: 3, ySpan: 3},
+      {value: "Ba", plot: "Bass", text: "ベース", xSpan: 3, ySpan: 3},
+      {value: "Dr", plot: "Drums", text: "ドラム", xSpan: 3, ySpan: 3},
+      {value: "AG", plot: "AG", text: "アコースティックギター", xSpan: 3, ySpan: 3},
+      {value: "Key", plot: "Keyboard", text: "キーボード", xSpan: 3, ySpan: 3},
+      {value: "Per", plot: "Per", text: "パーカッション", xSpan: 3, ySpan: 3},
+      {value: "Sax", plot: "Sax", text: "サックス", xSpan: 3, ySpan: 3},
+      {value: "Tp", plot: "Trumpet", text: "トランペット", xSpan: 3, ySpan: 3},
+      {value: "Tb", plot: "Trombone", text: "トロンボーン", xSpan: 3, ySpan: 3},
+      {value: "Vl", plot: "Violin", text: "バイオリン", xSpan: 3, ySpan: 3},
+      {value: "DJ", plot: "DJ", text: "DJ", xSpan: 3, ySpan: 3},
+      {value: "etc", plot: "", text: "その他", xSpan: 3, ySpan: 3},
     ],
     typeOfVocal:[
       {text: "ボーカル"},
@@ -117,12 +117,12 @@ export default{
       {text: "MC"},
     ],
     amp:[
-      {id: "rent", text: "レンタル"},
-      {id: "rentCombo", text: "コンボレンタル"},
-      {id: "head", text: "ヘッド持ち込み・キャビレンタル"},
-      {id: "cab", text: "ヘッドレンタル・キャビ持ち込み"},
-      {id: "head&cab", text: "ヘッド&キャビ持ち込み"},
-      {id: "combo", text: "コンボアンプ持ち込み"}
+      {id: "rent", text: "レンタル", xSpan: 2, ySpan: 2},
+      {id: "rentCombo", text: "コンボレンタル", xSpan: 2, ySpan: 2},
+      {id: "head", text: "ヘッド持ち込み・キャビレンタル", xSpan: 2, ySpan: 2},
+      {id: "cab", text: "ヘッドレンタル・キャビ持ち込み", xSpan: 2, ySpan: 2},
+      {id: "head&cab", text: "ヘッド&キャビ持ち込み", xSpan: 2, ySpan: 2},
+      {id: "combo", text: "コンボアンプ持ち込み", xSpan: 2, ySpan: 2}
     ],
     sync:[
       {text: "PC"},
@@ -158,15 +158,35 @@ export default{
     } ,
 
     // 楽器の名称を呼び出す用
-    getInstrumentValue: (state) => (text) =>{
+    getInstrumentValue: (state) => (type) =>{
       let name = ""
       state.instrument.forEach((object)=>{
-        if(object.text === text){
+        if(object.text === type){
           name = object.value
         }
       })
       return name
-    } ,
+    },
+
+    // Span情報をまとめて返却する
+    getSpanData: (state) => {
+      return new Array().concat(
+        state.instrument.map(entry => 
+          ({
+            text: entry.text,
+            xSpan: entry.xSpan,
+            ySpan: entry.ySpan
+          })
+        ),
+        state.amp.map(entry => 
+          ({
+            text: entry.id,
+            xSpan: entry.xSpan,
+            ySpan: entry.ySpan
+          })
+        )
+      )
+    }
   },
   mutations:{
 
