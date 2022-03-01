@@ -5,7 +5,7 @@
         <img src="@/assets/images/logo.png" class="sp-sub-header-logo" alt="">
       </div>
       <div v-else class="sp-sub-header-left">
-        <router-link v-if="backPath !== ''" :to="backPath"><img src="@/assets/images/icon-arrow-l.png" alt="矢印" class="_arrow sp-sub-header-arrow"></router-link>
+        <div v-if="isBack" @click="goBack()"><img src="@/assets/images/icon-arrow-l.png" alt="矢印" class="_arrow sp-sub-header-arrow"></div>
         <p class="sp-sub-header-title">{{ pageTitle }}</p>
       </div>
       <img v-if="pageType !== 'sign'" src="@/assets/images/burger.png" @click="open()" alt="burger" class="sp-sub-header-burger">
@@ -14,12 +14,12 @@
       <router-link :to="{name: 'Home'}" class="pc-sub-header-left">
         <img src="@/assets/images/logo.png" class="pc-sub-header-logo" alt="">
       </router-link>
-      <div class="pc-sub-header-right">
+      <div v-if="pageType !== 'sign'" class="pc-sub-header-right">
         <router-link :to="{name: 'SetList'}" class="pc-sub-header-link">
           <img v-if="pageType === 'setList'" src="@/assets/images/icon-mic-blue.png" alt="" class="pc-link-icon">
           <img v-else src="@/assets/images/icon-mic-gray.png" alt="" class="pc-link-icon">
         </router-link>
-        <router-link :to="{name: 'SetList'}" class="pc-sub-header-link">
+        <router-link :to="{name: 'StagePlot'}" class="pc-sub-header-link">
           <img v-if="pageType === 'stagePlot'" src="@/assets/images/icon-stage-blue.png" alt="" class="pc-link-icon">
           <img v-else src="@/assets/images/icon-stage-gray.png" alt="" class="pc-link-icon">
         </router-link>
@@ -33,15 +33,20 @@
 
     <div class="menu" :class="{'appear': isShown}">
       <img src="@/assets/images/cross.png" @click="close()" class="menu-close" alt="">
-      <img src="@/assets/images/logo.png" class="menu-logo" alt="ロゴ">
       <div class="menu-container">
-        <div class="_link-mini-blue">
-          <img src="@/assets/images/icon-signout-white.png" class="_link-mini-icon " alt="">
-          <p class="_link-mini-text">ログアウト</p>
+        <div class="menu-top">
+          <img src="@/assets/images/logo.png" class="menu-logo" alt="ロゴ">
+          <ul>
+            <li class="menu-link"><router-link :to="{name: 'SetList'}" ><img src="@/assets/images/icon-mic-blue.png" class="menu-icon" alt=""><span>セットリスト</span></router-link></li>
+            <li class="menu-link"><router-link :to="{name: 'SetList'}" ><img src="@/assets/images/icon-stage-blue.png" class="menu-icon" alt=""><span>ステージプロット</span></router-link></li>
+            <li class="menu-link"><router-link :to="{name: 'SetList'}" ><img src="@/assets/images/icon-person-blue.png" class="menu-icon" alt=""><span>プロフィール</span></router-link></li>
+            <li @click="signOut()" class="menu-link"><img src="@/assets/images/icon-signout-red.png" class="menu-icon" alt=""><span>ログアウト</span></li>
+          </ul>
         </div>
-        <div @click="signOut()" class="_link-mini-red">
-          <img src="@/assets/images/icon-signout-white.png" class="_link-mini-icon " alt="">
-          <p class="_link-mini-text">ログアウト</p>
+        <div class="menu-bottom">
+          <router-link :to="{name: 'SetList'}" class="menu-sub">利用規約</router-link>
+          <router-link :to="{name: 'SetList'}" class="menu-sub">プライバシーポリシー</router-link>
+          <div class="right">Copyright LIVE THROUGH All Rights Reserved.</div>
         </div>
       </div>
     </div>
@@ -61,8 +66,8 @@ export default {
     pageTitle:{
       type: String
     },
-    backPath:{
-      type: String
+    isBack:{
+      type: Boolean
     },
     isPcTitle:{
       type: Boolean
@@ -88,7 +93,11 @@ export default {
     },
     signOut(){
       auth.signOut()
+      this.$router.push({name: 'Home'})
     },
+    goBack(){
+      this.$router.back()
+    }
   }
 }
 </script>
@@ -191,10 +200,9 @@ export default {
     height: 100vh;
     z-index: 50;
     background-color: var(--white);
-    text-align: center;
     transition: 0.3s;
-    -webkit-transform: translate(0, 105%);
-    transform: translate(0, 105%);
+    -webkit-transform: translate(105%, 0);
+    transform: translate(105%, 0);
   }
   .menu-close{
     position: absolute;
@@ -203,15 +211,54 @@ export default {
     width: 20px;
     height: 20px;
   }
-  .menu-logo{
-    width: 65%;
-    padding: 200px 0;
+
+  .menu-container{
+    width: 80%;
+    height: 100vh;
     margin: 0 auto;
+    text-align: left;
+    position: relative;
+  }
+  .menu-top{
+    position: absolute;
+    top: 80px;
+    left: 0;
+  }
+  .menu-bottom{
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+  }
+  .menu-logo{
+    width: 70%;
+    margin-bottom: 40px;
 
   }
-  .menu-container{
-    width: 90%;
-    margin: 0 auto;
+  .menu-link{
+    margin-bottom: 20px;
+  }
+  .menu-icon{
+    width: 20px;
+    height: 20px;
+        -webkit-transform: translate(0, 3px);
+    transform: translate(0, 3px);
+  }
+  .menu-link span{
+    margin-left: 10px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--black);
+  }
+  .menu-sub{
+    color: var(--black);
+    font-size: 1.4rem;
+    display: block;
+    margin-top: 10px;
+  }
+
+  .right{
+    margin-top: 20px;
+    font-size: 1.2rem;
   }
   .appear{
     -webkit-transform: translate(0, 0);

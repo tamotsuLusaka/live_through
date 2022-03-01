@@ -1,7 +1,7 @@
 <template>
   <div class="_base">
     <Spinner v-if="inactiveButton"></Spinner>
-    <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :backPath="backPath" :isPcTitle="isPcTitle"></SubHeader>
+    <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content">
       <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
       <div class="_container">
@@ -21,13 +21,13 @@
       </div>
       <div class="_container">
         <label for="textForSound" class="_label">音響要望</label>
-        <textarea v-model="music.textForSound" @blur="v$.music.textForSound.$touch()" placeholder="150文字以内で入力 任意" :class="{'_input-error': v$.music.textForSound.$error}" class="_input-textarea"></textarea>
-        <p v-if="v$.music.textForSound.$error" class="_input-error-message">150文字以内で入力してください。</p>
+        <textarea v-model="music.textForSound" @blur="v$.music.textForSound.$touch()" placeholder="100文字以内で入力 任意" :class="{'_input-error': v$.music.textForSound.$error}" class="_input-textarea"></textarea>
+        <p v-if="v$.music.textForSound.$error" class="_input-error-message">100文字以内で入力してください。</p>
       </div>
       <div class="_container">
         <label for="textForLighting" class="_label">照明要望</label>
-        <textarea v-model="music.textForLighting" @blur="v$.music.textForLighting.$touch()" placeholder="150文字以内で入力 任意" :class="{'_input-error': v$.music.textForLighting.$error}" class="_input-textarea"></textarea>
-        <p v-if="v$.music.textForLighting.$error" class="_input-error-message">150文字以内で入力してください。</p>
+        <textarea v-model="music.textForLighting" @blur="v$.music.textForLighting.$touch()" placeholder="100文字以内で入力 任意" :class="{'_input-error': v$.music.textForLighting.$error}" class="_input-textarea"></textarea>
+        <p v-if="v$.music.textForLighting.$error" class="_input-error-message">100文字以内で入力してください。</p>
       </div>
       <div class="_container">
         <p class="_label">音源</p>
@@ -129,7 +129,7 @@ export default {
     return{
       pageType: "setList",
       pageTitle: "楽曲の新規登録",
-      backPath: "/music",
+      isBack: "/music",
       isPcTitle: true,
       inactiveButton: false,
       mode: "create", //"create", "edit"
@@ -216,10 +216,10 @@ export default {
           required
         },
         textForSound:{
-          maxLength: maxLength(150)
+          maxLength: maxLength(100)
         },
         textForLighting:{
-          maxLength: maxLength(150)
+          maxLength: maxLength(100)
         },
         source:{
           typeOfSource:{

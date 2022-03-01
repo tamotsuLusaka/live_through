@@ -1,7 +1,7 @@
 <template>
   <div class="_base-s">
     <div v-if="this.$store.getters['auth/isSignedIn']" class="after">
-      <SubHeader :pageType="pageType" :pageTitle="pageTitle" :backPath="backPath" :isPcTitle="isPcTitle"></SubHeader>
+      <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
       <div class="_content-s">
         <p class="name">{{this.$store.getters['auth/userName']}}</p>
 
@@ -75,7 +75,7 @@ export default {
     return{
       pageType: "home",
       pageTitle:"home",
-      backPath:"",
+      isBack:"",
       isPcTitle: false,
       topBackgroundImage: require("@/assets/images/top-image.jpg"),
     }

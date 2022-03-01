@@ -1,13 +1,49 @@
 <template>
   <div class="_base">
     <Spinner v-if="inactiveButton"></Spinner>
-    <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :backPath="backPath" :isPcTitle="isPcTitle"></SubHeader>
+    <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content">
       <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
       <div class="_container">
         <label for="name" class="_label">リスト名</label>
         <input type="text" v-model="setList.name" @blur="v$.setList.name.$touch()" placeholder="18文字以内で入力" :class="{'_input-error': v$.setList.name.$error}" class="_input-text">
         <p v-if="v$.setList.name.$error" class="_input-error-message">18文字以内で入力してください。</p>
+      </div>
+
+      <div class="_container">
+        <p class="_label">SE</p><Helper :helperObject="helper.tune"></Helper>
+        <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !setList.isSe}">
+          <div class="_multi-inner" :class="{'_multi-inner-end': !setList.isSe}">
+            <p class="_multi-text">SE 有り</p>
+            <Toggle v-model="setList.isSe" @click="_clearObject(setList.se)" class="_multi-toggle" />
+          </div>
+        </div>
+        <div v-if="setList.isSe" class="_multi-box">
+          <div class="_multi-inner">
+            <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
+            <select v-model="setList.se.typeOfSource" @blur="v$.setList.se.typeOfSource.$touch()" required :class="{'_input-select-exist': setList.se.typeOfSource !== null}" class="_multi-select" >
+              <option :value="null" disabled >音源の種類を選択</option>
+              <option v-for="typeOfSource in $store.getters['select/typeOfSource']" :key="typeOfSource.text" :value="typeOfSource.text" :style="{'color': '#131313'}" >音源の種類：{{typeOfSource.text}}</option>
+            </select>
+          </div>
+        </div>
+        <div v-if="setList.se.typeOfSource === 'その他'" class="_multi-box" :class="{'_multi-box-error': v$.setList.se.nameOfSource.$error}">
+          <div class="_multi-inner">
+            <input type="text" v-model="setList.se.nameOfSource" @blur="v$.setList.se.nameOfSource.$touch()" placeholder="音源の名称を6字以内で入力" class="_multi-input-text">
+          </div>
+        </div>
+        <div v-if="setList.isSe" class="_multi-box" :class="{'_multi-box-error': v$.setList.se.textForOpen.$error}">
+          <div class="_flex-multi-inner">
+            <textarea v-model="setList.se.textForOpen" @blur="v$.setList.se.textForOpen.$touch()" placeholder="開始指示を50文字以内で入力 任意" class="_multi-input-textarea"></textarea>
+          </div>
+        </div>
+        <div v-if="setList.isSe" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.setList.se.textForClose.$error}">
+          <div class="_flex-multi-inner _multi-inner-end">
+            <textarea v-model="setList.se.textForClose" @blur="v$.setList.se.textForClose.$touch()" placeholder="終了指示を50文字以内で入力 任意" class="_multi-input-textarea"></textarea>
+          </div>
+        </div>
+        <p v-if="v$.setList.se.nameOfSource.$error" class="_input-error-message">6文字以内で入力してください。</p>
+        <p v-if="v$.setList.se.textForOpen.$error || v$.setList.se.textForClose.$error" class="_input-error-message">50文字以内で入力してください。</p>
       </div>
 
       <div class="_container">
@@ -37,6 +73,7 @@
                 <div class="list-box">
                   <div v-if="element.type === 'music'" class="list-left handle">
                     <img src="@/assets/images/icon-music-blue.png" alt="" class="list-icon">
+                    <!-- <p class="list-name">{{index + 1}}. {{element.name}}</p> -->
                     <p class="list-name">{{index + 1}}. {{element.name}}</p>
                   </div>
                   <div v-if="element.type === 'mc'" class="list-left handle">
@@ -51,42 +88,6 @@
         </div>
       </div>
       
-      <div class="_container">
-        <p class="_label">SE</p><Helper :helperObject="helper.tune"></Helper>
-        <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !setList.isSe}">
-          <div class="_multi-inner" :class="{'_multi-inner-end': !setList.isSe}">
-            <p class="_multi-text">SE 有り</p>
-            <Toggle v-model="setList.isSe" @click="_clearObject(setList.se)" class="_multi-toggle" />
-          </div>
-        </div>
-        <div v-if="setList.isSe" class="_multi-box">
-          <div class="_multi-inner">
-            <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
-            <select v-model="setList.se.typeOfSource" @blur="v$.setList.se.typeOfSource.$touch()" required :class="{'_input-select-exist': setList.se.typeOfSource !== null}" class="_multi-select" >
-              <option :value="null" disabled >音源の種類を選択</option>
-              <option v-for="typeOfSource in $store.getters['select/typeOfSource']" :key="typeOfSource.text" :value="typeOfSource.text" :style="{'color': '#131313'}" >音源の種類：{{typeOfSource.text}}</option>
-            </select>
-          </div>
-        </div>
-        <div v-if="setList.se.typeOfSource === 'その他'" class="_multi-box" :class="{'_multi-box-error': v$.setList.se.nameOfSource.$error}">
-          <div class="_multi-inner">
-            <input type="text" v-model="setList.se.nameOfSource" @blur="v$.setList.se.nameOfSource.$touch()" placeholder="音源の名称を6字以内で入力" class="_multi-input-text">
-          </div>
-        </div>
-        <div v-if="setList.isSe" class="_multi-box" :class="{'_multi-box-error': v$.setList.se.textForOpen.$error}">
-          <div class="_flex-multi-inner">
-            <textarea v-model="setList.se.textForOpen" @blur="v$.setList.se.textForOpen.$touch()" placeholder="開始指示を55文字以内で入力 任意" class="_multi-input-textarea"></textarea>
-          </div>
-        </div>
-        <div v-if="setList.isSe" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.setList.se.textForClose.$error}">
-          <div class="_flex-multi-inner _multi-inner-end">
-            <textarea v-model="setList.se.textForClose" @blur="v$.setList.se.textForClose.$touch()" placeholder="終了指示を55文字以内で入力 任意" class="_multi-input-textarea"></textarea>
-          </div>
-        </div>
-        <p v-if="v$.setList.se.nameOfSource.$error" class="_input-error-message">6文字以内で入力してください。</p>
-        <p v-if="v$.setList.se.textForOpen.$error || v$.setList.se.textForClose.$error" class="_input-error-message">55文字以内で入力してください。</p>
-      </div>
-
       <div class="_container">
         <p class="_label">END SE</p><Helper :helperObject="helper.tune"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !setList.isEndSe}">
@@ -111,16 +112,16 @@
         </div>
         <div v-if="setList.isEndSe" class="_multi-box" :class="{'_multi-box-error': v$.setList.endSe.textForOpen.$error}">
           <div class="_flex-multi-inner">
-            <textarea v-model="setList.endSe.textForOpen" @blur="v$.setList.endSe.textForOpen.$touch()" placeholder="開始指示を55文字以内で入力 任意" class="_multi-input-textarea"></textarea>
+            <textarea v-model="setList.endSe.textForOpen" @blur="v$.setList.endSe.textForOpen.$touch()" placeholder="開始指示を50文字以内で入力 任意" class="_multi-input-textarea"></textarea>
           </div>
         </div>
         <div v-if="setList.isEndSe" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.setList.endSe.textForClose.$error}">
           <div class="_flex-multi-inner _multi-inner-end">
-            <textarea v-model="setList.endSe.textForClose" @blur="v$.setList.endSe.textForClose.$touch()" placeholder="終了指示を55文字以内で入力 任意" class="_multi-input-textarea"></textarea>
+            <textarea v-model="setList.endSe.textForClose" @blur="v$.setList.endSe.textForClose.$touch()" placeholder="終了指示を50文字以内で入力 任意" class="_multi-input-textarea"></textarea>
           </div>
         </div>
         <p v-if="v$.setList.endSe.nameOfSource.$error" class="_input-error-message">6文字以内で入力してください。</p>
-        <p v-if="v$.setList.endSe.textForOpen.$error || v$.setList.endSe.textForClose.$error" class="_input-error-message">55文字以内で入力してください。</p>
+        <p v-if="v$.setList.endSe.textForOpen.$error || v$.setList.endSe.textForClose.$error" class="_input-error-message">50文字以内で入力してください。</p>
       </div>
 
       <div class="_container">
@@ -129,47 +130,6 @@
           <div class="_text-inner">
             <p class="_text">アンコール有り</p>
             <Toggle v-model="setList.isEncore" @click="clearEncoreObject()" class="_multi-toggle" />
-          </div>
-        </div>
-      </div>
-
-      <div v-if="setList.isEncore" class="_container">
-        <p class="_label">アンコールリスト</p>
-        <div class="add">
-          <div @click="openAddLists('encore')" class="add-button">
-            <img src="@/assets/images/icon-music-blue.png" class="add-icon" alt="">
-            <p class="add-text">楽曲の追加</p>
-          </div>
-          <div @click="addMc('encore', musicListsOfEncore)" class="add-button">
-            <img src="@/assets/images/icon-mc-blue.png" class="add-icon" alt="">
-            <p class="add-text">MCの追加</p>
-          </div>
-        </div>
-        <div v-if="isShownAadListsOfEncore" class="add-list">
-          <div v-for="(music, index) in addLists" @click="addMusic('encore', music, musicListsOfEncore)" :key="index" class="_multi-box" :class="{'_multi-box-start': index === 0, '_multi-box-end': addLists.length -1 === index}" >
-            <div class="_multi-inner" :class="{'_multi-inner-end': addLists.length -1 === index}">
-              <p class="_multi-text">{{music.name}}</p>
-              <img  src="@/assets/images/button-plus.png" alt="" class="_multi-icon _arrow">
-            </div>
-          </div>
-        </div>
-        <div v-if="musicListsOfEncore.length !== 0" class="list">
-          <div class="list-container">
-            <draggable v-model="musicListsOfEncore" group="list" item-key="dummyId" handle=".handle">
-              <template #item="{element, index}">
-                <div class="list-box">
-                  <div v-if="element.type === 'music'" class="list-left handle">
-                    <img src="@/assets/images/icon-music-blue.png" alt="" class="list-icon">
-                    <p class="list-name">{{index + 1}}. {{element.name}}</p>
-                  </div>
-                  <div v-if="element.type === 'mc'" class="list-left handle">
-                    <img src="@/assets/images/icon-mc-blue.png" alt="" class="list-icon">
-                    <p class="list-name">{{index + 1}}. MC</p>
-                  </div>
-                  <img src="@/assets/images/button-cross.png" @click="removeMusic(musicListsOfEncore, index)" class="list-right">
-                </div>
-              </template>
-            </draggable>
           </div>
         </div>
       </div>
@@ -199,16 +159,57 @@
           </div>
           <div v-if="setList.isSeOfEncore" class="_multi-box" :class="{'_multi-box-error': v$.setList.seOfEncore.textForOpen.$error}">
             <div class="_flex-multi-inner">
-              <textarea v-model="setList.seOfEncore.textForOpen" @blur="v$.setList.seOfEncore.textForOpen.$touch()" placeholder="開始指示を55文字以内で入力 任意" class="_multi-input-textarea"></textarea>
+              <textarea v-model="setList.seOfEncore.textForOpen" @blur="v$.setList.seOfEncore.textForOpen.$touch()" placeholder="開始指示を50文字以内で入力 任意" class="_multi-input-textarea"></textarea>
             </div>
           </div>
           <div v-if="setList.isSeOfEncore" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.setList.seOfEncore.textForClose.$error}">
             <div class="_flex-multi-inner _multi-inner-end">
-              <textarea v-model="setList.seOfEncore.textForClose" @blur="v$.setList.seOfEncore.textForClose.$touch()" placeholder="終了指示を55文字以内で入力 任意" class="_multi-input-textarea"></textarea>
+              <textarea v-model="setList.seOfEncore.textForClose" @blur="v$.setList.seOfEncore.textForClose.$touch()" placeholder="終了指示を50文字以内で入力 任意" class="_multi-input-textarea"></textarea>
             </div>
           </div>
           <p v-if="v$.setList.seOfEncore.nameOfSource.$error" class="_input-error-message">6文字以内で入力してください。</p>
-          <p v-if="v$.setList.seOfEncore.textForOpen.$error || v$.setList.seOfEncore.textForClose.$error" class="_input-error-message">55文字以内で入力してください。</p>
+          <p v-if="v$.setList.seOfEncore.textForOpen.$error || v$.setList.seOfEncore.textForClose.$error" class="_input-error-message">50文字以内で入力してください。</p>
+        </div>
+
+        <div class="_container">
+          <p class="_label">アンコールリスト</p>
+          <div class="add">
+            <div @click="openAddLists('encore')" class="add-button">
+              <img src="@/assets/images/icon-music-blue.png" class="add-icon" alt="">
+              <p class="add-text">楽曲の追加</p>
+            </div>
+            <div @click="addMc('encore', musicListsOfEncore)" class="add-button">
+              <img src="@/assets/images/icon-mc-blue.png" class="add-icon" alt="">
+              <p class="add-text">MCの追加</p>
+            </div>
+          </div>
+          <div v-if="isShownAadListsOfEncore" class="add-list">
+            <div v-for="(music, index) in addLists" @click="addMusic('encore', music, musicListsOfEncore)" :key="index" class="_multi-box" :class="{'_multi-box-start': index === 0, '_multi-box-end': addLists.length -1 === index}" >
+              <div class="_multi-inner" :class="{'_multi-inner-end': addLists.length -1 === index}">
+                <p class="_multi-text">{{music.name}}</p>
+                <img  src="@/assets/images/button-plus.png" alt="" class="_multi-icon _arrow">
+              </div>
+            </div>
+          </div>
+          <div v-if="musicListsOfEncore.length !== 0" class="list">
+            <div class="list-container">
+              <draggable v-model="musicListsOfEncore" group="list" item-key="dummyId" handle=".handle">
+                <template #item="{element, index}">
+                  <div class="list-box">
+                    <div v-if="element.type === 'music'" class="list-left handle">
+                      <img src="@/assets/images/icon-music-blue.png" alt="" class="list-icon">
+                      <p class="list-name">{{index + 1}}. {{element.name}}</p>
+                    </div>
+                    <div v-if="element.type === 'mc'" class="list-left handle">
+                      <img src="@/assets/images/icon-mc-blue.png" alt="" class="list-icon">
+                      <p class="list-name">{{index + 1}}. MC</p>
+                    </div>
+                    <img src="@/assets/images/button-cross.png" @click="removeMusic(musicListsOfEncore, index)" class="list-right">
+                  </div>
+                </template>
+              </draggable>
+            </div>
+          </div>
         </div>
 
         <div class="_container">
@@ -235,23 +236,23 @@
           </div>
           <div v-if="setList.isEndSeOfEncore" class="_multi-box" :class="{'_multi-box-error': v$.setList.endSeOfEncore.textForOpen.$error}">
             <div class="_flex-multi-inner">
-              <textarea v-model="setList.endSeOfEncore.textForOpen" @blur="v$.setList.endSeOfEncore.textForOpen.$touch()" placeholder="開始指示を55文字以内で入力 任意" class="_multi-input-textarea"></textarea>
+              <textarea v-model="setList.endSeOfEncore.textForOpen" @blur="v$.setList.endSeOfEncore.textForOpen.$touch()" placeholder="開始指示を50文字以内で入力 任意" class="_multi-input-textarea"></textarea>
             </div>
           </div>
           <div v-if="setList.isEndSeOfEncore" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.setList.endSeOfEncore.textForClose.$error}">
             <div class="_flex-multi-inner _multi-inner-end">
-              <textarea v-model="setList.endSeOfEncore.textForClose" @blur="v$.setList.endSeOfEncore.textForClose.$touch()" placeholder="終了指示を55文字以内で入力 任意" class="_multi-input-textarea"></textarea>
+              <textarea v-model="setList.endSeOfEncore.textForClose" @blur="v$.setList.endSeOfEncore.textForClose.$touch()" placeholder="終了指示を50文字以内で入力 任意" class="_multi-input-textarea"></textarea>
             </div>
           </div>
           <p v-if="v$.setList.endSeOfEncore.nameOfSource.$error" class="_input-error-message">6文字以内で入力してください。</p>
-          <p v-if="v$.setList.endSeOfEncore.textForOpen.$error || v$.setList.endSeOfEncore.textForClose.$error" class="_input-error-message">55文字以内で入力してください。</p>
+          <p v-if="v$.setList.endSeOfEncore.textForOpen.$error || v$.setList.endSeOfEncore.textForClose.$error" class="_input-error-message">50文字以内で入力してください。</p>
         </div>
       </div>
 
       <div class="_container">
         <label for="textForSound" class="_label">その他要望など</label>
         <textarea v-model="setList.text" @blur="v$.setList.text.$touch()" placeholder="200文字以内で入力 任意" :class="{'_input-error': v$.setList.text.$error}" class="_input-textarea"></textarea>
-        <p v-if="v$.setList.text.$error" class="_input-error-message">300文字以内で入力してください。</p>
+        <p v-if="v$.setList.text.$error" class="_input-error-message">200文字以内で入力してください。</p>
       </div>
       
       <div v-if="this.mode === 'create'" class="_button-container">
@@ -318,7 +319,7 @@ export default {
     return{
       pageType: "setList",
       pageTitle: "セットリストの作成",
-      backPath: "/set_list",
+      isBack: true,
       isPcTitle: true,
       inactiveButton: false,
       mode: "create", //"create", "edit"
@@ -401,14 +402,14 @@ export default {
     },
     openAddLists(type){
       if(type === "main"){
-        if(this.musicLists.length >= 14){
+        if(this.musicLists.length >= 19){
           this._stop(true)
           this.isAlertShown = true
         }else{
           this.isShownAadLists = !this.isShownAadLists
         }
       }else if(type === "encore"){
-        if(this.musicListsOfEncore.length >= 13){
+        if(this.musicListsOfEncore.length >= 5){
           this._stop(true)
           this.isAlertShown = true
         }else{
@@ -432,10 +433,10 @@ export default {
       }
     },
     addMc(type, displayLists){
-      if(type === "main" && this.musicLists.length >= 14){
+      if(type === "main" && this.musicLists.length >= 19){
         this._stop(true)
         this.isAlertShown = true
-      }else if(type === "encore" && this.musicListsOfEncore.length >= 13){
+      }else if(type === "encore" && this.musicListsOfEncore.length >= 5){
         this._stop(true)
         this.isAlertShown = true
       }else{
@@ -478,7 +479,7 @@ export default {
       db.editSetList(this.setList)
       .then(()=>{
         this.inactiveButton = false
-        this.$router.push({name:'SetList'})
+        this.$router.push({name:'ShowSetList', params:{id: this.setList.id}})
       })
       .catch((error)=>{
         this.inactiveButton = false
@@ -572,10 +573,10 @@ export default {
             maxLength: maxLength(6)
           },
           textForOpen:{
-            maxLength: maxLength(55)
+            maxLength: maxLength(50)
           },
           textForClose:{
-            maxLength: maxLength(55)
+            maxLength: maxLength(50)
           }
         },
         endSe:{
@@ -586,10 +587,10 @@ export default {
             maxLength: maxLength(6)
           },
           textForOpen:{
-            maxLength: maxLength(55)
+            maxLength: maxLength(50)
           },
           textForClose:{
-            maxLength: maxLength(55)
+            maxLength: maxLength(50)
           }
         },
         seOfEncore:{
@@ -600,10 +601,10 @@ export default {
             maxLength: maxLength(6)
           },
           textForOpen:{
-            maxLength: maxLength(55)
+            maxLength: maxLength(50)
           },
           textForClose:{
-            maxLength: maxLength(55)
+            maxLength: maxLength(50)
           }
         },
         endSeOfEncore:{
@@ -614,14 +615,14 @@ export default {
             maxLength: maxLength(6)
           },
           textForOpen:{
-            maxLength: maxLength(55)
+            maxLength: maxLength(50)
           },
           textForClose:{
-            maxLength: maxLength(55)
+            maxLength: maxLength(50)
           }
         },
         text:{
-          maxLength: maxLength(300)
+          maxLength: maxLength(200)
         },
       }
     }

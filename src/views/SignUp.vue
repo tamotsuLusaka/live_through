@@ -1,7 +1,7 @@
 <template>
   <div class="_base">
     <Spinner v-if="inactiveButton"></Spinner>
-    <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :backPath="backPath" :isPcTitle="isPcTitle"></SubHeader>
+    <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content">
       <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
       <div class="_container">
@@ -80,7 +80,7 @@ export default {
     return{
       pageType: "sign",
       pageTitle: "新規アカウント作成",
-      backPath: "/",
+      isBack: "/",
       isPcTitle: true,
       inactiveButton: false,
       errorMessage:"",

@@ -24,7 +24,7 @@
         </div>
       </div>
       <div v-if="music.data.source.typeOfSource === 'CD'" class="_multi-box">
-        <router-link :to="{name: 'Complement', params:{id: $route.params.id}}" v-if="music.truckNumber === null" class="_multi-inner">
+        <router-link :to="{name: 'TruckNumber', params:{id: $route.params.id}}" v-if="music.truckNumber === null" class="_multi-inner">
           <img  src="@/assets/images/icon-arrow-r.png" alt="" class="_multi-icon _arrow">
           <p class="_multi-text red">音源トラックナンバー未入力</p>
         </router-link>
