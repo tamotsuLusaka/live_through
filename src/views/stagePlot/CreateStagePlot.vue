@@ -56,7 +56,7 @@ export default {
     return{
       pageType: "stagePlot",
       pageTitle: "ステージプロットの作成",
-      isBack: "/stage_plot",
+      isBack: true,
       isPcTitle: true,
       inactiveButton: false,
       errorMessage: "",

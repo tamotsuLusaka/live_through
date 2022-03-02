@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="_button-container">
-        <button :disabled="v$.exportPreparation.$invalid || inactiveButton" @click="exportPDF()" :class="{'_invalid-button': v$.exportPreparation.$invalid}" class="_button-s _margin30">PDF書き出し</button>
+        <button :disabled="v$.exportPreparation.$invalid || inactiveButton" @click="exportPDF()" :class="{'_invalid-button': v$.exportPreparation.$invalid}" class="_button-s _marginM">PDF書き出し</button>
         <button :disabled="v$.exportPreparation.$invalid || inactiveButton" @click="viewImage()" :class="{'_invalid-button': v$.exportPreparation.$invalid}" class="_button-s">画像を表示</button>
       </div>
 
@@ -154,6 +154,7 @@
         </div>
       </div>
 
+      <!-- ステージ用 -->
       <div id="pdf-stage" class="_pdf" :class="{'PDF-bg-black': isTurnOver}">
         <div class="PDF-stage-content">
           <div class="PDF-stage-name" :class="{'PDF-text-white': isTurnOver}">{{userName}}</div>
@@ -165,18 +166,56 @@
               <span v-if="music.type === 'music'">{{music.displayOrder}}. {{music.data.name}}</span>
             </li>
             <li v-if="setList.isEndSe">END SE</li>
-            <li v-if="setList.isSeOfEncore">アンコール SE</li>
+            <li v-if="setList.isSeOfEncore">EC SE</li>
             <li v-for="music in setList.listsOfEncore" :key="music">
               <span v-if="music.type === 'mc'">MC</span>
-              <span v-if="music.type === 'music'">アンコール {{music.displayOrder}}. {{music.data.name}}</span>
+              <span v-if="music.type === 'music'">EC {{music.displayOrder}}. {{music.data.name}}</span>
             </li>
-            <li v-if="setList.isEndSeOfEncore">アンコ-ル END SE</li>
+            <li v-if="setList.isEndSeOfEncore">EC END SE</li>
           </ul>
-          
         </div>
         <img v-if="isTurnOver" src="@/assets/images/logo-white.png" alt="" class="PDF-stage-logo">
         <img v-else src="@/assets/images/logo.png" alt="" class="PDF-stage-logo">
+      </div>
 
+      <!-- ステージ用2枚構成 -->
+      <div id="pdf-stage-1" class="_pdf" :class="{'PDF-bg-black': isTurnOver}">
+        <div class="PDF-stage-content">
+          <div class="PDF-stage-name" :class="{'PDF-text-white': isTurnOver}">{{userName}}</div>
+          <div class="_PDF-text-l" :class="{'PDF-text-white': isTurnOver}">1枚目：{{setList.name}}({{exportPreparation.date.year}}.{{exportPreparation.date.month}}.{{exportPreparation.date.day}})</div>
+          <ul class="PDF-list" :class="{'PDF-text-white': isTurnOver}">
+            <li v-if="setList.isSe" class="_marginSS">SE</li>
+            <li v-for="music in listsForFirst" :key="music" class="_marginSS">
+              <span v-if="music.type === 'mc'">MC</span>
+              <span v-if="music.type === 'music'">{{music.displayOrder}}. {{music.data.name}}</span>
+            </li>
+            <li v-if="setList.isEndSe && listsForFirst.length <= 12" class="_marginSS">END SE</li>
+          </ul>
+        </div>
+        <img v-if="isTurnOver" src="@/assets/images/logo-white.png" alt="" class="PDF-stage-logo">
+        <img v-else src="@/assets/images/logo.png" alt="" class="PDF-stage-logo">
+      </div>
+
+      <div id="pdf-stage-2" class="_pdf" :class="{'PDF-bg-black': isTurnOver}">
+        <div class="PDF-stage-content">
+          <div class="PDF-stage-name" :class="{'PDF-text-white': isTurnOver}">{{userName}}</div>
+          <div class="_PDF-text-l" :class="{'PDF-text-white': isTurnOver}">2枚目：{{setList.name}}({{exportPreparation.date.year}}.{{exportPreparation.date.month}}.{{exportPreparation.date.day}})</div>
+          <ul class="PDF-list" :class="{'PDF-text-white': isTurnOver}">
+            <li v-for="music in listsForSecond" :key="music" class="_marginSS">
+              <span v-if="music.type === 'mc'">MC</span>
+              <span v-if="music.type === 'music'">{{music.displayOrder}}. {{music.data.name}}</span>
+            </li>
+            <li v-if="setList.isEndSe && listsForFirst.length >= 13" class="_marginSS">END SE</li>
+            <li v-if="setList.isSeOfEncore" class="_marginSS">EN SE</li>
+            <li v-for="music in setList.listsOfEncore" :key="music" class="_marginSS">
+              <span v-if="music.type === 'mc'">MC</span>
+              <span v-if="music.type === 'music'">EC {{music.displayOrder}}. {{music.data.name}}</span>
+            </li>
+            <li v-if="setList.isEndSeOfEncore" class="_marginSS">EC END SE</li>
+          </ul>
+        </div>
+        <img v-if="isTurnOver" src="@/assets/images/logo-white.png" alt="" class="PDF-stage-logo">
+        <img v-else src="@/assets/images/logo.png" alt="" class="PDF-stage-logo">
       </div>
 
     </div>
@@ -332,23 +371,29 @@ export default {
         }
       }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
         fileName = "set_list_stage" + this._generateDay() + ".pdf"
-        const source = document.getElementById('pdf-stage')
-        await html2canvas(source).then(capture => {
-          imgData = capture.toDataURL('image/jpeg')
+        if(this.sheetType === "single"){
+          const source = document.getElementById('pdf-stage')
+          await html2canvas(source).then(capture => {
+            imgData = capture.toDataURL('image/jpeg')
+            doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
+          })
+        }else if(this.sheetType === "double"){
+          const source1 = document.getElementById('pdf-stage-1')
+          const source2 = document.getElementById('pdf-stage-2')
+          await html2canvas(source1).then(capture => {
+            imgData = capture.toDataURL('image/jpeg')
+          })
+          await html2canvas(source2).then(capture => {
+            imgData2 = capture.toDataURL('image/jpeg')
+          })
           doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
-        })
+          doc.addPage()
+          doc.addImage(imgData2, 'JPEG', 10, 10, width * 0.9, 0)
+        }
       }
 
       doc.save(fileName)
       this.inactiveButton = false
-      // OS別対応で書き出し
-      // if (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase())) {
-      //   window.open(doc.output('bloburl', { filename: fileName }))
-      //   this.inactiveButton = false
-      // } else {
-      //   doc.save(fileName)
-      //   this.inactiveButton = false
-      // }
     },
 
     async viewImage(){
@@ -380,11 +425,22 @@ export default {
           })
         }
       }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
-        this.isView2 = false
-        const source = document.getElementById('pdf-stage')
-        await html2canvas(source).then(capture => {
-          imgData = capture.toDataURL('image/jpeg')
-        })
+        if(this.sheetType === "single"){
+          this.isView2 = false
+          const source = document.getElementById('pdf-stage')
+          await html2canvas(source).then(capture => {
+            imgData = capture.toDataURL('image/jpeg')
+          })
+        }else if(this.sheetType === "double"){
+          const source1 = document.getElementById('pdf-stage-1')
+          const source2 = document.getElementById('pdf-stage-2')
+          await html2canvas(source1).then(capture => {
+            imgData = capture.toDataURL('image/jpeg')
+          })
+          await html2canvas(source2).then(capture => {
+            imgData2 = capture.toDataURL('image/jpeg')
+          })
+        }
       }
 
       renderSpace.src = imgData
@@ -450,17 +506,17 @@ export default {
   width: 70%;
 }
 .PDF-stage-content{
-  padding: 100px;
+  padding: 60px;
   position: relative;
 }
 .PDF-stage-name{
-  font-size: 40px;
+  font-size: 34px;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 .PDF-list{
-  margin-top: 60px;
-  font-size: 25px;
+  margin-top: 40px;
+  font-size: 45px;
   font-weight: 700;
 }
 .PDF-bg-black{
@@ -473,8 +529,8 @@ export default {
   width: 185px;
   height: 30px;
   position: absolute;
-  right: 100px;
-  bottom: 100px;
+  right: 60px;
+  bottom: 60px;
 }
 
 .render-space{

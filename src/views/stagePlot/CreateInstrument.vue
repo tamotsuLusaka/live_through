@@ -312,7 +312,7 @@
         <button  :disabled="v$.instrument.$invalid || inactiveButton" @click="createInstrument()" :class="{'_invalid-button': v$.instrument.$invalid}" class="_button-s">登録</button>
       </div>
       <div v-if="this.mode === 'edit'" class="_button-container">
-        <button  :disabled="v$.instrument.$invalid || inactiveButton" @click="editInstrument()" :class="{'_invalid-button': v$.instrument.$invalid}" class="_button-s _margin30">編集</button>
+        <button  :disabled="v$.instrument.$invalid || inactiveButton" @click="editInstrument()" :class="{'_invalid-button': v$.instrument.$invalid}" class="_button-s _marginM">編集</button>
         <button  :disabled="inactiveButton" @click="deleteInstrument()"  class="_button-red">削除</button>
       </div>
     </div>
@@ -366,7 +366,7 @@ export default {
     return{
       pageType: "stagePlot",
       pageTitle: "",
-      isBack: `/stage_plot/band/${this.$route.params.id}/edit`,
+      isBack: true,
       isPcTitle: true,
       inactiveButton: false,
       mode: "create", //"create", "edit"

@@ -147,16 +147,19 @@ a{
   margin: 0 auto;
 }
 
-._margin20{
+._marginSS{
+  margin-bottom: 10px;
+}
+._marginS{
   margin-bottom: 20px;
 }
-._margin30{
+._marginM{
   margin-bottom: 30px;
 }
-._margin40{
+._marginL{
   margin-bottom: 40px;
 }
-._margin60{
+._marginLL{
   margin-bottom: 60px;
 }
 

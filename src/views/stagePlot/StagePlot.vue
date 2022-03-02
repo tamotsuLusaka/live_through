@@ -4,7 +4,7 @@
       <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
       <div class="_content-s">
         <div class="list">
-          <router-link :to="{name: 'CreateStagePlot'}" class="_link _margin30">
+          <router-link :to="{name: 'CreateStagePlot'}" class="_link _marginM">
             <div class="_link-container">
               <img src="@/assets/images/icon-stage-blue-t.png" class="_link-icon" alt="セットリスト">
               <div class="_link-box">
@@ -55,7 +55,7 @@ export default {
     return{
       pageType: "stagePlot",
       pageTitle:"ステージプロット",
-      isBack:"/",
+      isBack: true,
       isPcTitle: false,
 
       stagePlots: []

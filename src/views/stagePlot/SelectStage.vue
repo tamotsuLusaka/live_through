@@ -2,7 +2,7 @@
   <div class="_base-s">
     <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content-s">
-        <router-link :to="{name: 'CreateBand'}" class="_link _margin40">
+        <router-link :to="{name: 'CreateBand'}" class="_link _marginL">
           <div class="_link-container">
             <img src="@/assets/images/icon-set-blue.png" class="_link-icon" alt="セットリスト">
             <div class="_link-box">
@@ -45,7 +45,7 @@ export default {
     return{
       pageType: "stagePlot",
       pageTitle:"ステージの選択",
-      isBack:"/stage_plot",
+      isBack: true,
       isPcTitle: false,
 
       setLists: []

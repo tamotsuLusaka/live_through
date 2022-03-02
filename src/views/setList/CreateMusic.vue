@@ -6,8 +6,8 @@
       <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
       <div class="_container">
         <label for="name" class="_label">曲名</label>
-        <input type="text" v-model="music.name" @blur="v$.music.name.$touch()" placeholder="20文字以内で入力" :class="{'_input-error': v$.music.name.$error}" class="_input-text">
-        <p v-if="v$.music.name.$error" class="_input-error-message">20文字以内で入力してください。</p>
+        <input type="text" v-model="music.name" @blur="v$.music.name.$touch()" placeholder="18文字以内で入力" :class="{'_input-error': v$.music.name.$error}" class="_input-text">
+        <p v-if="v$.music.name.$error" class="_input-error-message">18文字以内で入力してください。</p>
       </div>
       <div class="_container">
         <label for="tune" class="_label">曲調</label><Helper :helperObject="helper.tune"></Helper>
@@ -76,7 +76,7 @@
         <button  :disabled="v$.music.$invalid || inactiveButton" @click="createMusic()" :class="{'_invalid-button': v$.music.$invalid}" class="_button-s">登録</button>
       </div>
       <div v-if="this.mode === 'edit'" class="_button-container">
-        <button  :disabled="v$.music.$invalid || inactiveButton" @click="editMusic()" :class="{'_invalid-button': v$.music.$invalid}" class="_button-s _margin30">編集</button>
+        <button  :disabled="v$.music.$invalid || inactiveButton" @click="editMusic()" :class="{'_invalid-button': v$.music.$invalid}" class="_button-s _marginM">編集</button>
         <button  :disabled="inactiveButton" @click="deleteMusic()"  class="_button-red">削除</button>
       </div>
     </div>
@@ -129,7 +129,7 @@ export default {
     return{
       pageType: "setList",
       pageTitle: "楽曲の新規登録",
-      isBack: "/music",
+      isBack: true,
       isPcTitle: true,
       inactiveButton: false,
       mode: "create", //"create", "edit"
@@ -210,7 +210,7 @@ export default {
       music:{
         name:{
           required,
-          maxLength: maxLength(20)
+          maxLength: maxLength(18)
         },
         tune:{
           required

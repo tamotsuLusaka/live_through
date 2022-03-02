@@ -8,17 +8,17 @@
           <img src="@/assets/images/icon-mic-blue.png" alt="" class="show-icon">
           <p>{{setList.name}}</p>
         </div>
-        <div @click="goEdit()" class="_link-mini-line-blue _margin20">
+        <div @click="goEdit()" class="_link-mini-line-blue _marginS">
           <p class="_link-mini-text">セットリストの編集</p>
         </div>
-        <router-link :to="{name: 'TruckNumber', params:{id: $route.params.id}}" class="_link-mini-line-blue _margin20">
+        <router-link :to="{name: 'TruckNumber', params:{id: $route.params.id}}" class="_link-mini-line-blue _marginS">
           <p class="_link-mini-text">音源トラックナンバーの入力</p>
         </router-link>
-        <router-link v-if="isNecessarySource" :to="{name: 'Complement', params:{id: $route.params.id}}" class="_link-mini-line-blue _margin20">
+        <router-link v-if="isNecessarySource" :to="{name: 'Complement', params:{id: $route.params.id}}" class="_link-mini-line-blue _marginS">
           <p class="_link-mini-text">音源設定の入力</p>
         </router-link>
 
-        <div @click="goExport()" class="_link-mini-blue _margin20">
+        <div @click="goExport()" class="_link-mini-blue _marginS">
           <img src="@/assets/images/icon-pdf-white.png" class="_link-mini-icon " alt="">
           <p class="_link-mini-text">PDFで書き出し</p>
         </div>

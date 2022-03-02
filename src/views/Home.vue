@@ -6,7 +6,7 @@
         <p class="name">{{this.$store.getters['auth/userName']}}</p>
 
         <div class="main">
-          <router-link :to="{name: 'SetList'}" class="_link _margin40">
+          <router-link :to="{name: 'SetList'}" class="_link _marginL">
             <div class="_link-container">
               <img src="@/assets/images/icon-mic-blue-t.png" class="_link-icon" alt="セットリスト">
               <div class="_link-box">
@@ -39,7 +39,7 @@
       <div class="top" :style="{ 'background-image': 'url(' + topBackgroundImage +')'}">
         <img src="@/assets/images/logo-c.png" alt="ロゴ" class="logo">
         <div class="sign">
-          <router-link :to="{name: 'SignUp'}" class="_button-s _margin30">アカウント作成</router-link>
+          <router-link :to="{name: 'SignUp'}" class="_button-s _marginM">アカウント作成</router-link>
           <router-link :to="{name: 'SignIn'}" class="_button-a">ログイン</router-link>
         </div>
       </div>
