@@ -1,19 +1,19 @@
 <template>
 <div class="component" unselectable="on">
   <div ref="outerBox" class="outer-box">
-    <div class="inner-box" :style="{width: `${innerBoxWidth}px`, maxHeight: `calc(${cellHeight + 1}px * ${rowCount} + 2px)`}">
+    <div class="inner-box" :style="{width: `${innerBoxWidth}px`, maxHeight: `calc(${cellHeight + 1}px * ${rowCount})`}">
       <template v-for="yPos in rowCount">
         <template v-for="xPos in colCount" :key="`r${yPos-1}c${xPos-1}-cell`">
 
       <!-- Normal cells -->
-          <div class="cell" :style="`grid-row: ${yPos} / ${yPos}; grid-column: ${xPos} / ${xPos}; height: ${cellHeight}px`"></div>
+          <div class="cell" :style="`margin: ${cellMargin}; grid-row: ${yPos} / ${yPos}; grid-column: ${xPos} / ${xPos}; height: ${cellHeight}px`"></div>
 
       <!-- Cells being filled beforehand -->
           <template v-if="Object.keys(filledCells[yPos-1][xPos-1]).length > 0 && filledCells[yPos-1][xPos-1].topLeft">
             <div
               :key="`r${yPos-1}c${xPos-1}-filled`"
               class="filled"
-              :style="`grid-row: ${yPos} / ${yPos + filledCells[yPos-1][xPos-1].position.ySpan}; grid-column: ${xPos} / ${xPos + filledCells[yPos-1][xPos-1].position.xSpan};`"
+              :style="`margin: ${coloredMargin}; grid-row: ${yPos} / ${yPos + filledCells[yPos-1][xPos-1].position.ySpan}; grid-column: ${xPos} / ${xPos + filledCells[yPos-1][xPos-1].position.xSpan};`"
               v-html="filledCells[yPos-1][xPos-1].shortName"
             >
             </div>
@@ -24,7 +24,7 @@
             <div
               :key="`r${yPos-1}c${xPos-1}-selected`"
               class="selected"
-              :style="`grid-row: ${yPos} / ${yPos + instModifiable.position.ySpan}; grid-column: ${xPos} / ${xPos + instModifiable.position.xSpan};`"
+              :style="`margin: ${coloredMargin}; grid-row: ${yPos} / ${yPos + instModifiable.position.ySpan}; grid-column: ${xPos} / ${xPos + instModifiable.position.xSpan};`"
               v-html="instModifiable.shortName"
             >
             </div>
@@ -68,6 +68,7 @@
 <script>
 import Instrument from '@/class/Instrument.js'
 import cloneDeep from 'lodash/cloneDeep'
+import UAparser from 'ua-parser-js'
 
 export default {
   props: {
@@ -90,6 +91,7 @@ export default {
   },
   data() {
     return {
+      browserLC: new UAparser().getBrowser().name.toLowerCase(),
       isMounted: false,
       instModifiable: null,
       clientWidth: null,
@@ -226,8 +228,22 @@ export default {
       return Math.floor(this.$refs?.outerBox?.clientWidth / this.colCount) * this.colCount
     },
     cellHeight() {
-      return this.innerBoxWidth / this.colCount
+      const adjuster = this.browserLC.includes("safari") ? -2
+                      : this.browserLC.includes("chrom") ? 0
+                      : 0
+      return (this.innerBoxWidth / this.colCount) + adjuster
     },
+    cellMargin() {
+      return this.browserLC.includes("safari") ? "-2px 0px 0px -2px"
+            : this.browserLC.includes("chrom") ? "-1px 0px 0px -1px"
+            : "-1px 0px 0px -1px"
+    },
+    coloredMargin() {
+      return this.browserLC === "safari" ? "0px 0px 0px -2px"
+            : this.browserLC === "mobile safari" ? "-1px 0px 0px -3px"
+            : this.browserLC.includes("chrom") ? "0px 0px 0px -1px"
+            : "0px 0px 0px -1px"
+    }
   },
   methods: {
     responsive() {
@@ -291,6 +307,7 @@ export default {
   align-items: center;
   display: flex;
   flex-direction: column;
+  touch-action: manipulation; /** ダブルタップによるズームを阻害する */
 }
 
 .outer-box {
@@ -313,32 +330,27 @@ export default {
 }
 
 .cell {
-  margin: -1px 0px 0px -1px;
+  margin: -2px 0 0 -2px;
   border: 1px solid rgb(212, 212, 212);
   background-color: var(--white);
 }
 
-.filled {
+.filled, .selected {
   width: calc(100% - 1px);
   height: calc(100% - 1px);
-  background-color: var(--blue-hi);
-  z-index: 1;
   display: flex;
   justify-self: center;
   justify-content: center;
   align-items: center;
   color: var(--white);
 }
-.selected {
-  width: calc(100% - 1px);
-  height: calc(100% - 1px);
-  background-color: var(--blue) !important;
+.filled {
+  background-color: var(--blue-hi);
   z-index: 1;
-  display: flex;
-  justify-self: center;
-  justify-content: center;
-  align-items: center;
-  color: var(--white);
+}
+.selected {
+  background-color: var(--blue) !important;
+  z-index: 2;
 }
 
 .audience-plot {
