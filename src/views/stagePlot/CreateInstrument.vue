@@ -1,7 +1,7 @@
 <template>
   <div class="_base">
     <Spinner v-if="inactiveButton"></Spinner>
-    <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :backPath="backPath" :isPcTitle="isPcTitle"></SubHeader>
+    <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content">
       <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
       <div class="_container">
@@ -387,7 +387,7 @@ export default {
       isCreated: false,
       pageType: "stagePlot",
       pageTitle: "",
-      backPath: `/stage_plot/band/${this.$route.params.id}/edit`,
+      isBack: `/stage_plot/band/${this.$route.params.id}/edit`,
       isPcTitle: true,
       inactiveButton: false,
       mode: "create", //"create", "edit"

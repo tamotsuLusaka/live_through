@@ -1,75 +1,9 @@
 <template>
   <div class="_base">
     <Spinner v-if="inactiveButton"></Spinner>
-    <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :backPath="backPath" :isPcTitle="isPcTitle"></SubHeader>
+    <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content">
       <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
-
-      <div v-if="setList.se.typeOfSource === 'CD'" class="_container">
-        <label class="_label">SE</label>
-        <div class="_select-box">
-          <label class="_select-icon"><img src="@/assets/images/icon-arrow-b.png" alt="" class="_arrow"></label>
-          <select v-model="setList.se.truckNumber" :class="{'_input-select-exist': setList.se.truckNumber !== null}" class="_input-select" >
-            <option :value="null"  disabled class="_select-default">トラックナンバーを選択</option>
-            <option v-for="number in 100" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
-          </select>
-        </div>
-      </div>
-
-      <div v-for="music in incompletionLists" :key="music.order" class="_container">
-        <label class="_label">M-{{music.order + 1}}. {{music.name}}</label>
-        <div class="_select-box">
-          <label class="_select-icon"><img src="@/assets/images/icon-arrow-b.png" alt="" class="_arrow"></label>
-          <select v-model="setList.lists[music.order].truckNumber" :class="{'_input-select-exist': setList.lists[music.order].truckNumber !== null}" class="_input-select" >
-            <option :value="null"  disabled class="_select-default">トラックナンバーを選択</option>
-            <option v-for="number in 100" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
-          </select>
-        </div>
-      </div>
-
-      <div v-if="setList.se.typeOfSource === 'CD'" class="_container">
-        <label class="_label">END SE</label>
-        <div class="_select-box">
-          <label class="_select-icon"><img src="@/assets/images/icon-arrow-b.png" alt="" class="_arrow"></label>
-          <select v-model="setList.endSe.truckNumber" :class="{'_input-select-exist': setList.endSe.truckNumber !== null}" class="_input-select" >
-            <option :value="null"  disabled class="_select-default">トラックナンバーを選択</option>
-            <option v-for="number in 100" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
-          </select>
-        </div>
-      </div>
-
-      <div v-if="setList.seOfEncore.typeOfSource === 'CD'" class="_container">
-        <label class="_label">アンコール SE</label>
-        <div class="_select-box">
-          <label class="_select-icon"><img src="@/assets/images/icon-arrow-b.png" alt="" class="_arrow"></label>
-          <select v-model="setList.seOfEncore.truckNumber" :class="{'_input-select-exist': setList.seOfEncore.truckNumber !== null}" class="_input-select" >
-            <option :value="null"  disabled class="_select-default">トラックナンバーを選択</option>
-            <option v-for="number in 100" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
-          </select>
-        </div>
-      </div>
-
-      <div v-for="music in incompletionListsOfEncore" :key="music.order" class="_container">
-        <label class="_label">アンコール M-{{music.order + 1}}. {{music.name}}</label>
-        <div class="_select-box">
-          <label class="_select-icon"><img src="@/assets/images/icon-arrow-b.png" alt="" class="_arrow"></label>
-          <select v-model="setList.listsOfEncore[music.order].truckNumber" :class="{'_input-select-exist': setList.listsOfEncore[music.order].truckNumber !== null}" class="_input-select" >
-            <option :value="null"  disabled class="_select-default">トラックナンバーを選択</option>
-            <option v-for="number in 100" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
-          </select>
-        </div>
-      </div>
-
-      <div v-if="setList.endSeOfEncore.typeOfSource === 'CD'" class="_container">
-        <label class="_label">アンコール END SE</label>
-        <div class="_select-box">
-          <label class="_select-icon"><img src="@/assets/images/icon-arrow-b.png" alt="" class="_arrow"></label>
-          <select v-model="setList.endSeOfEncore.truckNumber" :class="{'_input-select-exist': setList.endSeOfEncore.truckNumber !== null}" class="_input-select" >
-            <option :value="null"  disabled class="_select-default">トラックナンバーを選択</option>
-            <option v-for="number in 100" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
-          </select>
-        </div>
-      </div>
 
       <div class="_container">
         <p class="_label">音源設定</p><Helper :helperObject="helper.tune"></Helper>
@@ -126,8 +60,8 @@ export default {
   data(){
     return{
       pageType: "setList",
-      pageTitle: "音源詳細の入力",
-      backPath: "/",
+      pageTitle: "音源設定",
+      isBack: true,
       isPcTitle: true,
       inactiveButton: false,
       errorMessage:"",

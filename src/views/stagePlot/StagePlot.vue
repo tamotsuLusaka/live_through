@@ -1,7 +1,7 @@
 <template>
   <div class="_base-s">
     <div v-if="this.$store.getters['auth/isSignedIn']" class="after">
-      <SubHeader :pageType="pageType" :pageTitle="pageTitle" :backPath="backPath" :isPcTitle="isPcTitle"></SubHeader>
+      <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
       <div class="_content-s">
         <div class="list">
           <router-link :to="{name: 'CreateStagePlot'}" class="_link _margin30">
@@ -55,7 +55,7 @@ export default {
     return{
       pageType: "stagePlot",
       pageTitle:"ステージプロット",
-      backPath:"/",
+      isBack:"/",
       isPcTitle: false,
 
       stagePlots: []

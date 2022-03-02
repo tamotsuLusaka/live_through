@@ -3,8 +3,8 @@
   <tr class="_PDF-list">
     <td v-if="type === 'se' " class="_PDF-no _PDF-text-m"></td>
     <td v-if="type === 'endSe' " class="_PDF-no _PDF-text-m"></td>
-    <td v-if="type === 'seOfEncore' " class="_PDF-no _PDF-text-ss">ENCORE</td>
-    <td v-if="type === 'endSeOfEncore' " class="_PDF-no _PDF-text-ss">ENCORE</td>
+    <td v-if="type === 'seOfEncore' " class="_PDF-no _PDF-text-ss">EC</td>
+    <td v-if="type === 'endSeOfEncore' " class="_PDF-no _PDF-text-ss">EC</td>
 
     <td class="_PDF-title _PDF-text-m">
       <div v-if="type === 'se'">SE</div>
@@ -20,7 +20,7 @@
     </td>
     <td class="_PDF-tune"></td>
     <td class="_PDF-time"></td>
-    <td class="_PDF-text-s _PDF-request">開始指示：{{data.textForOpen}}<br><br>終了指示：{{data.textForClose}}</td>
+    <td class="_PDF-text-s _PDF-request"><span class="under">開始：</span>{{data.textForOpen}}<br><span class="under">終了：</span>{{data.textForClose}}</td>
     <td class="_PDF-text-s _PDF-request"></td>
   </tr>
   
@@ -52,5 +52,8 @@ export default {
 </script>
 
 <style scoped>
-
+.under{
+  text-decoration:underline;
+  text-decoration-color:var(--black);
+}
 </style>

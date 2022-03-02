@@ -1,7 +1,7 @@
 <template>
   <div class="_base-s">
     <div v-if="this.$store.getters['auth/isSignedIn']" class="after">
-      <SubHeader :pageType="pageType" :pageTitle="pageTitle" :backPath="backPath" :isPcTitle="isPcTitle"></SubHeader>
+      <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
       <div class="_content-s">
         <router-link :to="{name: 'CreateMusic'}" class="_link _margin30">
           <div class="_link-container">
@@ -45,7 +45,7 @@ export default {
     return{
       pageType: "setList",
       pageTitle:"楽曲の登録・編集",
-      backPath:"/set_list",
+      isBack: true,
       isPcTitle: false,
       musics: []
     }

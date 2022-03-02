@@ -1,6 +1,6 @@
 <template>
   <div class="_base">
-    <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :backPath="backPath" :isPcTitle="isPcTitle"></SubHeader>
+    <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content">
       <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
       <div class="_container">
@@ -56,7 +56,7 @@ export default {
     return{
       pageType: "stagePlot",
       pageTitle: "ステージプロットの作成",
-      backPath: "/stage_plot",
+      isBack: "/stage_plot",
       isPcTitle: true,
       inactiveButton: false,
       errorMessage: "",

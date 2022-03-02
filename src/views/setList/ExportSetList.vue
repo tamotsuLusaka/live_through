@@ -1,7 +1,7 @@
 <template>
   <div class="_base">
     <Spinner v-if="inactiveButton"></Spinner>
-    <SubHeader :pageType="pageType" :pageTitle="pageTitle" :backPath="backPath" :isPcTitle="isPcTitle"></SubHeader>
+    <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="content">
       <img src="@/assets/images/logo-c.png" alt="" class="logo">
       <div class="_container">
@@ -47,15 +47,20 @@
         </div>
       </div>
       <div class="_button-container">
-        <button :disabled="v$.exportPreparation.$invalid || inactiveButton" @click="exportPDF()" :class="{'_invalid-button': v$.exportPreparation.$invalid}" class="_button-s">PDF書き出し</button>
+        <button :disabled="v$.exportPreparation.$invalid || inactiveButton" @click="exportPDF()" :class="{'_invalid-button': v$.exportPreparation.$invalid}" class="_button-s _margin30">PDF書き出し</button>
+        <button :disabled="v$.exportPreparation.$invalid || inactiveButton" @click="viewImage()" :class="{'_invalid-button': v$.exportPreparation.$invalid}" class="_button-s">画像を表示</button>
       </div>
 
-      <a id="download" target="_blank">ダウンロードスイッチ</a>
-      <img id="renderSpace" :src="renderImage">
-      <!-- <canvas id="canvas" width="2000" height="2970" :style="{'display': 'none'}" ></canvas> -->
+      <!-- <a id="download" target="_blank">ダウンロードスイッチ</a> -->
+      <div class="render-container">
+        <img  v-show="isView" id="renderSpace" class="render-space" :src="renderImage">
+        <img  v-show="isView2" id="renderSpace2" class="render-space" :src="renderImage2">
+      </div>
 
       <!-- 1ページ構成 -->
-      <div id="pdf-single" class="_pdf" >
+
+      <div id="pdf-single"  class="_pdf">
+      
         <div class="_PDF-name">{{userName}}</div>
         <div class="_PDF-day">{{exportPreparation.date.year}}.{{exportPreparation.date.month}}.{{exportPreparation.date.day}}</div>
         <table border="1" class="_PDF-table" id="my-table">
@@ -78,7 +83,7 @@
         <div class="_PDF-output"><span>音源チャンネル数：{{setList.output.channel}}</span><span>音源端子：{{setList.output.terminal}}</span></div>
         <div class="_PDF-bottom">
           <div class="_PDF-text-m">その他、要望など</div>
-          <div class="_PDF-note">
+          <div class="_PDF-note _PDF-text-m">
             {{setList.text}}
           </div>
           <div class="_PDF-footer">
@@ -86,7 +91,9 @@
             <img src="@/assets/images/logo.png" class="_PDF-logo" alt="">
           </div>
         </div>
+      
       </div>
+
   
       <!-- 2ページ構成 -->
       <div id="pdf-double-1" class="_pdf">
@@ -103,12 +110,12 @@
             <th class="_PDF-head _PDF-text-m">照明への要望</th>
           </tr>
           <Se v-if="setList.isSe" :type="'se'" :data="setList.se"></Se>
-          <List :type="'main'" :lists="setList.lists" ></List>
-          <Se v-if="setList.isEndSe" :type="'endSe'" :data="setList.endSe"></Se>
+          <List :type="'main'" :lists="listsForFirst" ></List>
+          <Se v-if="setList.isEndSe && listsForFirst.length <= 12" :type="'endSe'" :data="setList.endSe"></Se>
         </table>
         <div class="_PDF-output"><span>音源チャンネル数：{{setList.output.channel}}</span><span>音源端子：{{setList.output.terminal}}</span></div>
         <div class="_PDF-bottom">
-          <p class="_PDF-text-m">2枚目にアンコール指示を記載</p>
+          <p class="_PDF-next">2枚目に続く</p>
           <div class="_PDF-footer">
             <div class="_PDF-page">- 1 -</div>
             <img src="@/assets/images/logo.png" class="_PDF-logo" alt="">
@@ -129,13 +136,15 @@
             <th class="_PDF-head _PDF-text-m">音響への要望</th>
             <th class="_PDF-head _PDF-text-m">照明への要望</th>
           </tr>
+          <List :type="'main'" :lists="listsForSecond" ></List>
+          <Se v-if="setList.isEndSe && listsForFirst.length >= 13" :type="'endSe'" :data="setList.endSe"></Se>
           <Se v-if="setList.isSeOfEncore" :type="'seOfEncore'" :data="setList.seOfEncore"></Se>
           <List v-if="setList.isEncore" :type="'encore'" :lists="setList.listsOfEncore" ></List>
           <Se v-if="setList.isEndSeOfEncore" :type="'endSeOfEncore'" :data="setList.endSeOfEncore"></Se>
         </table>
         <div class="_PDF-bottom">
           <div class="_PDF-text-m">その他、要望など</div>
-          <div class="_PDF-note">
+          <div class="_PDF-note _PDF-text-m">
             {{setList.text}}
           </div>
           <div class="_PDF-footer">
@@ -187,15 +196,8 @@ import Footer from '@/components/Footer.vue'
 import SetList from '@/class/SetList.js'
 
 import db from '@/firebase/modules/db.js'
-// import { jsPDF } from 'jspdf'
-// import autoTable from 'jspdf-autotable'
-// import koruri from '@/assets/font/Koruri-Regular-normal.js'
-
+import { jsPDF } from 'jspdf'
 import * as html2canvas from 'html2canvas'
-
-// import * as htmlToImage from 'html-to-image';
-// import {toJpeg} from 'html-to-image';
-// import * as rasterizeHTML from 'rasterizehtml';
 
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
@@ -219,7 +221,7 @@ export default {
     return{
       pageType: "setList",
       pageTitle:"セットリストの書き出し",
-      backPath:`/set_list/${this.$route.params.id}`,
+      isBack: true,
       isPcTitle: false,
       inactiveButton: false,
       errorMessage: "",
@@ -230,6 +232,10 @@ export default {
       mainCounter: 0,
       encoreCounter: 0,
       sheetType: "", // "single" or "double"
+
+      // 2枚構成用リスト
+      listsForFirst: [],
+      listsForSecond: [],
 
       daysMax: null,
       exportPreparation:{
@@ -242,9 +248,9 @@ export default {
       },
       isTurnOver: false,
       renderImage: null,
-
-      topBackgroundImage: require("@/assets/images/top-image-sp.jpg"),
-
+      renderImage2: null,
+      isView: false,
+      isView2: false
     }
   },
   async created(){
@@ -268,10 +274,18 @@ export default {
       this.encoreCounter = this.encoreCounter + 1
     }
     this.encoreCounter = this.encoreCounter + this.setList.listsOfEncore.length
-    if(this.mainCounter + this.encoreCounter <= 15){
+    if(this.mainCounter + this.encoreCounter <= 13){
       this.sheetType = "single"
     }else{
+      // 2枚目にいく時
       this.sheetType = "double"
+      for (const target of this.setList.lists){
+        if(this.listsForFirst.length <= 13){
+          this.listsForFirst.push(target)
+        }else{
+          this.listsForSecond.push(target)
+        }
+      }
     }
 
   },
@@ -279,287 +293,105 @@ export default {
     
   },
   methods:{
-    // async exportPDF(){
-    //   this.inactiveButton = true
-    //   if(this.exportPreparation.type === "normal"){
-    //     if(this.sheetType === "single"){
-    //       const source = document.getElementById('pdf-single')
-    //       html2canvas(source).then(capture => {
-    //         const imgData = capture.toDataURL('image/png')
-    //         const doc = new jsPDF()
-    //         const width = doc.internal.pageSize.width
-    //         doc.addImage(imgData, 'PNG', 10, 10, width * 0.9, 0)
-    //         doc.save("set_list.pdf")
-    //         this.inactiveButton = false
-    //       })
-    //     }else if(this.sheetType === "double"){
-    //       const source1 = document.getElementById('pdf-double-1')
-    //       const source2 = document.getElementById('pdf-double-2')
-    //       let imgData1
-    //       let imgData2
-    //       await html2canvas(source1).then(capture => {
-    //         imgData1 = capture.toDataURL('image/png')
-    //       })
-    //       await html2canvas(source2).then(capture => {
-    //         imgData2 = capture.toDataURL('image/png')
-    //       })
-    //       const doc = new jsPDF()
-    //       const width = doc.internal.pageSize.width
-    //       doc.addImage(imgData1, 'PNG', 10, 10, width * 0.9, 0)
-    //       doc.addPage()
-    //       doc.addImage(imgData2, 'PNG', 10, 10, width * 0.9, 0)
-    //       doc.save("set_list.pdf")
-    //       this.inactiveButton = false
-    //     }
-    //   }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
-    //     const source = document.getElementById('pdf-stage')
-    //     html2canvas(source).then(capture => {
-    //       const imgData = capture.toDataURL('image/png')
-    //       const doc = new jsPDF()
-    //       const width = doc.internal.pageSize.width
-    //       doc.addImage(imgData, 'PNG', 10, 10, width * 0.9, 0)
-    //       doc.save("set_list_stage.pdf")
-    //       this.inactiveButton = false
-    //     })
-    //   }
-    // },
-
-    // jsPDF-autotableで
-    // exportPDF(){
-    //   this.inactiveButton = true
-    //   const doc = new jsPDF()
-    //   doc.text(40, 30, "こんにちは")
-    //   autoTable(doc, {
-    //     theme: 'grid',
-    //     html:"#my-table",
-    //     styles:{
-    //       fontSize: 6,
-    //       font: 'Koruri-Regular',
-    //       fontStyle: 'normal',
-    //       cellWidth: '10', rowPageBreak: 'auto', halign: 'justify'
-    //     },
-
-    //   })
-    //   doc.save('doc.pdf')
-    //   this.inactiveButton = false
-    // },
-
-    // rasterizeHTMLで
-    // exportPDF(){
-    //   this.inactiveButton = true
-    //   var canvas = document.getElementById("canvas")
-    //   let html_container = document.getElementById("pdf-single")
-    //   let html = html_container.innerHTML
-    //   rasterizeHTML.drawHTML(html, canvas)
-    //   .then(()=>{
-    //     const doc = new jsPDF()
-    //     const width = doc.internal.pageSize.width
-    //     const image = canvas.toDataURL("image/jpeg", 1.0)
-    //     doc.addImage(image, 'JPEG', 10, 10, width * 0.9, 0)
-    //     // doc.save("set_list.pdf")
-    //     let fileName = "set_list.jpeg"
-    //     window.open(doc.output('bloburl', { filename: fileName }))
-    //     let downloadButton = document.getElementById("download")
-    //     downloadButton.href = image
-    //     downloadButton.download = "aaa.jpeg"
-
-    //     let aaa = document.getElementById("renderSpace")
-    //     aaa.src = image
-    //     this.inactiveButton = false
-    //   })
-    // },
-
-    // 画像化 HTMLToImage
-//     exportPDF(){
-//       this.inactiveButton = true
-//       if(this.exportPreparation.type === "normal"){
-//         if(this.sheetType === "single"){
-//           console.log("1")
-//           const source = document.getElementById('pdf-single')
-//           htmlToImage.toJpeg(source, { quality: 0.95 })
-//           .then(capture => {
-//  console.log("2")
-//           const renderPDF = capture
-//           let downloadButton = document.getElementById("download")
-//           downloadButton.href = renderPDF
-//           downloadButton.download = "aaa.jpeg"
-
-//           let aaa = document.getElementById("renderSpace")
-//           aaa.src = renderPDF
-//           this.inactiveButton = false
-//           })
-//         }
-      //   else if(this.sheetType === "double"){
-      //     const source1 = document.getElementById('pdf-double-1')
-      //     const source2 = document.getElementById('pdf-double-2')
-      //     let imgData1
-      //     let imgData2
-      //     html2canvas(source1).then(capture => {
-      //       imgData1 = capture.toDataURL('image/png')
-      //               let downloadButton = document.getElementById("download")
-      //     downloadButton.href = imgData1
-      //     this.inactiveButton = false
-      //     })
-      //     html2canvas(source2).then(capture => {
-      //       imgData2 = capture.toDataURL('image/png')
-      //               let downloadButton = document.getElementById("download")
-      //     downloadButton.href = imgData2
-      //     this.inactiveButton = false
-      //     })
-
-      //   }
-      // }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
-      //   const source = document.getElementById('pdf-stage')
-      //   html2canvas(source).then(capture => {
-      //     const renderPDF = capture.toDataURL()
-      //     let downloadButton = document.getElementById("download")
-      //     downloadButton.href = renderPDF
-      //     this.inactiveButton = false
-      //   })
-    //   }
-    // },
-
-    // 画像化 HTML2Canvas
-    exportPDF(){
+        
+    async exportPDF(){
       this.inactiveButton = true
-      const source = document.getElementById('pdf-single')
-      html2canvas(source).then(capture => {
-      const renderImage = capture.toDataURL('image/jpeg')
-      let downloadButton = document.getElementById("download")
-      downloadButton.href = renderImage
-      downloadButton.download = "aaa.jpeg"
+      const doc = new jsPDF({format: 'a4'})
+      const width = doc.internal.pageSize.width
+      let fileName = ""
+      let imgData = null
+      let imgData2 = null
+      // 画像表示を初期化
+      let renderSpace = document.getElementById("renderSpace")
+      let renderSpace2 = document.getElementById("renderSpace2")
+      renderSpace.src = null
+      renderSpace2.src = null
+      this.isView = false
+      this.isView2 = false
 
-      let aaa = document.getElementById("renderSpace")
-      aaa.src = renderImage
+      if(this.exportPreparation.type === "normal"){
+        fileName = "set_list" + this._generateDay() + ".pdf"
+        if(this.sheetType === "single"){
+          const source = document.getElementById('pdf-single')
+          await html2canvas(source).then(capture => {
+            imgData = capture.toDataURL('image/jpeg')
+            doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
+          })
+        }else if(this.sheetType === "double"){
+          const source1 = document.getElementById('pdf-double-1')
+          const source2 = document.getElementById('pdf-double-2')
+          await html2canvas(source1).then(capture => {
+            imgData = capture.toDataURL('image/jpeg')
+          })
+          await html2canvas(source2).then(capture => {
+            imgData2 = capture.toDataURL('image/jpeg')
+          })
+          doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
+          doc.addPage()
+          doc.addImage(imgData2, 'JPEG', 10, 10, width * 0.9, 0)
+        }
+      }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
+        fileName = "set_list_stage" + this._generateDay() + ".pdf"
+        const source = document.getElementById('pdf-stage')
+        await html2canvas(source).then(capture => {
+          imgData = capture.toDataURL('image/jpeg')
+          doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
+        })
+      }
+
+      doc.save(fileName)
       this.inactiveButton = false
-      })
+      // OS別対応で書き出し
+      // if (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase())) {
+      //   window.open(doc.output('bloburl', { filename: fileName }))
+      //   this.inactiveButton = false
+      // } else {
+      //   doc.save(fileName)
+      //   this.inactiveButton = false
+      // }
     },
 
+    async viewImage(){
+      this.inactiveButton = true
+      this.isView = true
+      this.isView2 = true
+      let imgData = null
+      let imgData2 = null
+      let renderSpace = document.getElementById("renderSpace")
+      let renderSpace2 = document.getElementById("renderSpace2")
+      renderSpace.src = null
+      renderSpace2.src = null
 
-    // async exportPDF(){
-    //   this.inactiveButton = true
-    //   const doc = new jsPDF()
-    //   const width = doc.internal.pageSize.width
-    //   let fileName = "pdf"
+      if(this.exportPreparation.type === "normal"){
+        if(this.sheetType === "single"){
+          this.isView2 = false
+          const source = document.getElementById('pdf-single')
+          await html2canvas(source).then(capture => {
+            imgData = capture.toDataURL('image/jpeg')
+          })
+        }else if(this.sheetType === "double"){
+          const source1 = document.getElementById('pdf-double-1')
+          const source2 = document.getElementById('pdf-double-2')
+          await html2canvas(source1).then(capture => {
+            imgData = capture.toDataURL('image/jpeg')
+          })
+          await html2canvas(source2).then(capture => {
+            imgData2 = capture.toDataURL('image/jpeg')
+          })
+        }
+      }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
+        this.isView2 = false
+        const source = document.getElementById('pdf-stage')
+        await html2canvas(source).then(capture => {
+          imgData = capture.toDataURL('image/jpeg')
+        })
+      }
 
-    //   if(this.exportPreparation.type === "normal"){
-    //     fileName = "set_list.pdf"
-    //     if(this.sheetType === "single"){
-    //       const source = document.getElementById('pdf-single')
-    //       await html2canvas(source).then(capture => {
-    //         const imgData = capture.toDataURL('image/jpeg')
-    //         doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
-    //       })
-    //     }else if(this.sheetType === "double"){
-    //       const source1 = document.getElementById('pdf-double-1')
-    //       const source2 = document.getElementById('pdf-double-2')
-    //       let imgData1
-    //       let imgData2
-    //       await html2canvas(source1).then(capture => {
-    //         imgData1 = capture.toDataURL('image/jpeg')
-    //       })
-    //       await html2canvas(source2).then(capture => {
-    //         imgData2 = capture.toDataURL('image/jpeg')
-    //       })
-    //       doc.addImage(imgData1, 'JPEG', 10, 10, width * 0.9, 0)
-    //       doc.addPage()
-    //       doc.addImage(imgData2, 'JPEG', 10, 10, width * 0.9, 0)
-    //     }
-    //   }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
-    //     fileName = "set_list_stage.pdf"
-    //     const source = document.getElementById('pdf-stage')
-    //     await html2canvas(source).then(capture => {
-    //       const imgData = capture.toDataURL('image/jpeg')
-    //       doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
-    //     })
-    //   }
+      renderSpace.src = imgData
+      renderSpace2.src = imgData2
+      this.inactiveButton = false
+    },
 
-    //   // const renderPDF = doc.output("datauristring", { filename: fileName })
-    //   // var img = document.getElementById('renderSpace')
-    //   // img.setAttribute('src', renderPDF)
-
-    //   const renderPDF = doc.output("bloburl", { filename: fileName })
-    //   let downloadButton = document.getElementById("download")
-    //   downloadButton.href = renderPDF
-
-
-    //   this.inactiveButton = false
-    //   // OS別対応で書き出し
-    //   // if (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase())) {
-    //   //   window.open(doc.output('bloburl', { filename: fileName }))
-    //   //   this.inactiveButton = false
-    //   // } else {
-    //   //   doc.save(fileName)
-    //   //   this.inactiveButton = false
-    //   // }
-    // },
-
-
-    // exportPDF(){
-    //   this.inactiveButton = true
-    //   const doc = new jsPDF()
-    //   const width = doc.internal.pageSize.width
-    //   let fileName = "pdf"
-
-    //   if(this.exportPreparation.type === "normal"){
-    //     fileName = "set_list.pdf"
-    //     if(this.sheetType === "single"){
-    //       const source = document.getElementById('pdf-single')
-    //       html2canvas(source).then(capture => {
-    //         const imgData = capture.toDataURL('image/jpeg')
-    //         doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
-
-    //         // const renderPDF = doc.output("datauristring", { filename: fileName })
-    //         // var img = document.getElementById('renderSpace')
-    //         // img.setAttribute('src', renderPDF)
-            
-    //               const renderPDF = doc.output("bloburl", { filename: fileName })
-    //   let downloadButton = document.getElementById("download")
-    //   downloadButton.href = renderPDF
-    //   this.inactiveButton = false
-    //       })
-    //     }else if(this.sheetType === "double"){
-    //       const source1 = document.getElementById('pdf-double-1')
-    //       const source2 = document.getElementById('pdf-double-2')
-    //       let imgData1
-    //       let imgData2
-    //       html2canvas(source1).then(capture => {
-    //         imgData1 = capture.toDataURL('image/jpeg')
-    //         html2canvas(source2).then(capture => {
-    //           imgData2 = capture.toDataURL('image/jpeg')
-    //           doc.addImage(imgData1, 'JPEG', 10, 10, width * 0.9, 0)
-    //           doc.addPage()
-    //           doc.addImage(imgData2, 'JPEG', 10, 10, width * 0.9, 0)
-
-    //           const renderPDF = doc.output("datauristring", { filename: fileName })
-    //           var img = document.getElementById('renderSpace')
-    //           img.setAttribute('src', renderPDF)
-    //           this.inactiveButton = false
-    //         })
-    //       })
-    //     }
-    //   }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
-    //     fileName = "set_list_stage.pdf"
-    //     const source = document.getElementById('pdf-stage')
-    //     html2canvas(source).then(capture => {
-    //       const imgData = capture.toDataURL('image/jpeg')
-    //       doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
-    //       const renderPDF = doc.output("datauristring", { filename: fileName })
-    //       var img = document.getElementById('renderSpace')
-    //       img.setAttribute('src', renderPDF)
-    //       this.inactiveButton = false
-    //     })
-    //   }
-
-    //   // OS別対応で書き出し
-    //   // if (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase())) {
-    //   //   window.open(doc.output('bloburl', { filename: fileName }))
-    //   //   this.inactiveButton = false
-    //   // } else {
-    //   //   doc.save(fileName)
-    //   //   this.inactiveButton = false
-    //   // }
-    // },
   },
   computed:{
 
@@ -622,13 +454,13 @@ export default {
   position: relative;
 }
 .PDF-stage-name{
-  font-size: 70px;
+  font-size: 40px;
   font-weight: 700;
   margin-bottom: 20px;
 }
 .PDF-list{
   margin-top: 60px;
-  font-size: 50px;
+  font-size: 25px;
   font-weight: 700;
 }
 .PDF-bg-black{
@@ -638,17 +470,18 @@ export default {
   color: white;
 }
 .PDF-stage-logo{
-  width: 308px;
-  height: 50px;
+  width: 185px;
+  height: 30px;
   position: absolute;
   right: 100px;
   bottom: 100px;
 }
 
-#renderSpace{
+.render-space{
   width: 100%;
-  height: 800px;
-  background-color: blue;
+  height: auto;
+  margin-bottom: 30px;
+
 }
 
 @media screen and (min-width:600px){

@@ -7,6 +7,7 @@ import Music from '@/views/setList/Music.vue'
 import CreateMusic from '@/views/setList/CreateMusic.vue'
 import CreateSetList from '@/views/setList/CreateSetList.vue'
 import ShowSetList from '@/views/setList/ShowSetList.vue'
+import TruckNumber from '@/views/setList/TruckNumber.vue'
 import Complement from '@/views/setList/Complement.vue'
 import ExportSetList from '@/views/setList/ExportSetList.vue'
 import StagePlot from '@/views/stagePlot/StagePlot.vue'
@@ -75,6 +76,12 @@ const routes = [
     path: '/set_list/:id',
     name: 'ShowSetList',
     component: ShowSetList,
+    props: true
+  },
+  {
+    path: '/set_list/:id/truck_number',
+    name: 'TruckNumber',
+    component: TruckNumber,
     props: true
   },
   {

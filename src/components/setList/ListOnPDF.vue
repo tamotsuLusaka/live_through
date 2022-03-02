@@ -2,7 +2,7 @@
 
   <tr v-for="music in lists" :key="music.order" class="_PDF-list">
     <td v-if="type === 'main'" class="_PDF-no _PDF-text-m">{{music.displayOrder}}</td>
-    <td v-if="type === 'encore'" class="_PDF-no _PDF-text-m"><span class="_PDF-text-ss">ENCORE<br></span>{{music.displayOrder}}</td>
+    <td v-if="type === 'encore'" class="_PDF-no _PDF-text-m"><span class="_PDF-text-s">EC<br></span>{{music.displayOrder}}</td>
 
     <td v-if="music.type === 'music'" class="_PDF-title _PDF-text-m">{{music.data.name}}</td>
     <td v-if="music.type === 'mc'" class="_PDF-title _PDF-text-m">MC</td>

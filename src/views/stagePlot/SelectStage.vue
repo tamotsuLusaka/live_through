@@ -1,6 +1,6 @@
 <template>
   <div class="_base-s">
-    <SubHeader :pageType="pageType" :pageTitle="pageTitle" :backPath="backPath" :isPcTitle="isPcTitle"></SubHeader>
+    <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content-s">
         <router-link :to="{name: 'CreateBand'}" class="_link _margin40">
           <div class="_link-container">
@@ -45,7 +45,7 @@ export default {
     return{
       pageType: "stagePlot",
       pageTitle:"ステージの選択",
-      backPath:"/stage_plot",
+      isBack:"/stage_plot",
       isPcTitle: false,
 
       setLists: []
