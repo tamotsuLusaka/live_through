@@ -15,6 +15,7 @@ import CreateStagePlot from '@/views/stagePlot/CreateStagePlot.vue'
 import CreateBand from '@/views/stagePlot/CreateBand.vue'
 import SelectInstrument from '@/views/stagePlot/SelectInstrument.vue'
 import CreateInstrument from '@/views/stagePlot/CreateInstrument.vue'
+import EditPosition from '@/views/stagePlot/EditPosition.vue'
 
 const routes = [
   {
@@ -131,7 +132,12 @@ const routes = [
     component: CreateInstrument,
     props: true
   },
-  
+  {
+    path: '/stage_plot/band/:id/instrument/edit-position',
+    name: 'EditPosition',
+    component: EditPosition,
+    props: true
+  },
 ]
 
 const router = createRouter({

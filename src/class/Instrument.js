@@ -3,13 +3,13 @@ export default class Instrument{
   id = null
   type = null
   member = null
-  position = {x: 0, y: 0, spanX: null, spanY: null}
+  position = {x: null, y: null, xSpan: 1, ySpan: 1}
   isVocal = false
   vocal = {part: null} //"ボーカル", "コーラス", "MC"
   isBroughtMic = false
   mic = {type: null, brand: null, model: null} // type: (line)
   isAmp = false
-  amp = {type: null, brandOfHead: null, brandOfCab: null, brandOfCombo: null, position:{x: 0, y: 0, spanX: null, spanY: null}} // type: ここはidを保存 "rent","rentCombo", "head", "cab", "head&cab", "combo" 
+  amp = {type: null, brandOfHead: null, brandOfCab: null, brandOfCombo: null, position:{x: null, y: null, xSpan: 1, ySpan: 1}} // type: ここはidを保存 "rent","rentCombo", "head", "cab", "head&cab", "combo" 
   idBroughtDi = false
   di = {brand: null, model: null}
   // isDrum = false

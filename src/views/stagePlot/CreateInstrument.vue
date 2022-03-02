@@ -10,6 +10,15 @@
         <p v-if="v$.instrument.member.$error" class="_input-error-message">10文字以内で入力してください。</p>
       </div>
 
+      <div class="_container">
+        <label class="_label">パート配置図</label><Helper :helperObject="helper.tune"></Helper>
+        <StageLayout v-if="isCreated" mode="display" :band="band" :instrument="instrument" class="_margin20"></StageLayout>
+      </div>
+      <div @click="editPosition(false)" class="_link-mini-white _margin20">
+        <img src="@/assets/images/icon-pin-blue.png" class="_link-mini-icon" alt="">
+        <p class="_link-mini-text">パート配置を設定</p>
+      </div>
+
       <div v-if="tag !== 'VOCAL'" class="_container">
         <p class="_label">ボーカル・コーラス・/MC</p>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isVocal}">
@@ -85,7 +94,14 @@
             <input type="text" v-model="instrument.amp.brandOfCombo" @blur="v$.instrument.amp.brandOfCombo.$touch()" placeholder="コンボメーカー名を10字以内で入力" class="_multi-input-text">
           </div>
         </div>
-        <p v-if="v$.instrument.amp.brandOfHead.$error || v$.instrument.amp.brandOfCab.$error || v$.instrument.amp.brandOfCombo.$error" class="_input-error-message">10文字以内で入力してください。</p>
+        <div class="_margin20">
+          <p v-if="v$.instrument.amp.brandOfHead.$error || v$.instrument.amp.brandOfCab.$error || v$.instrument.amp.brandOfCombo.$error" class="_input-error-message">10文字以内で入力してください。</p>
+        </div>
+        <div @click="editPosition(true)" class="_link-mini-white _margin20">
+          <img src="@/assets/images/icon-pin-blue.png" class="_link-mini-icon" alt="">
+          <p class="_link-mini-text">アンプ配置を設定</p>
+        </div>
+        <Alert :isShown="isAlertShown" :message="alertMessage" @closeAlert="closeAlert()"></Alert>
       </div>
 
       <div v-if="instrument.type === 'ベース'" class="_container">
@@ -327,6 +343,8 @@ import Helper from '@/components/Helper.vue'
 import Spinner from '@/components/Spinner.vue'
 import Mixin from '@/mixin/mixin.js'
 import Footer from '@/components/Footer.vue'
+import Alert from '@/components/Alert.vue'
+import StageLayout from '@/components/stagePlot/StageLayout.vue'
 
 import Band from '@/class/Band.js'
 import Instrument from '@/class/Instrument.js'
@@ -354,7 +372,9 @@ export default {
     SubHeader,
     Helper,
     Footer,
-    Toggle
+    Toggle,
+    Alert,
+    StageLayout
   },
   mixins:[
     Mixin
@@ -364,6 +384,7 @@ export default {
   },
   data(){
     return{
+      isCreated: false,
       pageType: "stagePlot",
       pageTitle: "",
       isBack: true,
@@ -371,6 +392,8 @@ export default {
       inactiveButton: false,
       mode: "create", //"create", "edit"
       errorMessage: "",
+      isAlertShown: false,
+      alertMessage: "",
 
       band: new Band(),
       instrument: new Instrument(),
@@ -397,13 +420,28 @@ export default {
       console.log(error.message)
     })
 
+    let updatedInst = this.$store.getters["data/instrument"]
+
     if(this.$route.params.instrumentId){
       this.mode = "edit"
       this.listIndex = this.band.lists.findIndex((part)=> part.id === this.$route.params.instrumentId)
-      this.instrument = this.band.lists.find((part)=> part.id === this.$route.params.instrumentId)
+
+      if(updatedInst != null) {
+        this.instrument = updatedInst
+        this.band.lists[this.listIndex] = this.instrument
+        this.$store.commit("data/setInstrument", null)
+      } else {
+        this.instrument = this.band.lists[this.listIndex]
+      }
     }else{
-      this.instrument.type = this.$route.query.instrument
+      if(updatedInst != null) {
+        this.instrument = updatedInst
+        this.$store.commit("data/setInstrument", null)
+      } else {
+        this.instrument.type = this.$route.query.instrument
+      }
     }
+
     this.pageTitle = this.instrument.type
 
     if(this.instrument.type === "ボーカル" || this.instrument.type === "コーラス" || this.instrument.type === "MC"){
@@ -423,7 +461,7 @@ export default {
       this.instrument.isAmp = true
     }
 
-    
+    this.isCreated = true
   },
   mounted(){
     
@@ -479,12 +517,24 @@ export default {
 
     offMic(){
      this.instrument.isBroughtMic = false
-    }
+    },
 
+    editPosition(isAmp){
+      if(isAmp && this.instrument.amp.type == null) {
+        this._stop(true)
+        this.alertMessage = "アンプの種別を選択して下さい。"
+        this.isAlertShown = true
+        return
+      }
+      this.$store.commit('data/setInstrument', this.instrument)
+      this.$router.push({name:'EditPosition', params:{ isAmp } })
+    },
+    closeAlert(){
+        this._stop(false)
+        this.isAlertShown = false
+    }
   },
 	
-
-
   validations(){
     return{
       instrument:{

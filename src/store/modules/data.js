@@ -3,14 +3,14 @@ export default{
   state:{
     myMusicLists: [],
     exportSetList: null,
-
     band: null,
-
+    instrument: null,
   },
   getters:{
     myMusicLists: state => state.myMusicLists,
     exportSetList: state => state.exportSetList,
     band: state => state.band,
+    instrument: state => state.instrument,
   },
   mutations:{
     setMyMusicLists(state, payload){
@@ -22,7 +22,9 @@ export default{
     setBand(state, payload){
       state.band = payload
     },
-
+    setInstrument(state, payload){
+      state.instrument = payload
+    },
   },
   actions:{
 
