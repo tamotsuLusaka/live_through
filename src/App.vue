@@ -34,10 +34,10 @@ export default{
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
 *{
   /* font-family: 'Noto Sans JP', sans-serif, 'PingFang SC'; */
   /* font-family:'ヒラギノ角ゴ ProN W6' ; */
-  font-family:'Yusei Magic' ;
+  font-family: 'Noto Sans JP', 'ヒラギノ角ゴ ProN W3', 'メイリオ' sans-serif;
 }
 </style>

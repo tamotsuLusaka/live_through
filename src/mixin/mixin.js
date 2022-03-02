@@ -101,6 +101,21 @@ export default{
       format = format.toString(16)
       return id + format
     },
+
+    _generateDay(){
+      var date = new Date()
+      const year = date.getFullYear()
+      const month = 1 + date.getMonth()
+      const day = date.getDate()
+      
+      var format = 'YYYYMMDD';
+      format = format.replace(/YYYY/g, year);
+      format = format.replace(/MM/g, month);
+      format = format.replace(/DD/g, day);
+      format = Number(format)
+      format = format.toString()
+      return format
+    },
   },
 
 

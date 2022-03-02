@@ -1,7 +1,7 @@
 <template>
   <div class="_base">
     <Spinner v-if="inactiveButton"></Spinner>
-    <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :backPath="backPath" :isPcTitle="isPcTitle"></SubHeader>
+    <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content">
       <label for="name" class="_label">パート</label><Helper :helperObject="helper.tune"></Helper>
       <div v-for="(instrument, index) in instruments" :key="index" class="_multi-box" :class="{'_multi-box-start': index === 0, '_multi-box-end': instruments.length -1 === index}" >
@@ -39,7 +39,7 @@ export default {
     return{
       pageType: "stagePlot",
       pageTitle: "パートの選択",
-      backPath: "/stage_plot",
+      isBack: "/stage_plot",
       isPcTitle: true,
       inactiveButton: false,
       errorMessage: "",

@@ -1,6 +1,6 @@
 <template>
   <div class="_base-s">
-    <SubHeader :pageType="pageType" :pageTitle="pageTitle" :backPath="backPath" :isPcTitle="isPcTitle"></SubHeader>
+    <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="show-top">
       <div class="show-top-content">
         <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
@@ -8,12 +8,16 @@
           <img src="@/assets/images/icon-mic-blue.png" alt="" class="show-icon">
           <p>{{setList.name}}</p>
         </div>
-        <router-link :to="{name: 'Complement', params:{id: $route.params.id}}" class="_link-mini-line-blue _margin20">
-          <p class="_link-mini-text">音源詳細を入力</p>
-        </router-link>
         <div @click="goEdit()" class="_link-mini-line-blue _margin20">
-          <p class="_link-mini-text">セットリスの編集</p>
+          <p class="_link-mini-text">セットリストの編集</p>
         </div>
+        <router-link :to="{name: 'TruckNumber', params:{id: $route.params.id}}" class="_link-mini-line-blue _margin20">
+          <p class="_link-mini-text">音源トラックナンバーの入力</p>
+        </router-link>
+        <router-link v-if="isNecessarySource" :to="{name: 'Complement', params:{id: $route.params.id}}" class="_link-mini-line-blue _margin20">
+          <p class="_link-mini-text">音源設定の入力</p>
+        </router-link>
+
         <div @click="goExport()" class="_link-mini-blue _margin20">
           <img src="@/assets/images/icon-pdf-white.png" class="_link-mini-icon " alt="">
           <p class="_link-mini-text">PDFで書き出し</p>
@@ -28,7 +32,7 @@
         <ShowSe v-if="setList.isSeOfEncore" :type="'アンコール SE'" :seObject="setList.seOfEncore"></ShowSe>
         <ShowLists :type="'encore'" :lists="this.listsOfEncore"></ShowLists>
         <ShowSe v-if="setList.isEndSeOfEncore" :type="'アンコール END SE'" :seObject="setList.endSeOfEncore"></ShowSe>
-        <div class="_container">
+        <div v-if="isNecessarySource" class="_container">
           <div class="_label-white">音源設定</div>
           <div class="_multi-box _multi-box-start">
             <router-link :to="{name: 'Complement', params:{id: $route.params.id}}" v-if="setList.output.channel === null" class="_multi-inner">
@@ -61,7 +65,8 @@
       </div>
     </div>
     <Footer></Footer>
-    <Alert :isShown="isAlertShown" :message="alertMessage" @closeAlert="closeAlert()"></Alert>
+    <Alert :isShown="isAlertShownForTruckNumber" :message="alertMessageForTruckNumber" @closeAlert="closeAlert()"></Alert>
+    <Alert :isShown="isAlertShownForSource" :message="alertMessageForSource" @closeAlert="closeAlert()"></Alert>
   </div>
 </template>
 
@@ -93,7 +98,7 @@ export default {
     return{
       pageType: "setList",
       pageTitle:"セットリスト",
-      backPath:"/set_list",
+      isBack: true,
       isPcTitle: false,
       errorMessage: "",
 
@@ -101,11 +106,17 @@ export default {
       lists: [],
       listsOfEncore: [],
       originMusics:[],
-      incompletion: false,
+      incompletionTruckNumber: false,
+      incompletionSource: false,
+      isNecessarySource: false,
 
-      // アラートモーダル用
-      isAlertShown: false,
-      alertMessage: "音源のトラックナンバーまたは設定が未設定です。【音源詳細を入力】から設定して下さい。",
+      // アラートモーダル用 トラックナンバー
+      isAlertShownForTruckNumber: false,
+      alertMessageForTruckNumber: "音源のトラックナンバーが未入力です。【音源トラックナンバーの入力】から設定して下さい。",
+
+      // アラートモーダル用 音源
+      isAlertShownForSource: false,
+      alertMessageForSource: "音源設定が未設定です。【音源設定の入力】から設定して下さい。",
 
     }
   },
@@ -132,6 +143,12 @@ export default {
 
     this.margeMusicData(this.setList.lists, this.lists)
     this.margeMusicData(this.setList.listsOfEncore, this.listsOfEncore)
+    this.incompletionCheckForSe(this.setList.se)
+    this.incompletionCheckForSe(this.setList.endSe)
+    this.incompletionCheckForSe(this.setList.seOfEncore)
+    this.incompletionCheckForSe(this.setList.endSeOfEncore)
+    this.incompletionCheckForLists(this.lists)
+    this.incompletionCheckForLists(this.listsOfEncore)
   },
   mounted(){
     
@@ -155,7 +172,12 @@ export default {
     incompletionCheckForSe(seObject){
       if(seObject.typeOfSource === "CD"){
         if(seObject.truckNumber === null){
-          this.incompletion = true
+          this.incompletionTruckNumber = true
+        }
+      }else if(seObject.typeOfSource === "PC" || seObject.typeOfSource === "その他" ){
+        this.isNecessarySource = true
+        if(this.setList.output.channel === null || this.setList.output.terminal === null){
+          this.incompletionSource = true
         }
       }
     },
@@ -165,7 +187,12 @@ export default {
           if(music.data.isSource){
             if(music.data.source.typeOfSource === "CD"){
               if(music.truckNumber === null){
-                this.incompletion = true
+                this.incompletionTruckNumber = true
+              }
+            }else if(music.data.source.typeOfSource === "PC" || music.data.source.typeOfSource === "その他"){
+              this.isNecessarySource = true
+              if(this.setList.output.channel === null || this.setList.output.terminal === null){
+                this.incompletionSource = true
               }
             }
           }
@@ -173,18 +200,13 @@ export default {
       }
     },
     goExport(){
-      this.incompletionCheckForSe(this.setList.se)
-      this.incompletionCheckForSe(this.setList.endSe)
-      this.incompletionCheckForSe(this.setList.seOfEncore)
-      this.incompletionCheckForSe(this.setList.endSeOfEncore)
-      this.incompletionCheckForLists(this.lists)
-      this.incompletionCheckForLists(this.listsOfEncore)
-      if(this.setList.output.channel === null || this.setList.output.terminal === null){
-        this.incompletion = true
-      }
-      if(this.incompletion){
+
+      if(this.incompletionTruckNumber){
         this._stop(true)
-        this.isAlertShown = true
+        this.isAlertShownForTruckNumber = true
+      }else if(this.incompletionSource){
+        this._stop(true)
+        this.isAlertShownForSource = true  
       }else{
         this.$store.commit('data/setExportSetList', null)
         this.setList.lists = this.lists
@@ -195,7 +217,8 @@ export default {
     },
     closeAlert(){
       this._stop(false)
-      this.isAlertShown = false
+      this.isAlertShownForTruckNumber = false
+      this.isAlertShownForSource = false
     },
   },
   computed:{
@@ -235,6 +258,7 @@ export default {
   padding:60px 0 60px;
   margin: 0 auto;
 }
+
 
 @media screen and (min-width:600px){
   .show-top-content{
