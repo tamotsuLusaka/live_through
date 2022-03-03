@@ -1,7 +1,7 @@
 <template>
   <div class="_base">
     <Spinner v-if="inactiveButton"></Spinner>
-    <SubHeader  pageType="editPlot" pageTitle="配置" :backPath="$router.options.history.state.back" :isPcTitle="isPcTitle"></SubHeader>
+    <SubHeader isBack pageType="editPlot" pageTitle="配置" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content">
       <div class="_container">
         <label class="_label">パート配置図</label>
