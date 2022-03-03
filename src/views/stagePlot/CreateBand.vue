@@ -11,7 +11,7 @@
       </div>
       <div class="_container">
         <label for="tune" class="_label">メンバーリスト</label>
-        <div @click="addMember()" class="_link-mini-white _margin20">
+        <div @click="addMember()" class="_link-mini-white _marginS">
           <img src="@/assets/images/icon-set-blue.png" class="_link-mini-icon" alt="">
           <p class="_link-mini-text">メンバー（パート）を追加</p>
         </div>
@@ -39,7 +39,7 @@
         <button  :disabled="v$.band.$invalid || inactiveButton" @click="createBand()" :class="{'_invalid-button': v$.band.$invalid}" class="_button-s">登録</button>
       </div>
       <div v-if="this.mode === 'edit'" class="_button-container">
-        <button  :disabled="v$.band.$invalid || inactiveButton" @click="editBand()" :class="{'_invalid-button': v$.band.$invalid}" class="_button-s _margin30">編集</button>
+        <button  :disabled="v$.band.$invalid || inactiveButton" @click="editBand()" :class="{'_invalid-button': v$.band.$invalid}" class="_button-s _marginM">編集</button>
         <button  :disabled="inactiveButton" @click="deleteBand()"  class="_button-red">削除</button>
       </div>
     </div>
@@ -84,7 +84,7 @@ export default {
     return{
       pageType: "stagePlot",
       pageTitle: "バンドステージの作成",
-      isBack: "/stage_plot",
+      isBack: true,
       isPcTitle: true,
       inactiveButton: false,
       mode: "create", //"create", "edit"

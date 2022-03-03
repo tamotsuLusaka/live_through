@@ -39,7 +39,7 @@ export default {
     return{
       pageType: "stagePlot",
       pageTitle: "パートの選択",
-      isBack: "/stage_plot",
+      isBack: true,
       isPcTitle: true,
       inactiveButton: false,
       errorMessage: "",

@@ -37,15 +37,15 @@
         <div class="menu-top">
           <img src="@/assets/images/logo.png" class="menu-logo" alt="ロゴ">
           <ul>
-            <li class="menu-link"><router-link :to="{name: 'SetList'}" ><img src="@/assets/images/icon-mic-blue.png" class="menu-icon" alt=""><span>セットリスト</span></router-link></li>
-            <li class="menu-link"><router-link :to="{name: 'SetList'}" ><img src="@/assets/images/icon-stage-blue.png" class="menu-icon" alt=""><span>ステージプロット</span></router-link></li>
-            <li class="menu-link"><router-link :to="{name: 'SetList'}" ><img src="@/assets/images/icon-person-blue.png" class="menu-icon" alt=""><span>プロフィール</span></router-link></li>
+            <li @click="link('SetList')" class="menu-link"><img src="@/assets/images/icon-mic-blue.png" class="menu-icon" alt=""><span>セットリスト</span></li>
+            <li @click="link('StagePlot')" class="menu-link"><img src="@/assets/images/icon-stage-blue.png" class="menu-icon" alt=""><span>ステージプロット</span></li>
+            <li  class="menu-link"><img src="@/assets/images/icon-person-blue.png" class="menu-icon" alt=""><span>プロフィール</span></li>
             <li @click="signOut()" class="menu-link"><img src="@/assets/images/icon-signout-red.png" class="menu-icon" alt=""><span>ログアウト</span></li>
           </ul>
         </div>
         <div class="menu-bottom">
-          <router-link :to="{name: 'SetList'}" class="menu-sub">利用規約</router-link>
-          <router-link :to="{name: 'SetList'}" class="menu-sub">プライバシーポリシー</router-link>
+          <p  class="menu-sub">利用規約</p>
+          <p  class="menu-sub">プライバシーポリシー</p>
           <div class="right">Copyright LIVE THROUGH All Rights Reserved.</div>
         </div>
       </div>
@@ -92,11 +92,16 @@ export default {
       this.isShown = false
     },
     signOut(){
+      this._stop(false)
       auth.signOut()
       this.$router.push({name: 'Home'})
     },
     goBack(){
       this.$router.back()
+    },
+    link(name){
+      this._stop(false)
+      this.$router.push({name: name})
     }
   }
 }

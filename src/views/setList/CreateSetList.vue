@@ -259,7 +259,7 @@
         <button  :disabled="v$.setList.$invalid || inactiveButton" @click="createSetList()" :class="{'_invalid-button': v$.setList.$invalid}" class="_button-s">作成</button>
       </div>
       <div v-if="this.mode === 'edit'" class="_button-container">
-        <button  :disabled="v$.setList.$invalid || inactiveButton" @click="editSetList()" :class="{'_invalid-button': v$.setList.$invalid}" class="_button-s _margin30">編集</button>
+        <button  :disabled="v$.setList.$invalid || inactiveButton" @click="editSetList()" :class="{'_invalid-button': v$.setList.$invalid}" class="_button-s _marginM">編集</button>
         <button  :disabled="inactiveButton" @click="deleteSetList()"  class="_button-red">削除</button>
       </div>
 
@@ -684,6 +684,10 @@ export default {
   position: relative;
   width: calc(100% - 50px);
   height: 39px;
+  width: 85%; /* この幅を超えると省略 */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .list-name{
   line-height: 39px;

@@ -3,7 +3,7 @@
     <div v-if="this.$store.getters['auth/isSignedIn']" class="after">
       <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
       <div class="_content-s">
-        <router-link :to="{name: 'CreateMusic'}" class="_link _margin30">
+        <router-link :to="{name: 'CreateMusic'}" class="_link _marginM">
           <div class="_link-container">
             <img src="@/assets/images/icon-music-blue.png" class="_link-icon" alt="セットリスト">
             <div class="_link-box">
