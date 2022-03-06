@@ -12,9 +12,9 @@
 
       <div class="_container">
         <label class="_label">パート配置図</label><Helper :helperObject="helper.tune"></Helper>
-        <StageLayout v-if="isCreated" mode="display" :band="band" :instrument="instrument" class="_margin20"></StageLayout>
+        <StageLayout v-if="isCreated" mode="display" :band="band" :instrument="instrument" class="_marginS"></StageLayout>
       </div>
-      <div @click="editPosition(false)" class="_link-mini-white _margin20">
+      <div @click="editPosition(false)" class="_link-mini-white _marginS">
         <img src="@/assets/images/icon-pin-blue.png" class="_link-mini-icon" alt="">
         <p class="_link-mini-text">パート配置を設定</p>
       </div>
@@ -94,10 +94,10 @@
             <input type="text" v-model="instrument.amp.brandOfCombo" @blur="v$.instrument.amp.brandOfCombo.$touch()" placeholder="コンボメーカー名を10字以内で入力" class="_multi-input-text">
           </div>
         </div>
-        <div class="_margin20">
+        <div class="_marginS">
           <p v-if="v$.instrument.amp.brandOfHead.$error || v$.instrument.amp.brandOfCab.$error || v$.instrument.amp.brandOfCombo.$error" class="_input-error-message">10文字以内で入力してください。</p>
         </div>
-        <div @click="editPosition(true)" class="_link-mini-white _margin20">
+        <div @click="editPosition(true)" class="_link-mini-white _marginS">
           <img src="@/assets/images/icon-pin-blue.png" class="_link-mini-icon" alt="">
           <p class="_link-mini-text">アンプ配置を設定</p>
         </div>

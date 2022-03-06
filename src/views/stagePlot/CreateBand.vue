@@ -25,7 +25,7 @@
 
       <div class="_container">
         <label class="_label">パート配置図</label><Helper :helperObject="helper.tune"></Helper>
-        <StageLayout v-if="isBandFetched" mode="display" :band="band" class="_margin20"></StageLayout>
+        <StageLayout v-if="isBandFetched" mode="display" :band="band" class="_marginS"></StageLayout>
       </div>
 
       <div class="_container">
