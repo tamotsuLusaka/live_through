@@ -1,7 +1,12 @@
 <template>
 <div class="component" unselectable="on">
   <div ref="outerBox" class="outer-box">
-    <div class="inner-box" :style="{width: `${innerBoxWidth}px`, maxHeight: `calc(${cellHeight + 1}px * ${rowCount})`}">
+    <div class="inner-box" :style="{
+      width: `${innerBoxWidth}px`,
+      maxHeight: `calc(${cellHeight + 1}px * ${rowCount})`,
+      gridTemplateRows: `repeat(${rowCount}, 1fr)`,
+      gridTemplateColumns: `repeat(${colCount}, 1fr)`,
+    }">
       <template v-for="yPos in rowCount">
         <template v-for="xPos in colCount" :key="`r${yPos-1}c${xPos-1}-cell`">
 
@@ -300,8 +305,6 @@ export default {
 
 .inner-box {
   display: grid;
-  grid-template-rows: repeat(9, 1fr);
-  grid-template-columns: repeat(15, 1fr);
   column-gap: 0;
   row-gap: 0;
 }
