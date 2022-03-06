@@ -19,7 +19,6 @@
         </div>
       </div>
 
-
       <div v-if="tag !== 'VOCAL'" class="_container">
         <p class="_label">ボーカル・コーラス・/MC</p>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isVocal}">
