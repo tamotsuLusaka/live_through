@@ -100,7 +100,7 @@ export default{
       {value: "Cho", plot: "Cho", text: "コーラス", xSpan: 3, ySpan: 3},
       {value: "Gt", plot: "Guitar", text: "ギター", xSpan: 3, ySpan: 3},
       {value: "Ba", plot: "Bass", text: "ベース", xSpan: 3, ySpan: 3},
-      {value: "Dr", plot: "Drums", text: "ドラム", xSpan: 3, ySpan: 3},
+      {value: "Dr", plot: "Drums", text: "ドラム", xSpan: 5, ySpan: 4},
       {value: "AG", plot: "AG", text: "アコースティックギター", xSpan: 3, ySpan: 3},
       {value: "Key", plot: "Keyboard", text: "キーボード", xSpan: 3, ySpan: 3},
       {value: "Per", plot: "Per", text: "パーカッション", xSpan: 3, ySpan: 3},

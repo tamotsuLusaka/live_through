@@ -25,7 +25,7 @@
 
       <div class="_container">
         <label class="_label">パート配置図</label><Helper :helperObject="helper.tune"></Helper>
-        <StageLayout v-if="isBandFetched" mode="display" :band="band" class="_margin20"></StageLayout>
+        <StageLayout v-if="isBandFetched" mode="display" :band="band" class="_marginS"></StageLayout>
       </div>
 
       <div class="_container">
@@ -34,12 +34,8 @@
         <p v-if="v$.band.text.$error" class="_input-error-message">200文字以内で入力してください。</p>
       </div>
 
-      
-      <div v-if="this.mode === 'create'" class="_button-container">
-        <button  :disabled="v$.band.$invalid || inactiveButton" @click="createBand()" :class="{'_invalid-button': v$.band.$invalid}" class="_button-s">登録</button>
-      </div>
-      <div v-if="this.mode === 'edit'" class="_button-container">
-        <button  :disabled="v$.band.$invalid || inactiveButton" @click="editBand()" :class="{'_invalid-button': v$.band.$invalid}" class="_button-s _marginM">編集</button>
+      <div class="_button-container">
+        <button  :disabled="v$.band.$invalid || inactiveButton" @click="editBand()" :class="{'_invalid-button': v$.band.$invalid}" class="_button-s _marginM">保存</button>
         <button  :disabled="inactiveButton" @click="deleteBand()"  class="_button-red">削除</button>
       </div>
     </div>
@@ -87,7 +83,6 @@ export default {
       isBack: true,
       isPcTitle: true,
       inactiveButton: false,
-      mode: "create", //"create", "edit"
       errorMessage: "",
 
       band: new Band(),
@@ -107,7 +102,6 @@ export default {
       db.getBand(this.$route.params.id)
       .then((doc)=>{
         this.band = doc.data()
-        this.band
 
         this.isBandFetched = true
       })
@@ -148,17 +142,17 @@ export default {
     //     this._goToTop()
     //   })
     // },
-    // deleteMusic(){
-    //   db.deleteMusic(this.music.id)
-    //   .then(()=>{
-    //     this.$router.push({name:'Music'})
-    //   })
-    //   .catch((error)=>{
-    //     console.log(error.message)
-    //     this.errorMessage = "削除に失敗しました。もう一度やり直して下さい。"
-    //     this._goToTop()
-    //   })
-    // },
+    deleteBand(){
+      db.deleteBand(this.band.id)
+      .then(()=>{
+        this.$router.push({name:'StagePlot'})
+      })
+      .catch((error)=>{
+        console.log(error.message)
+        this.errorMessage = "削除に失敗しました。もう一度やり直して下さい。"
+        this._goToTop()
+      })
+    },
     addMember(){
       this.$router.push({name: 'SelectInstrument', params:{id: this.$route.params.id}})
     },

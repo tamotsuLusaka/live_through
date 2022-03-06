@@ -1,7 +1,7 @@
 <template>
   <div class="_base">
     <Spinner v-if="inactiveButton"></Spinner>
-    <SubHeader  pageType="editPlot" pageTitle="配置" :backPath="$router.options.history.state.back" :isPcTitle="isPcTitle"></SubHeader>
+    <SubHeader  pageType="editPlot" pageTitle="配置" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content">
       <div class="_container">
         <label class="_label">パート配置図</label>
@@ -11,6 +11,7 @@
         </template>
       </div>
     </div>
+    <Footer></Footer>
     <Alert :isShown="isAlertShown" :text="alertText" @closeAlert="closeAlert()"></Alert>
   </div>
 </template>
@@ -21,6 +22,7 @@ import SubHeader from '@/components/SubHeader.vue'
 import Spinner from '@/components/Spinner.vue'
 import Helper from '@/components/Helper.vue'
 import Alert from '@/components/Alert.vue'
+import Footer from '@/components/Footer.vue'
 import StageLayout from '@/components/stagePlot/StageLayout.vue'
 import db from '@/firebase/modules/db.js'
 
@@ -30,7 +32,8 @@ export default {
     Spinner,
     Helper,
     Alert,
-    StageLayout
+    StageLayout,
+    Footer
   },
   mixins:[
     Mixin,
@@ -47,6 +50,7 @@ export default {
       instrument: {},
       isBandFetched: false,
       inactiveButton: false,
+      isBack: true,
       isPcTitle: true,
       isAlertShown: false,
       alertText: "",

@@ -100,5 +100,8 @@ export default {
     const q = query(collection(db, "band"), where("userId", "==", userId))
     return getDocs(q)
   },
-
+  deleteBand(id){
+    const docRef = doc(db, 'band', id)
+    return deleteDoc(docRef)
+  },
 }

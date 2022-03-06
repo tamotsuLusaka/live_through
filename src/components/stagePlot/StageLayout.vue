@@ -60,7 +60,10 @@
         </svg>
       </div>
     </div>
-    <button class="_button-s" :class="{'_invalid-button': isOverlapping}" :disabled="isOverlapping" @click="emit()">決定</button>
+    <div class="_button-container">
+      <button class="_button-s" :class="{'_invalid-button': isOverlapping}" :disabled="isOverlapping" @click="emit()">決定</button>
+    </div>
+    
   </div>
 </div>
 </template>
@@ -354,7 +357,6 @@ export default {
 }
 
 .audience-plot {
-  margin-top: 5px;
   width: 100%;
   border: 1px solid var(--placeholder);
   color: var(--placeholder);
