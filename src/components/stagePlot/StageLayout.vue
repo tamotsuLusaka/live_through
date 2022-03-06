@@ -5,11 +5,11 @@
       <template v-for="yPos in rowCount">
         <template v-for="xPos in colCount" :key="`r${yPos-1}c${xPos-1}-cell`">
 
-      <!-- Normal cells -->
+      <!-- Blank cells -->
           <div class="cell" :style="`margin: ${cellMargin}; grid-row: ${yPos} / ${yPos}; grid-column: ${xPos} / ${xPos}; height: ${cellHeight}px`"></div>
 
       <!-- Cells being filled beforehand -->
-          <template v-if="Object.keys(filledCells[yPos-1][xPos-1]).length > 0 && filledCells[yPos-1][xPos-1].topLeft">
+          <template v-if="Object.keys(filledCells[yPos-1][xPos-1]).length > 0 && filledCells[yPos-1][xPos-1].isTopLeft">
             <div
               :key="`r${yPos-1}c${xPos-1}-filled`"
               class="filled"
@@ -20,7 +20,7 @@
           </template>
 
       <!-- Cells you are selecting now -->
-          <template v-if="/^edit/.test(mode) && cursor.x === xPos-1 && cursor.y === yPos-1">
+          <template v-if="/^edit/.test(mode) && instModifiable.position.x === xPos-1 && instModifiable.position.y === yPos-1">
             <div
               :key="`r${yPos-1}c${xPos-1}-selected`"
               class="selected"
@@ -97,31 +97,17 @@ export default {
       clientWidth: null,
       rowCount: 9,
       colCount: 15,
-      xSpan: 3,
-      ySpan: 3,
-      cursor: {
-        x: 0,
-        y: 0
-      },
       filledCells: [],
-      selectedCells: [],
       isOverlapping: true,
-      selectedFlag: "f"
     }
   },
   created() {
     /** 条件によらない初期化処理 */
     for(let r = 0; r < this.rowCount; r++ ) {
       this.filledCells.push([])
-      this.selectedCells.push([])
       for(let c = 0; c < this.colCount; c++) {
         this.filledCells[r].push({})
-        this.selectedCells[r].push("")
       }
-    }
-    this.cursor = {
-      x: 0,
-      y: 0
     }
 
     /** 楽器リストの初期化 */
@@ -133,7 +119,6 @@ export default {
     // 楽器リストの各楽器に省略名を追加
     instList.forEach(part => {
       const shortName = this.$store.getters['select/getInstrumentValue'](part.type)
-      console.log(`shortName: ${shortName}`);
       part.shortName = shortName        
       if(part.isAmp) {
         part.amp.shortName = `${shortName}.<br>Amp`
@@ -143,7 +128,7 @@ export default {
       }
     })
 
-
+    //propsのthis.instrumentは読み取り専用なので、書き込み可能なinstModifiableへcloneする
     this.instModifiable = cloneDeep(this.instrument)
 
     /** 変更対象の楽器に省略名を追加 */
@@ -153,12 +138,7 @@ export default {
       this.instModifiable.amp.shortName = `${shortName}.<br>Amp`
     }
 
-    /**
-     * アンプがある && アンプが編集ターゲットではない場合には、
-     * 楽器リストにアンプを追加。
-     * アンプがある && アンプが編集ターゲットの場合には、
-     * 変更対象の楽器をアンプで置換。
-     */
+    /** ポジションの表示のため、必要に応じたinstModifiableの入れ替えとinstListへの追加を行う */
     if(this.mode === "display") {
       instList.push(this.instModifiable)
       if(this.instModifiable.isAmp) {
@@ -166,6 +146,7 @@ export default {
         instList.push(this.instModifiable.amp)
       }
     } else if(this.mode === "editAmp") {
+      //アンプを編集する場合は、instModifiableをリストに追加した上で、instModifiableをinstModifiable.ampで置換する
       instList.push(this.instModifiable)
       this.instModifiable = cloneDeep(this.instModifiable.amp)
     } else if(this.mode === "editInst" && this.instModifiable.isAmp){
@@ -173,7 +154,10 @@ export default {
       instList.push(this.instModifiable.amp)
     }
 
+    //Modeがedit.*の場合には更に、positionの初期化
     if(this.mode.startsWith('edit')) {
+      this.instModifiable.position.x = 0
+      this.instModifiable.position.y = 0
       const spanData = this.$store.getters['select/getSpanData']
       spanData.some(entry => {
         if(entry.text === this.instModifiable.type) {
@@ -187,6 +171,7 @@ export default {
     // console.log(`DEBUG: StageLayout.vue/created() - instModifiable -> ${JSON.stringify(this.instModifiable)}`);
     // console.log(`DEBUG: StageLayout.vue/created() - instList -> ${JSON.stringify(instList.map(inst => ({shortName: inst.shortName, position: inst.position})))}`);
 
+    /** instListから読んだposition情報を元にfilledCellsを組み立てる */
     instList.forEach(part => {
 
       const position = part?.position
@@ -199,9 +184,10 @@ export default {
 
       for(let row = 0; row < ySpan; row++) {
         for(let col = 0; col < xSpan; col++) {
-          let topLeft = row === 0 && col === 0
+          //楽器の表示領域の左上にあたるcellをisTopLeftフラグで管理
+          let isTopLeft = row === 0 && col === 0
           this.filledCells[y + row][x + col] = {
-            topLeft,
+            isTopLeft,
             ...part
           }
         }
@@ -210,10 +196,11 @@ export default {
 
   },
   mounted() {
+    //windowのresizeイベントはmount後に行う
     window.addEventListener('resize', this.responsive)
     this.responsive()
 
-    // This is a little hack to initialize selection
+    //初期状態(x===0,y===0)での保存を可能にするためのhack
     this.moveCursor(0, 0)
 
     this.isMounted = true
@@ -224,7 +211,7 @@ export default {
   computed: {
     innerBoxWidth() {
       if(! this.clientWidth) return null
-      console.log(Math.floor(this.$refs?.outerBox?.clientWidth / this.colCount) * this.colCount);
+      // console.log(Math.floor(this.$refs?.outerBox?.clientWidth / this.colCount) * this.colCount);
       return Math.floor(this.$refs?.outerBox?.clientWidth / this.colCount) * this.colCount
     },
     cellHeight() {
@@ -253,37 +240,31 @@ export default {
     },
     moveCursor(xDiff, yDiff) {
       const position = this.instModifiable.position
-      const xLeft = this.cursor.x + xDiff
+      const xLeft = position.x + xDiff
+      const yTop = position.y + yDiff
       const xRight = xLeft + position.xSpan - 1
-      const yTop = this.cursor.y + yDiff
       const yBottom = yTop + position.ySpan - 1
+      // 楽器の領域が範囲外になった場合は何もしない
       if(xLeft < 0 || xRight >= this.colCount || yTop < 0 || yBottom >= this.rowCount) {
         return
       }
 
-      this.cursor.x = xLeft
-      this.cursor.y = yTop
-      this.selectedCells = []
-      this.isOverlapping = false
-      
-      for(let r = 0; r < this.rowCount; r++ ) {
-        this.selectedCells.push([])
-        for(let c = 0; c < this.colCount; c++) {
-          let val = ""
-          if(xLeft <= c && c <= xRight && yTop <= r && r <= yBottom) {
-            val = this.selectedFlag
+      //次の操作に向けてcursorの設定
+      this.instModifiable.position.x = xLeft
+      this.instModifiable.position.y = yTop
 
-            if(Object.keys(this.filledCells[r][c]).length > 0) {
-              this.isOverlapping = true
-            }
+      /** 重なり判定のループ */
+      this.isOverlapping = false
+      outerLoop: for(let r = yTop; r <= yBottom; r++) {
+        for(let c = xLeft; c <= xRight; c++) {
+          if(Object.keys(this.filledCells[r][c]).length > 0) {
+            this.isOverlapping = true;
+            break outerLoop;
           }
-          this.selectedCells[r].push(val)
         }
       }
     },
     emit() {
-      this.instModifiable.position.x = this.cursor.x
-      this.instModifiable.position.y = this.cursor.y
       if(this.instModifiable?.shortName)
         delete this.instModifiable.shortName
       if(this.instModifiable?.amp?.shortName)

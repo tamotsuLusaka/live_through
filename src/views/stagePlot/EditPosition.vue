@@ -7,6 +7,8 @@
         <label class="_label">パート配置図</label>
         <Helper :helperObject="helper.tune"></Helper>
         <template v-if="isBandFetched">
+
+      <!-- ToDo: Booleanでの受け取りがうまくいかないのでStringで"true"/"false"を受け取る -->
           <StageLayout :mode="isAmp === 'true' ? 'editAmp' : 'editInst'" :band="band" :instrument="instrument" @instChanged="instChanged($event)"></StageLayout>
         </template>
       </div>
@@ -69,6 +71,7 @@ export default {
       console.log(error.message)
     })
 
+    //全画面からinstrumentインスタンスをstore経由で受け取る
     if(this.$store.getters["data/instrument"] != null) {
       this.instrument = this.$store.getters["data/instrument"]
     } else {
@@ -85,7 +88,10 @@ export default {
     },
     instChanged(event) {
       if(typeof event === 'object') {
+        //event経由で変更済みInstrumentインスタンスを受け取る
         this.instrument = event
+
+        //全画面へ戻る際に、Store経由でInstrumentインスタンスを受け渡す
         this.$store.commit('data/setInstrument', this.instrument)
         this.$router.back()
       } else {
