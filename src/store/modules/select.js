@@ -107,7 +107,7 @@ export default{
       {value: "Sax", plot: "Sax", text: "サックス", xSpan: 3, ySpan: 3},
       {value: "Tp", plot: "Trumpet", text: "トランペット", xSpan: 3, ySpan: 3},
       {value: "Tb", plot: "Trombone", text: "トロンボーン", xSpan: 3, ySpan: 3},
-      {value: "Vl", plot: "Violin", text: "バイオリン", xSpan: 3, ySpan: 3},
+      {value: "Vl", plot: "Violin", text: "ヴァイオリン", xSpan: 3, ySpan: 3},
       {value: "DJ", plot: "DJ", text: "DJ", xSpan: 3, ySpan: 3},
       {value: "etc", plot: "", text: "その他", xSpan: 3, ySpan: 3},
     ],
@@ -129,6 +129,15 @@ export default{
       {text: "MTR"},
       {text: "その他"},
     ],
+    acousticGuitar:[
+      {text: "ライン"},
+      {text: "マイク"},
+      {text: "ライン&マイク"}
+    ],
+    ampForKeyboard:[
+      {text: "レンタル"},
+      {text: "持ち込み"},
+    ]
 
   },
   getters:{
@@ -145,6 +154,8 @@ export default{
     typeOfVocal:state => state.typeOfVocal,
     amp:state => state.amp,
     sync:state => state.sync,
+    acousticGuitar:state => state.acousticGuitar,
+    ampForKeyboard:state => state.ampForKeyboard,
 
     // selectの文章を呼び出す用
     getText: () => (stateName, id) =>{
