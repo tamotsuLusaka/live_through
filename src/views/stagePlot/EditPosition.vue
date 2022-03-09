@@ -1,7 +1,7 @@
 <template>
   <div class="_base">
     <Spinner v-if="inactiveButton"></Spinner>
-    <SubHeader  pageType="editPlot" pageTitle="配置" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
+    <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content">
       <div class="_container">
         <label class="_label">パート配置図</label>
@@ -48,6 +48,8 @@ export default {
   },
   data() {
     return {
+      pageType: "editPlot",
+      pageTitle: "配置",
       band: {},
       instrument: {},
       isBandFetched: false,
