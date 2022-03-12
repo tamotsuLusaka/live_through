@@ -552,7 +552,7 @@ import Instrument from '@/class/Instrument.js'
 import db from '@/firebase/modules/db.js'
 import Toggle from '@vueform/toggle'
 import useVuelidate from '@vuelidate/core'
-import { required, maxLength, helpers} from '@vuelidate/validators'
+import { required, requiredIf, maxLength, helpers} from '@vuelidate/validators'
 const contains = (param) => helpers.withParams(
   { type: 'isChecked', value: param},
   (value) => {
@@ -611,6 +611,7 @@ export default {
     }
   },
   async created(){
+    console.log(`yes, created.`);
     await db.getBand(this.$route.params.id)
     .then((doc)=>{
       this.band = doc.data()
@@ -808,6 +809,10 @@ export default {
           type:{
             isChecked: contains(this.instrument.isAmp)
           },
+          position: {
+            x:{ requiredIf: requiredIf(this.instrument.isAmp)  },
+            y:{ requiredIf: requiredIf(this.instrument.isAmp)  },
+          },
           brandOfHead:{
             maxLength: maxLength(10)
           },
@@ -914,7 +919,10 @@ export default {
         text:{
           maxLength: maxLength(50)
         },
-
+        position: {
+          x:{ required },
+          y:{ required },
+        },
 
       }
     }
