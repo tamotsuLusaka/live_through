@@ -400,6 +400,11 @@ a{
   color: var(--gray-hi);
   margin-bottom: 6px;
 }
+._multi-sub_title-blue{
+  font-size: 1.2rem;
+  color: var(--blue-hi);
+  margin-bottom: 6px;
+}
 ._multi-text{
   line-height: 45px;
   color: var(--black);
@@ -639,7 +644,7 @@ a{
 
 
 
-/* PDF用 */
+/* セットリストPDF用 */
 
 ._pdf{
   position: fixed;
@@ -652,19 +657,7 @@ a{
   max-height: none;
   min-height: none;
   padding: 5px;
-
-  /* position: relative; */
 }
-
-#pdf-single{
-  position: fixed;
-  top: 105%;
-  left: 0;
-  z-index: 100;
-
-}
-
-
 
 ._PDF-name{
   text-align: center;
@@ -768,7 +761,6 @@ a{
   position: absolute;
   right: 20px;
   top: 0;
-
 }
 
 /* manager用 */

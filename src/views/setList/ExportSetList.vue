@@ -5,7 +5,7 @@
     <div class="content">
       <img src="@/assets/images/logo-c.png" alt="" class="logo">
       <div class="_container">
-        <p class="_label">作成日</p>
+        <p class="_label">ライブ日</p>
         <div class="_multi-box _multi-box-start">
           <div class="_multi-inner">
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
@@ -500,6 +500,12 @@ export default {
   padding:90px 0 0;
   margin: 0 auto;
 }
+#pdf-single{
+  position: fixed;
+  top: 105%;
+  left: 0;
+  z-index: 100;
+}
 .logo{
   display: block;
   margin: 100px auto;
@@ -539,6 +545,8 @@ export default {
   margin-bottom: 30px;
 
 }
+
+
 
 @media screen and (min-width:600px){
   .content{

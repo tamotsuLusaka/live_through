@@ -16,6 +16,9 @@ import CreateBand from '@/views/stagePlot/CreateBand.vue'
 import SelectInstrument from '@/views/stagePlot/SelectInstrument.vue'
 import CreateInstrument from '@/views/stagePlot/CreateInstrument.vue'
 import EditPosition from '@/views/stagePlot/EditPosition.vue'
+import ShowBand from '@/views/stagePlot/ShowBand.vue'
+import ExportBand from '@/views/stagePlot/ExportBand.vue'
+
 
 const routes = [
   {
@@ -136,6 +139,18 @@ const routes = [
     path: '/stage_plot/band/:id/instrument/edit-position',
     name: 'EditPosition',
     component: EditPosition,
+    props: true
+  },
+  {
+    path: '/stage_plot/band/:id',
+    name: 'ShowBand',
+    component: ShowBand,
+    props: true
+  },
+  {
+    path: '/stage_plot/band/:id/export',
+    name: 'ExportBand',
+    component: ExportBand,
     props: true
   },
 ]

@@ -115,6 +115,28 @@ export default{
       format = format.toString()
       return format
     },
+
+    // _collectDisplayObject(object, select, searchKey){
+    //   let lists = []
+    //   const selectArray = this.$store.getters[`select/${select}`]
+    //   let validKeys = []
+      
+    //   Object.keys(object).forEach((key =>{
+    //     if(object[key]){
+    //       validKeys.push(key)
+    //     }
+    //   }))
+
+    //   for(let item in selectArray){
+    //     if(searchKey === "id"){
+    //       if(item.id === )
+    //     }else if(searchKey === "value"){
+    //       lists.push(selectArray.find(data => data.value === key))
+    //     }
+    //   }
+
+    //   return lists
+    // }
   },
 
 

@@ -6,12 +6,12 @@
       <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
       <div class="_container">
         <label for="name" class="_label">ステージプロット名</label><Helper :helperObject="helper.tune"></Helper>
-        <input type="text" v-model="band.name" @blur="v$.band.name.$touch()" placeholder="20文字以内で入力" :class="{'_input-error': v$.band.name.$error}" class="_input-text">
-        <p v-if="v$.band.name.$error" class="_input-error-message">20文字以内で入力してください。</p>
+        <input type="text" v-model="band.name" @blur="v$.band.name.$touch()" placeholder="18文字以内で入力" :class="{'_input-error': v$.band.name.$error}" class="_input-text">
+        <p v-if="v$.band.name.$error" class="_input-error-message">18文字以内で入力してください。</p>
       </div>
       <div class="_container">
         <label for="tune" class="_label">メンバーリスト</label>
-        <div @click="addMember()" class="_link-mini-white _marginS">
+        <div @click="addMember()" class="_link-mini-white _marginSS">
           <img src="@/assets/images/icon-set-blue.png" class="_link-mini-icon" alt="">
           <p class="_link-mini-text">メンバー（パート）を追加</p>
         </div>
@@ -130,18 +130,18 @@ export default {
     //     this._goToTop()
     //   })
     // },
-    // editMusic(){
-    //   db.editMusic(this.music)
-    //   .then(()=>{
-    //     this.inactiveButton = false
-    //     this.$router.push({name:'Music'})
-    //   })
-    //   .catch((error)=>{
-    //     console.log(error.message)
-    //     this.errorMessage = "更新に失敗しました。もう一度やり直して下さい。"
-    //     this._goToTop()
-    //   })
-    // },
+    editBand(){
+      db.editBand(this.band)
+      .then(()=>{
+        this.inactiveButton = false
+        this.$router.push({name:'ShowBand', params:{id: this.band.id}})
+      })
+      .catch((error)=>{
+        console.log(error.message)
+        this.errorMessage = "更新に失敗しました。もう一度やり直して下さい。"
+        this._goToTop()
+      })
+    },
     deleteBand(){
       db.deleteBand(this.band.id)
       .then(()=>{
@@ -165,7 +165,7 @@ export default {
       band:{
         name:{
           required,
-          maxLength: maxLength(20)
+          maxLength: maxLength(18)
         },
 
         text:{

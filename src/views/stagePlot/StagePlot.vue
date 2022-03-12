@@ -14,7 +14,7 @@
           </router-link>
           <div v-if="stagePlots.length !== 0" class="_label-white">ステージプロット一覧</div>
           <div v-for="(stagePlot, index) in stagePlots" :key="index" class="_multi-box" :class="{'_multi-box-start': index === 0, '_multi-box-end': stagePlots.length -1 === index}" >
-            <router-link :to="{name: 'EditBand', params:{id: stagePlot.id}}" class="_multi-inner" :class="{'_multi-inner-end': stagePlots.length -1 === index}">
+            <router-link :to="{name: 'ShowBand', params:{id: stagePlot.id}}" class="_multi-inner" :class="{'_multi-inner-end': stagePlots.length -1 === index}">
               <p class="_multi-text">{{stagePlot.name}}</p>
               <img  src="@/assets/images/icon-arrow-r.png" alt="" class="_multi-icon _arrow">
             </router-link>

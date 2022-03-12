@@ -61,35 +61,50 @@ export default{
       {text: "その他"}
     ],
     terminal:[
-      {text: "XLR"},
-      {text: "フォン"},
-      {text: "RCA（ピン）"},
-      {text: "ステレオミニプラグ"}
+      {text: "XLR", plot: "XLR"},
+      {text: "フォン", plot: "フォン"},
+      {text: "RCA（ピン）", plot: "RCA"},
+      {text: "ステレオミニプラグ", plot: "ステレオミニプラグ"}
     ],
     terminalMini:[
       {text: "XLR"},
       {text: "フォン"},
       {text: "RCA（ピン）"},
     ],
+    terminalMicro:[
+      {text: "XLR"},
+      {text: "フォン"},
+    ],
     channel:[
-      {text: "モノ"},
-      {text: "ステレオ"},
-      {text: "3ch"},
-      {text: "4ch"},
-      {text: "5ch"},
-      {text: "6ch"},
-      {text: "7ch"},
-      {text: "8ch"},
+      {text: "モノ", plot: "MONO"},
+      {text: "ステレオ", plot: "STEREO"},
+      {text: "3ch", plot: "3ch"},
+      {text: "4ch", plot: "4ch"},
+      {text: "5ch", plot: "5ch"},
+      {text: "6ch", plot: "6ch"},
+      {text: "7ch", plot: "7ch"},
+      {text: "8ch", plot: "8ch"},
+    ],
+    channelForSync:[
+      {text: "1ch", plot: "1ch"},
+      {text: "2ch（モノ）", plot: "ﾓﾉ2ch"},
+      {text: "2ch（ステレオ）", plot: "LR2ch"},
+      {text: "3ch", plot: "3ch"},
+      {text: "4ch", plot: "4ch"},
+      {text: "5ch", plot: "5ch"},
+      {text: "6ch", plot: "6ch"},
+      {text: "7ch", plot: "7ch"},
+      {text: "8ch", plot: "8ch"},
     ],
     twoChannel:[
       {text: "モノ"},
       {text: "ステレオ"},
     ],
     line:[
-      {text: "有線"},
-      {text: "ワイヤレス2.4GHz"},
-      {text: "ワイヤレスB帯"},
-      {text: "ワイヤレスWS帯"},
+      {text: "有線", plot: "有線"},
+      {text: "ワイヤレス2.4GHz", plot: "W/L 2.4GHz"},
+      {text: "ワイヤレスB帯", plot: "W/L B帯"},
+      {text: "ワイヤレスWS帯", plot: "W/L WS帯"},
     ],
     site:[
       {text: "右側"},
@@ -97,7 +112,8 @@ export default{
     ],
     instrument:[
       {value: "Vo", plot: "Vocal", text: "ボーカル", xSpan: 3, ySpan: 3},
-      {value: "Cho", plot: "Cho", text: "コーラス", xSpan: 3, ySpan: 3},
+      {value: "Cho", plot: "Chorus", text: "コーラス", xSpan: 3, ySpan: 3},
+      {value: "MC", plot: "MC", text: "MC", xSpan: 3, ySpan: 3},
       {value: "Gt", plot: "Guitar", text: "ギター", xSpan: 3, ySpan: 3},
       {value: "Ba", plot: "Bass", text: "ベース", xSpan: 3, ySpan: 3},
       {value: "Dr", plot: "Drums", text: "ドラム", xSpan: 5, ySpan: 4},
@@ -107,9 +123,9 @@ export default{
       {value: "Sax", plot: "Sax", text: "サックス", xSpan: 3, ySpan: 3},
       {value: "Tp", plot: "Trumpet", text: "トランペット", xSpan: 3, ySpan: 3},
       {value: "Tb", plot: "Trombone", text: "トロンボーン", xSpan: 3, ySpan: 3},
-      {value: "Vl", plot: "Violin", text: "ヴァイオリン", xSpan: 3, ySpan: 3},
+      {value: "Vl", plot: "Violin", text: "バイオリン", xSpan: 3, ySpan: 3},
       {value: "DJ", plot: "DJ", text: "DJ", xSpan: 3, ySpan: 3},
-      {value: "etc", plot: "", text: "その他", xSpan: 3, ySpan: 3},
+      {value: "etc", plot: "etc", text: "その他", xSpan: 3, ySpan: 3},
     ],
     typeOfVocal:[
       {text: "ボーカル"},
@@ -130,14 +146,36 @@ export default{
       {text: "その他"},
     ],
     acousticGuitar:[
-      {text: "ライン"},
-      {text: "マイク"},
-      {text: "ライン&マイク"}
+      {text: "ライン", plot: "Line"},
+      {text: "マイク", plot: "Mic"},
+      {text: "ライン&マイク", plot: "Line&Mic"}
     ],
     ampForKeyboard:[
       {text: "レンタル"},
       {text: "持ち込み"},
-    ]
+    ],
+    // 下記はそのままドラムのdbに持たせる
+    drum:[
+      {id: "bass", text: "バスドラム", plot:"Kick", use: false},
+      {id: "snare", text: "スネア", plot:"Snare", use: false},
+      {id: "hiHat", text: "ハイハット", plot:"HiHat", use: false},
+      {id: "floorTom", text: "フロアタム", plot:"Floor Tom", use: false},
+      {id: "tom13", text: "タム13\"", plot:"Rack Tom 13\"", use: false},
+      {id: "tom12", text: "タム12\"", plot:"Rack Tom 12\"", use: false},
+      {id: "rideCymbal", text: "ライドシンバル", plot:"Ride", use: false},
+      {id: "crash18", text: "クラッシュ18\"", plot:"Crash 18\"", use: false},
+      {id: "crash16", text: "クラッシュ16\"", plot:"Crash 16\"", use: false},
+      {id: "kickPedal", text: "キックペダル", plot:"Kick Pedal", use: false},
+    ],
+    // 下記はそのままパーカッションのdbに持たせる
+    percussion:[
+      {id: "cajon", text: "カホン", plot:"Cajon", use: false},
+      {id: "djembe", text: "ジャンベ", plot:"Djembe", use: false},
+      {id: "conga", text: "コンガ", plot:"Conga", use: false},
+      {id: "cowbell", text: "カウベル", plot:"Cowbell", use: false},
+      {id: "splash", text: "スプラッシュ", plot:"Splash", use: false},
+      {id: "windChime", text: "ウインドチャイム", plot:"Wind Chime", use: false},
+    ],
 
   },
   getters:{
@@ -147,6 +185,7 @@ export default{
     terminal: state => state.terminal,
     terminalMini: state => state.terminalMini,
     channel: state => state.channel,
+    channelForSync: state => state.channelForSync,
     twoChannel: state => state.twoChannel,
     line: state => state.line,
     site: state => state.site,
@@ -156,6 +195,9 @@ export default{
     sync:state => state.sync,
     acousticGuitar:state => state.acousticGuitar,
     ampForKeyboard:state => state.ampForKeyboard,
+    terminalMicro:state => state.terminalMicro,
+    drum:state => state.drum,
+    percussion:state => state.percussion,
 
     // selectの文章を呼び出す用
     getText: () => (stateName, id) =>{
@@ -168,12 +210,86 @@ export default{
       return text
     } ,
 
-    // 楽器の名称を呼び出す用
+    // 楽器のvalueを呼び出す用
     getInstrumentValue: (state) => (type) =>{
       let name = ""
       state.instrument.forEach((object)=>{
         if(object.text === type){
           name = object.value
+        }
+      })
+      return name
+    },
+
+    // 楽器のplotを呼び出す用
+    getInstrumentPlot: (state) => (type) =>{
+      let name = ""
+      state.instrument.forEach((object)=>{
+        if(object.text === type){
+          name = object.plot
+        }
+      })
+      return name
+    },
+
+    // ラインのplotを呼び出す用
+    getLinePlot: (state) => (type) =>{
+      let name = ""
+      state.line.forEach((object)=>{
+        if(object.text === type){
+          name = object.plot
+        }
+      })
+      return name
+    },
+
+    // チャンネルのplotを呼び出す用
+    getChannelPlot: (state) => (type) =>{
+      let name = ""
+      state.channel.forEach((object)=>{
+        if(object.text === type){
+          name = object.plot
+        }
+      })
+      return name
+    },
+    // 同期用チャンネルのplotを呼び出す用
+    getChannelForSyncPlot: (state) => (type) =>{
+      let name = ""
+      state.channelForSync.forEach((object)=>{
+        if(object.text === type){
+          name = object.plot
+        }
+      })
+      return name
+    },
+    // 端子のplotを呼び出す用
+    getTerminalPlot: (state) => (type) =>{
+      let name = ""
+      state.terminal.forEach((object)=>{
+        if(object.text === type){
+          name = object.plot
+        }
+      })
+      return name
+    },
+    // アコギのplotを呼び出す用
+    getAcousticGuitarPlot: (state) => (type) =>{
+      let name = ""
+      state.acousticGuitar.forEach((object)=>{
+        if(object.text === type){
+          name = object.plot
+        }
+      })
+      return name
+    },
+
+    // 楽器の名称を呼び出す用
+    getAmpText: (state) => (type) =>{
+      let name = ""
+      state.amp.forEach((object)=>{
+        if(object.id === type){
+          name = object.text
         }
       })
       return name

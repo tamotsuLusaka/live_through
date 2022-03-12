@@ -5,7 +5,7 @@ export default class Instrument{
   member = null
   position = {x: null, y: null, xSpan: 1, ySpan: 1}
   isVocal = false
-  vocal = {part: null} //"ボーカル", "コーラス", "MC"
+  vocal = {part: null, monitor: 1} //part: "ボーカル", "コーラス", "MC", monitor モニターの数にはバリデーションかけずに選ばなければ初期値の1を入れている。ドラム専用を作ることを回避するため。
   isBroughtMic = false
   mic = {type: null, brand: null, model: null} // type: (line)
   isAmp = false
@@ -14,12 +14,13 @@ export default class Instrument{
   di = {brand: null, model: null}
   // isDrum = false
   drum = {
-    rent: {bass: false, snare: false, hiHat: false, floorTom: false, tom13: false, tom12: false, rideCymbal: false, crash18: false, crash16: false, kickPedal: false},
-    bring: null
+    rent: null,
+    bring: null,
+    tom: null
   }
   // isPercussion = false
   percussion = {
-    bring: {cajon: false, djembe: false, conga: false, cowbell: false, splash: false, windChime: false},
+    bring: null,
     other: null
   }
   isLineOutForAcousticGuitar = false
