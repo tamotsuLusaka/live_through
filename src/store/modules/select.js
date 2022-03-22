@@ -106,6 +106,11 @@ export default{
       {text: "ワイヤレスB帯", plot: "W/L B帯"},
       {text: "ワイヤレスWS帯", plot: "W/L WS帯"},
     ],
+    lineW:[
+      {text: "ワイヤレス2.4GHz", plot: "W/L 2.4GHz"},
+      {text: "ワイヤレスB帯", plot: "W/L B帯"},
+      {text: "ワイヤレスWS帯", plot: "W/L WS帯"},
+    ],
     site:[
       {text: "右側"},
       {text: "左側"},
@@ -133,12 +138,12 @@ export default{
       {text: "MC"},
     ],
     amp:[
-      {id: "rent", text: "レンタル", xSpan: 2, ySpan: 2},
-      {id: "rentCombo", text: "コンボレンタル", xSpan: 2, ySpan: 2},
-      {id: "head", text: "ヘッド持ち込み・キャビレンタル", xSpan: 2, ySpan: 2},
-      {id: "cab", text: "ヘッドレンタル・キャビ持ち込み", xSpan: 2, ySpan: 2},
-      {id: "head&cab", text: "ヘッド&キャビ持ち込み", xSpan: 2, ySpan: 2},
-      {id: "combo", text: "コンボアンプ持ち込み", xSpan: 2, ySpan: 2}
+      {id: "rent", text: "レンタル", plotRent: "Amp Head&Cabi", plotBring: "", xSpan: 2, ySpan: 2},
+      {id: "rentCombo", text: "コンボレンタル", plotRent: "Amp Combo", plotBring: "", xSpan: 2, ySpan: 2},
+      {id: "head", text: "ヘッド持ち込み・キャビレンタル", plotRent: "Amp Cabi", plotBring: "[Amp Head]",  xSpan: 2, ySpan: 2},
+      {id: "cab", text: "ヘッドレンタル・キャビ持ち込み", plotRent: "Amp Head", plotBring: "[Amp Cabi]",  xSpan: 2, ySpan: 2},
+      {id: "head&cab", text: "ヘッド&キャビ持ち込み", plotRent: "", plotBring: "[Amp Head&Cabi]",  xSpan: 2, ySpan: 2},
+      {id: "combo", text: "コンボアンプ持ち込み", plotRent: "", plotBring: "[Amp Combo]",  xSpan: 2, ySpan: 2}
     ],
     sync:[
       {text: "PC"},
@@ -188,6 +193,7 @@ export default{
     channelForSync: state => state.channelForSync,
     twoChannel: state => state.twoChannel,
     line: state => state.line,
+    lineW: state => state.lineW,
     site: state => state.site,
     instrument:state => state.instrument,
     typeOfVocal:state => state.typeOfVocal,
@@ -279,6 +285,26 @@ export default{
       state.acousticGuitar.forEach((object)=>{
         if(object.text === type){
           name = object.plot
+        }
+      })
+      return name
+    },
+    // レンタルアンプのplotを呼び出す用
+    getAmpPlotRent: (state) => (type) =>{
+      let name = ""
+      state.amp.forEach((object)=>{
+        if(object.id === type){
+          name = object.plotRent
+        }
+      })
+      return name
+    },
+    // 持ち込みアンプのplotを呼び出す用
+    getAmpPlotBring: (state) => (type) =>{
+      let name = ""
+      state.amp.forEach((object)=>{
+        if(object.id === type){
+          name = object.plotBring
         }
       })
       return name

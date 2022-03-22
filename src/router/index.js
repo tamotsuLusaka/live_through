@@ -18,7 +18,9 @@ import CreateInstrument from '@/views/stagePlot/CreateInstrument.vue'
 import EditPosition from '@/views/stagePlot/EditPosition.vue'
 import ShowBand from '@/views/stagePlot/ShowBand.vue'
 import ExportBand from '@/views/stagePlot/ExportBand.vue'
-
+import CreateIdol from '@/views/stagePlot/CreateIdol.vue'
+import ShowIdol from '@/views/stagePlot/ShowIdol.vue'
+import ExportIdol from '@/views/stagePlot/ExportIdol.vue'
 
 const routes = [
   {
@@ -151,6 +153,24 @@ const routes = [
     path: '/stage_plot/band/:id/export',
     name: 'ExportBand',
     component: ExportBand,
+    props: true
+  },
+  {
+    path: '/stage_plot/idol/:id/edit',
+    name: 'EditIdol',
+    component: CreateIdol,
+    props: true
+  },
+  {
+    path: '/stage_plot/idol/:id',
+    name: 'ShowIdol',
+    component: ShowIdol,
+    props: true
+  },
+  {
+    path: '/stage_plot/idol/:id/export',
+    name: 'ExportIdol',
+    component: ExportIdol,
     props: true
   },
 ]

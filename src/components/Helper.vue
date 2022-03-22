@@ -4,7 +4,8 @@
     <div v-if="isShown" class="pop">
       <div @click="close()" class="cover"></div>
       <div class="content">
-        <p class="text">{{helperObject.text}}</p>
+        <p class="help-title">{{helperObject.title}}</p>
+        <p class="help-text">{{helperObject.text}}</p>
       </div>
     </div>
   </div>
@@ -18,7 +19,7 @@ export default {
   props:{
     helperObject:{
       type: Object
-      // id: "フォームの名称。labelのfor に入れたもの",
+      // title: 
       // text: "入れ込みたい文章"
     },
   },
@@ -47,7 +48,6 @@ export default {
 <style scoped>
 .helper{
   display: inline;
-
 }
 .button{
   width: 15px;
@@ -71,16 +71,27 @@ export default {
   position: fixed;
   z-index: 70;
   width: 70%;
+  max-width: 500px;
   height: auto;
   background-color: var(--white);
-  padding: 16px;
+  padding: 24px 16px;
   border-radius: 10px;
   top: 50%;
   left: 50%;
 -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-.text{
+.help-title{
+  text-align: center;
+  font-size: 1.7rem;
+  color: var(--blue);
+  margin-bottom: 10px;
+}
+.help-text{
+  text-align: justify;
   white-space: pre-wrap;
+  font-size: 1.5rem;
+  color: var(--black);
+  font-weight: 300;
 }
 </style>

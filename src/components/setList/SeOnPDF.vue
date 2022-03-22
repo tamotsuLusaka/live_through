@@ -3,8 +3,8 @@
   <tr class="_PDF-list">
     <td v-if="type === 'se' " class="_PDF-no _PDF-text-m"></td>
     <td v-if="type === 'endSe' " class="_PDF-no _PDF-text-m"></td>
-    <td v-if="type === 'seOfEncore' " class="_PDF-no _PDF-text-ss">EC</td>
-    <td v-if="type === 'endSeOfEncore' " class="_PDF-no _PDF-text-ss">EC</td>
+    <td v-if="type === 'seOfEncore' " class="_PDF-no _PDF-text-ss">EN</td>
+    <td v-if="type === 'endSeOfEncore' " class="_PDF-no _PDF-text-ss">EN</td>
 
     <td class="_PDF-title _PDF-text-m">
       <div v-if="type === 'se'">SE</div>

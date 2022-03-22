@@ -4,14 +4,21 @@
     <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content">
       <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
+
+      <div v-if="instrument.type === 'その他'" class="_container">
+        <label for="name" class="_label">楽器名</label>
+        <input type="text" v-model="instrument.etc" @blur="v$.instrument.etc.$touch()" placeholder="10文字以内で入力" :class="{'_input-error': v$.instrument.etc.$error}" class="_input-text">
+        <p v-if="v$.instrument.etc.$error" class="_input-error-message">10文字以内で入力してください。</p>
+      </div>
+
       <div class="_container">
-        <label for="name" class="_label">メンバー名</label><Helper :helperObject="helper.tune"></Helper>
+        <label for="name" class="_label">メンバー名</label><Helper :helperObject="helper.member"></Helper>
         <input type="text" v-model="instrument.member" @blur="v$.instrument.member.$touch()" placeholder="10文字以内で入力" :class="{'_input-error': v$.instrument.member.$error}" class="_input-text">
         <p v-if="v$.instrument.member.$error" class="_input-error-message">10文字以内で入力してください。</p>
       </div>
 
       <div class="_container">
-        <label class="_label">パート配置図</label><Helper :helperObject="helper.tune"></Helper>
+        <label class="_label">パート配置図</label><Helper :helperObject="helper.position"></Helper>
         <StageLayout v-if="isCreated" mode="display" :band="band" :instrument="instrument" class="_marginS"></StageLayout>
         <div @click="editPosition(false)" class="_link-mini-white">
           <img src="@/assets/images/icon-pin-blue.png" class="_link-mini-icon" alt="">
@@ -20,7 +27,7 @@
       </div>
 
       <div v-if="tag !== 'VOCAL'" class="_container">
-        <p class="_label">ボーカル・コーラス・/MC</p>
+        <p class="_label">ボーカル・コーラス・/MC</p><Helper :helperObject="helper.vocal"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isVocal}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.isVocal}">
             <p class="_multi-text">有り</p>
@@ -36,7 +43,7 @@
             </select>
           </div>
         </div>
-        <div v-if="instrument.isVocal && instrument.type !== 'ドラム'" class="_multi-box _multi-box-end">
+        <div v-if="instrument.isVocal && instrument.type !== 'ドラム' && instrument.vocal.part === 'コーラス'" class="_multi-box _multi-box-end">
           <div class="_multi-inner _multi-inner-end">
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
             <select v-model="instrument.vocal.monitor" :class="{'_input-select-exist': instrument.vocal.monitor !== null}" class="_multi-select" >
@@ -48,7 +55,7 @@
       </div>
 
       <div v-if="instrument.isVocal" class="_container">
-        <p class="_label">マイク</p>
+        <p class="_label">マイク</p><Helper :helperObject="helper.mic"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isBroughtMic}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.isBroughtMic}">
             <p class="_multi-text">持ち込み有り</p>
@@ -78,7 +85,7 @@
       </div>
 
       <div v-if="instrument.isAmp" class="_container">
-        <p class="_label">アンプ</p>
+        <p class="_label">アンプ</p><Helper :helperObject="helper.amp"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': instrument.amp.type === null || instrument.amp.type === 'rent' || instrument.amp.type === 'rentCombo'}">
           <div class="_multi-inner" :class="{'_multi-inner-end': instrument.amp.type === null || instrument.amp.type === 'rent' || instrument.amp.type === 'rentCombo'}">
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
@@ -115,7 +122,7 @@
 
       <!-- アコギ専用 -->
       <div v-if="instrument.type === 'アコースティックギター'" class="_container">
-        <p class="_label">アコギ出力</p>
+        <p class="_label">アコギ出力</p><Helper :helperObject="helper.acousticGuitar"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isLineOutForAcousticGuitar}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.isLineOutForAcousticGuitar}">
             <p class="_multi-text">有り</p>
@@ -139,7 +146,7 @@
       </div>
 
       <div v-if="instrument.type === 'ベース' || instrument.isLineOutForAcousticGuitar" class="_container">
-        <p class="_label">DI</p>
+        <p class="_label">DI</p><Helper :helperObject="helper.di"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.idBroughtDi}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.idBroughtDi}">
             <p class="_multi-text">持ち込み有り</p>
@@ -161,7 +168,7 @@
 
       <!-- ドラム専用 -->
       <div v-if="instrument.type === 'ドラム'" class="_container">
-        <p class="_label">会場レンタルドラム</p>
+        <p class="_label">ドラム会場レンタル</p><Helper :helperObject="helper.drum"></Helper>
         <div v-for="(item, index) in instrument.drum.rent" :key="item.id">
           <div class="_multi-box" :class="{'_multi-box-start': index === 0,'_multi-box-end': instrument.drum.rent.length === index + 1}">
             <div class="_multi-inner" :class="{'_multi-inner-end': instrument.drum.rent.length === index + 1}">
@@ -173,13 +180,13 @@
       </div>
       <!-- ドラム専用 -->
       <div v-if="instrument.type === 'ドラム'" class="_container">
-        <label for="textForLighting" class="_label">持ち込みドラム機材</label>
+        <label for="textForLighting" class="_label">持ち込みドラム機材</label><Helper :helperObject="helper.bringDrum"></Helper>
         <textarea v-model="instrument.drum.bring" @blur="v$.instrument.drum.bring.$touch()" placeholder="持ち込みドラム機材があれば全て入力" :class="{'_input-error': v$.instrument.drum.bring.$error}" class="_input-textarea"></textarea>
         <p v-if="v$.instrument.drum.bring.$error" class="_input-error-message">50文字以内で入力してください。</p>
       </div>
       <!-- ドラム専用 -->
       <div v-if="instrument.type === 'ドラム'" class="_container">
-        <p class="_label">ラックタム</p>
+        <p class="_label">ラックタム</p><Helper :helperObject="helper.tom"></Helper>
         <div class="_multi-box" :class="{'_multi-box-error': v$.instrument.drum.tom.$error}">
           <div class="_multi-inner">
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
@@ -193,7 +200,7 @@
 
       <!-- ドラム専用同期 -->
       <div v-if="instrument.type === 'ドラム'" class="_container">
-        <p class="_label">同期</p>
+        <p class="_label">同期</p><Helper :helperObject="helper.sync"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isSyncForDrum}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.isSyncForDrum}">
             <p class="_multi-text">有り</p>
@@ -240,7 +247,7 @@
 
       <!-- キーボード専用 -->
       <div v-if="instrument.type === 'キーボード'" class="_container">
-        <p class="_label">キーボード（レンタル）</p>
+        <p class="_label">キーボード（レンタル）</p><Helper :helperObject="helper.rentKeyboard"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isRentedKeyboard}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.isRentedKeyboard}">
             <p class="_multi-text">レンタル有り</p>
@@ -260,7 +267,7 @@
 
       <!-- キーボード専用 -->
       <div v-if="instrument.type === 'キーボード'" class="_container">
-        <p class="_label">キーボード（持ち込み）</p><Helper :helperObject="helper.tune"></Helper>
+        <p class="_label">キーボード（持ち込み）</p><Helper :helperObject="helper.bringKeyboard"></Helper>
         <div @click="addKeyboard()" class="_link-mini-white _marginSS">
           <img src="@/assets/images/icon-keyboard-blue.png" class="_link-mini-icon" alt="">
           <p class="_link-mini-text">持ち込みキーボードを追加</p>
@@ -376,7 +383,7 @@
       </div>
 
       <div v-if="instrument.type === 'DJ' || instrument.type === 'その他'" class="_container">
-        <p class="_label">PAへのラインアウト</p><Helper :helperObject="helper.tune"></Helper>
+        <p class="_label">PAへのラインアウト</p><Helper :helperObject="helper.line"></Helper>
         <div @click="addLineOut()" class="_link-mini-white _marginSS">
           <img src="@/assets/images/icon-keyboard-blue.png" class="_link-mini-icon" alt="">
           <p class="_link-mini-text">持ち込み機材を追加</p>
@@ -424,7 +431,7 @@
 
       <!-- バイオリン専用 -->
       <div v-if="instrument.type === 'バイオリン'" class="_container">
-        <p class="_label">PAへのラインアウト</p>
+        <p class="_label">PAへのラインアウト</p><Helper :helperObject="helper.lineForViolin"></Helper>
         <div class="_multi-box _multi-box-start">
           <div class="_multi-inner">
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
@@ -436,14 +443,14 @@
         </div>
         <div class="_multi-box _multi-box-end">
           <div class="_multi-inner _multi-inner-end">
-            <p class="_multi-text">持ち込み有り</p>
+            <p class="_multi-text">DIの持ち込み有り</p>
             <Toggle v-model="instrument.lineOutForViolin.isDi" class="_multi-toggle" />
           </div>
         </div>
       </div>
 
       <div v-if="tag !== 'BRASS' && instrument.type !== 'バイオリン' && instrument.type !== 'ドラム'" class="_container">
-        <p class="_label">同期</p>
+        <p class="_label">同期</p><Helper :helperObject="helper.sync"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isSync}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.isSync}">
             <p class="_multi-text">有り</p>
@@ -480,7 +487,7 @@
       </div>
 
       <div class="_container">
-        <p class="_label">イヤモニ</p>
+        <p class="_label">イヤモニ</p><Helper :helperObject="helper.monitor"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isBroughtMonitor}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.isBroughtMonitor}">
             <p class="_multi-text">持ち込み有り</p>
@@ -508,7 +515,7 @@
       </div>
 
       <div v-if="tag !== 'BRASS'" class="_container">
-        <p class="_label">足元電源（100V）</p>
+        <p class="_label">足元電源（100V）</p><Helper :helperObject="helper.power"></Helper>
         <div class="_box">
           <div class="_text-inner">
             <p class="_text">必要</p>
@@ -517,12 +524,6 @@
         </div>
       </div>
 
-      <div class="_container">
-        <label for="textForLighting" class="_label">備考</label>
-        <textarea v-model="instrument.text" @blur="v$.instrument.text.$touch()" placeholder="50文字以内で入力 任意" :class="{'_input-error': v$.instrument.text.$error}" class="_input-textarea"></textarea>
-        <p v-if="v$.instrument.text.$error" class="_input-error-message">50文字以内で入力してください。</p>
-      </div>
-      
       <div v-if="this.mode === 'create'" class="_button-container">
         <button  :disabled="v$.instrument.$invalid || inactiveButton" @click="createInstrument()" :class="{'_invalid-button': v$.instrument.$invalid}" class="_button-s">登録</button>
       </div>
@@ -600,12 +601,78 @@ export default {
       listIndex: null, //編集時に使う楽器リストのインデックス番号
       tag: null, //楽器の大グループ "VOCAL", "BRASS"
 
+      maxItem: 2, //ラインアウト、持ち込みキーボードの限界数
 
       helper:{
-        tune:{
-          id:"tune",
-          text:"説明文をここに入力。説明文をここに入力。説明文をここに入力。\n説明文をここに入力。"
-        }
+        member:{
+          title:"メンバー名",
+          text:"メンバー名（ステージネーム）を入力して下さい。"
+        },
+        position:{
+          title:"パート配置図",
+          text:"ステージ上でのパート（メンバー）の位置を指定して下さい。"
+        },
+        vocal:{
+          title:"ボーカル・コーラス・MC（MC中の喋り）",
+          text:"メンバーがボーカル・コーラス・MC（MC中の喋り等）を担当する場合は選択して下さい。"
+        },
+        mic:{
+          title:"マイク",
+          text:"ボーカル・コーラス用のマイクが持込みであれば詳細を選択・記入して下さい。"
+        },
+        amp:{
+          title:"アンプ",
+          text:"アンプの持込み有無、詳細を入力して下さい。\n\n例）Marshall\n\nまた、ステージ上での位置を指定して下さい。"
+        },
+        di:{
+          title:"DI",
+          text:"ベースのライン出力にて、DIの持込みがある場合は詳細を入力して下さい。"
+        },
+        drum:{
+          title:"ドラム会場レンタル",
+          text:"会場でレンタル希望の機材を全て選択して下さい。"
+        },
+        bringDrum:{
+          title:"持ち込みドラム機材",
+          text:"持込み機材を全て入力して下さい。\n改行無しで入力して下さい。※英語表記でも可\n\n例）スネア、キックペダル、チャイナ\n例）Snare、KickPedal、China"
+        },
+        tom:{
+          title:"ラックタムの数",
+          text:"ラックタムの数を選択して下さい。\n\n例）Tom12\"のみの場合→１\n例）Tom13\"とTom12\"の場合→２\n例）Tom13\"とTom12\"と持込みTom10\"がある場合→３"
+        },
+        acousticGuitar:{
+          title:"アコギ出力",
+          text:"アコースティックギターの出力を選択して下さい。\nまたDIの持込みや、ほか特殊な事がある場合は備考欄へご記入下さい。"
+        },
+        isRentedKeyboard:{
+          title:"キーボード（レンタル）",
+          text:"キーボードをレンタル希望の場合は選択して下さい。\n※キーボードレンタルに関しましては予め会場にご確認下さい。"
+        },
+        bringKeyboard:{
+          title:"キーボード（持ち込み）",
+          text:"キーボードの持ち込みがある場合は、【持ち込みキーボードを追加】よりキーボードの詳細を入力・選択して下さい。\n複数台の持ち込みであれば、更に【持ち込みキーボードを追加】を繰り返し、持ち込みキーボードの台数分すべて設定して下さい。"
+        },
+        sync:{
+          title:"同期",
+          text:"同期がある場合はアウト端子・チャンネル数を選択して下さい。\n※現在編集中のメンバーが同期を操作する場合に選択\n\nドラムが同期類を扱う場合のみ位置を選択して下さい。\n下手（ステージに向かって左）or 上手（ステージに向かって右）"
+        },
+        line:{
+          title:"PAへのラインアウト",
+          text:"PAへのライン出力が必要な持ち込み機材（PAD他、電子楽器やDJ機材等）がある場合は【持ち込み機材を追加】から機材名・チャンネル数・アウト端子・DI\n持ち込み有無を選択して下さい。\n複数台あれば、更に【持ち込み機材を追加】を繰り返し、ライン出力が必要な持ち込み機材の台数分すべて設定して下さい。"
+        },
+        lineForViolin:{
+          title:"PAへのラインアウト",
+          text:"PAへのライン出力の端子を選択して下さい。\nまた、DIの持ち込みがあれば持込み有りにチェックを入れてください。"
+        },
+        monitor:{
+          title:"イヤモニ",
+          text:"イヤモニの持込みがある場合は詳細を選択して下さい。"
+        },
+        power:{
+          title:"足元電源",
+          text:"エフェクターや楽器等で足元に電源が必要な場合は選択して下さい。"
+        },
+
       },
 
     }
@@ -736,7 +803,7 @@ export default {
       this.instrument.idBroughtDi = false
     },
     addKeyboard(){
-      if(this.instrument.bringKeyboardLists.length < 3){
+      if(this.instrument.bringKeyboardLists.length < this.maxItem){
         const keyboard = {name: null, channel: null, terminal: null, isDi: false}
         this.instrument.bringKeyboardLists.push(keyboard)
       }else{
@@ -749,7 +816,7 @@ export default {
       this.instrument.bringKeyboardLists.splice(index, 1)
     },
     addLineOut(){
-      if(this.instrument.lineOutLists.length < 3){
+      if(this.instrument.lineOutLists.length < this.maxItem){
         const item = {name: null, channel: null, terminal: null, isDi: false}
         this.instrument.lineOutLists.push(item)
       }else{
@@ -774,15 +841,19 @@ export default {
       this.$router.push({name:'EditPosition', params:{ isAmp } })
     },
     closeAlert(){
-        this._stop(false)
-        this.isAlertShown = false
-        this.alertMessage = null
+      this._stop(false)
+      this.isAlertShown = false
+      this.alertMessage = null
     }
   },
 	
   validations(){
     return{
       instrument:{
+        etc:{
+          isChecked: contains(this.instrument.type === 'その他'),
+          maxLength: maxLength(10)
+        },
         member:{
           required,
           maxLength: maxLength(10)
@@ -916,9 +987,9 @@ export default {
             isChecked: contains(this.instrument.isBroughtMonitor),
           },
         },
-        text:{
-          maxLength: maxLength(50)
-        },
+        // text:{
+        //   maxLength: maxLength(50)
+        // },
         position: {
           x:{ required },
           y:{ required },

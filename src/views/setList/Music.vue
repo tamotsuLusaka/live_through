@@ -11,7 +11,7 @@
             </div>
           </div>
         </router-link>
-        <div class="_label-white">楽曲一覧</div>
+        <div class="_label-white">楽曲一覧</div><Helper :helperObject="helper.list"></Helper>
         <div v-for="(music, index) in musics" :key="index" class="_multi-box" :class="{'_multi-box-start': index === 0, '_multi-box-end': musics.length -1 === index}" >
           <router-link :to="{name: 'EditMusic', params:{id: music.id}}" class="_multi-inner" :class="{'_multi-inner-end': musics.length -1 === index}">
             <p class="_multi-text">{{music.name}}</p>
@@ -28,6 +28,7 @@
 import SubHeader from '@/components/SubHeader.vue'
 import Footer from '@/components/Footer.vue'
 import Mixin from '@/mixin/mixin.js'
+import Helper from '@/components/Helper.vue'
 
 import db from '@/firebase/modules/db.js'
 
@@ -36,7 +37,8 @@ export default {
   name: 'Music',
   components: {
     SubHeader,
-    Footer
+    Footer,
+    Helper,
   },
   mixins:[
     Mixin
@@ -47,7 +49,14 @@ export default {
       pageTitle:"楽曲の登録・編集",
       isBack: true,
       isPcTitle: false,
-      musics: []
+      musics: [],
+
+      helper:{
+        list:{
+          title:"楽曲一覧",
+          text:"【楽曲の新規登録】で登録された曲が表示されます。\n登録済み楽曲の内容を変更する場合は曲名を選択して下さい。"
+        },
+      }
     }
   },
   created(){

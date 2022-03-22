@@ -22,10 +22,12 @@
           <img src="@/assets/images/icon-pdf-white.png" class="_link-mini-icon " alt="">
           <p class="_link-mini-text">PDFで書き出し</p>
         </div>
+        <p class="_description">下記【セットリスト内容】を確認して訂正がある場合は【セットリストを編集】問題なければ【PDFで書き出し】。<br>CDを使用する場合はCDのトラック番号を指定、その他PC等の音源を使用する場合はチャンネル数・端子を指定して下さい。</p>
       </div>
     </div>
     <div class="show-bottom">
       <div class="show-bottom-content">
+        <p class="show-title">セットリスト内容<Helper :helperObject="helper.note"></Helper></p>
         <ShowSe v-if="setList.isSe" :type="'SE'" :seObject="setList.se"></ShowSe>
         <ShowLists :type="'main'" :lists="this.lists"></ShowLists>
         <ShowSe v-if="setList.isEndSe" :type="'END SE'" :seObject="setList.endSe"></ShowSe>
@@ -77,6 +79,7 @@ import ShowSe from '@/components/ShowSe.vue'
 import ShowLists from '@/components/ShowLists.vue'
 import Alert from '@/components/Alert.vue'
 import Footer from '@/components/Footer.vue'
+import Helper from '@/components/Helper.vue'
 
 import SetList from '@/class/SetList.js'
 
@@ -89,7 +92,8 @@ export default {
     ShowSe,
     ShowLists,
     Alert,
-    Footer
+    Footer,
+    Helper,
   },
   mixins:[
     Mixin
@@ -109,6 +113,13 @@ export default {
       incompletionTruckNumber: false,
       incompletionSource: false,
       isNecessarySource: false,
+
+      helper:{
+        note:{
+          title:"セットリスト内容",
+          text:"作成したセットリストの曲順と各曲の詳細が表示されます。"
+        },
+      },
 
       // アラートモーダル用 トラックナンバー
       isAlertShownForTruckNumber: false,
@@ -258,7 +269,13 @@ export default {
   padding:60px 0 60px;
   margin: 0 auto;
 }
-
+.show-title{
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 30px;
+}
 
 @media screen and (min-width:600px){
   .show-top-content{

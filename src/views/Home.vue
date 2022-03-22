@@ -9,18 +9,18 @@
           <router-link :to="{name: 'SetList'}" class="_link _marginL">
             <div class="_link-container">
               <img src="@/assets/images/icon-mic-blue-t.png" class="_link-icon" alt="セットリスト">
-              <div class="_link-box">
+              <div class="_link-text-box">
                 <p class="_link-title">セットリスト</p>
-                <p class="_link-text">セットリストの説明。セットリストの説明。セットリストの説明。</p>
+                <p class="_link-text">セットリスト(曲順表)の作成・編集</p>
               </div>
             </div>
           </router-link>
           <router-link :to="{name: 'StagePlot'}" class="_link">
             <div class="_link-container">
               <img src="@/assets/images/icon-stage-blue-t.png" class="_link-icon" alt="セットリスト">
-              <div class="_link-box">
+              <div class="_link-text-box">
                 <p class="_link-title">ステージプロット</p>
-                <p class="_link-text">セットリストの説明。セットリストの説明。セットリストの説明。</p>
+                <p class="_link-text">ステージプロット(セッティング図)の作成・編集</p>
               </div>
             </div>
           </router-link>

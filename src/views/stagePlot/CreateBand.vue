@@ -5,12 +5,12 @@
     <div class="_content">
       <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
       <div class="_container">
-        <label for="name" class="_label">ステージプロット名</label><Helper :helperObject="helper.tune"></Helper>
+        <label for="name" class="_label">ステージプロット名</label>
         <input type="text" v-model="band.name" @blur="v$.band.name.$touch()" placeholder="18文字以内で入力" :class="{'_input-error': v$.band.name.$error}" class="_input-text">
         <p v-if="v$.band.name.$error" class="_input-error-message">18文字以内で入力してください。</p>
       </div>
       <div class="_container">
-        <label for="tune" class="_label">メンバーリスト</label>
+        <label for="tune" class="_label">メンバーリスト</label><Helper :helperObject="helper.list"></Helper>
         <div @click="addMember()" class="_link-mini-white _marginSS">
           <img src="@/assets/images/icon-set-blue.png" class="_link-mini-icon" alt="">
           <p class="_link-mini-text">メンバー（パート）を追加</p>
@@ -24,12 +24,12 @@
       </div>
 
       <div class="_container">
-        <label class="_label">パート配置図</label><Helper :helperObject="helper.tune"></Helper>
+        <label class="_label">パート配置図</label><Helper :helperObject="helper.position"></Helper>
         <StageLayout v-if="isBandFetched" mode="display" :band="band" class="_marginS"></StageLayout>
       </div>
 
       <div class="_container">
-        <label for="textForLighting" class="_label">備考</label>
+        <label for="textForLighting" class="_label">備考</label><Helper :helperObject="helper.note"></Helper>
         <textarea v-model="band.text" @blur="v$.band.text.$touch()" placeholder="200文字以内で入力 任意" :class="{'_input-error': v$.band.text.$error}" class="_input-textarea"></textarea>
         <p v-if="v$.band.text.$error" class="_input-error-message">200文字以内で入力してください。</p>
       </div>
@@ -40,6 +40,7 @@
       </div>
     </div>
     <Footer></Footer>
+    <Alert :isShown="isAlertShown" :message="alertMessage" @closeAlert="closeAlert()"></Alert>
   </div>
 </template>
 
@@ -50,6 +51,7 @@ import Helper from '@/components/Helper.vue'
 import Spinner from '@/components/Spinner.vue'
 import Mixin from '@/mixin/mixin.js'
 import Footer from '@/components/Footer.vue'
+import Alert from '@/components/Alert.vue'
 import StageLayout from '@/components/stagePlot/StageLayout.vue'
 
 import Band from '@/class/Band.js'
@@ -68,6 +70,7 @@ export default {
     SubHeader,
     Helper,
     Footer,
+    Alert,
     StageLayout
   },
   mixins:[
@@ -84,15 +87,26 @@ export default {
       isPcTitle: true,
       inactiveButton: false,
       errorMessage: "",
+      isAlertShown: false,
+      alertMessage: "",
 
       band: new Band(),
       isBandFetched: false,
+      maxMember: 6, //最大人数
 
       helper:{
-        tune:{
-          id:"tune",
-          text:"説明文をここに入力。説明文をここに入力。説明文をここに入力。\n説明文をここに入力。"
-        }
+        list:{
+          title:"メンバーリスト",
+          text:"【メンバーを追加】から各メンバーのパート・位置・機材等を設定して下さい。\n登録されたメンバーが下部に表示されます。表示されたメンバーを選択すると内容の編集が出来ます。"
+        },
+        position:{
+          title:"パート配置図",
+          text:"各メンバー登録で指定された配置図が表示されます。\n変更の際は各メンバーの編集からおこなって下さい。"
+        },
+        note:{
+          title:"備考",
+          text:"全体的な要望等があれば入力して下さい。"
+        },
       },
 
     }
@@ -154,11 +168,20 @@ export default {
       })
     },
     addMember(){
-      this.$router.push({name: 'SelectInstrument', params:{id: this.$route.params.id}})
+      if(this.band.lists.length < this.maxMember){
+        this.$router.push({name: 'SelectInstrument', params:{id: this.$route.params.id}})
+      }else{
+        this.alertMessage = "メンバー追加の上限に達しています。"
+        this._stop(true)
+        this.isAlertShown = true
+      }
     },
+    closeAlert(){
+      this._stop(false)
+      this.isAlertShown = false
+      this.alertMessage = null
+    }
   },
-	
-
 
   validations(){
     return{

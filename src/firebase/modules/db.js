@@ -104,4 +104,31 @@ export default {
     const docRef = doc(db, 'band', id)
     return deleteDoc(docRef)
   },
+  async createIdol(idol){
+    idol.createdAt = serverTimestamp()
+    idol.updatedAt = serverTimestamp()
+    const idolRef = doc(collection(db, "idol"))
+    idol.id = await idolRef.id
+    return  setDoc(idolRef,{...idol})
+    .then(()=>{
+      router.push({name: 'EditIdol', params:{id: idol.id}})
+    })
+  },
+  editIdol(idol){
+    idol.updatedAt = serverTimestamp()
+    const docRef = doc(db, 'idol', idol.id)
+    return updateDoc(docRef, {...idol})
+  },
+  getIdol(id){
+    const docRef = doc(db, "idol", id)
+    return getDoc(docRef)
+  },
+  getIdols(userId){
+    const q = query(collection(db, "idol"), where("userId", "==", userId))
+    return getDocs(q)
+  },
+  deleteIdol(id){
+    const docRef = doc(db, 'idol', id)
+    return deleteDoc(docRef)
+  },
 }

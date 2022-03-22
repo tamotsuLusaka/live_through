@@ -3,7 +3,7 @@
     <Spinner v-if="inactiveButton"></Spinner>
     <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content">
-      <label for="name" class="_label">パート</label><Helper :helperObject="helper.tune"></Helper>
+      <label for="name" class="_label">パートの選択</label><Helper :helperObject="helper.part"></Helper>
       <div v-for="(instrument, index) in instruments" :key="index" class="_multi-box" :class="{'_multi-box-start': index === 0, '_multi-box-end': instruments.length -1 === index}" >
         <router-link :to="{name: 'CreateInstrument', params:{id: $route.params.id}, query:{instrument: instrument.text}}" class="_multi-inner" :class="{'_multi-inner-end': instruments.length -1 === index}">
           <p class="_multi-text">{{instrument.text}}</p>
@@ -46,10 +46,10 @@ export default {
       instruments: this.$store.getters['select/instrument'],
 
       helper:{
-        tune:{
-          id:"tune",
-          text:"説明文をここに入力。説明文をここに入力。説明文をここに入力。\n説明文をここに入力。"
-        }
+        part:{
+          title:"パートの選択",
+          text:"追加するメンバーのパートを選択。\n一覧に無い場合はその他から入力して下さい。"
+        },
       },
 
     }

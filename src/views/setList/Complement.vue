@@ -6,7 +6,7 @@
       <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
 
       <div class="_container">
-        <p class="_label">音源設定</p><Helper :helperObject="helper.tune"></Helper>
+        <p class="_label">PC、その他音源使用時の音源詳細</p><Helper :helperObject="helper.source"></Helper>
         <div class="_multi-box _multi-box-start" >
           <div class="_multi-inner">
             <img src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
@@ -51,8 +51,8 @@ export default {
   components: {
     Spinner,
     SubHeader,
+    Footer,
     Helper,
-    Footer
   },
   mixins:[
     Mixin
@@ -72,9 +72,9 @@ export default {
       incompletionListsOfEncore: [],
 
       helper:{
-        tune:{
-          id:"tune",
-          text:"説明文をここに入力。説明文をここに入力。説明文をここに入力。\n説明文をここに入力。"
+        source:{
+          title:"PC、その他音源使用時の音源詳細",
+          text:"曲に使用するオケ等で、CD以外のPCやその他シーケンス類の音源がある場合に詳細を選択します。"
         }
       },
     }

@@ -5,13 +5,13 @@
     <div class="_content">
       <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
       <div class="_container">
-        <label for="name" class="_label">リスト名</label>
+        <label for="name" class="_label">セットリスト名</label><Helper :helperObject="helper.name"></Helper>
         <input type="text" v-model="setList.name" @blur="v$.setList.name.$touch()" placeholder="18文字以内で入力" :class="{'_input-error': v$.setList.name.$error}" class="_input-text">
         <p v-if="v$.setList.name.$error" class="_input-error-message">18文字以内で入力してください。</p>
       </div>
 
       <div class="_container">
-        <p class="_label">SE</p><Helper :helperObject="helper.tune"></Helper>
+        <p class="_label">SE</p><Helper :helperObject="helper.se"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !setList.isSe}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !setList.isSe}">
             <p class="_multi-text">SE 有り</p>
@@ -47,7 +47,7 @@
       </div>
 
       <div class="_container">
-        <p class="_label">リスト</p>
+        <p class="_label">セットリスト（曲順）</p><Helper :helperObject="helper.list"></Helper>
         <div class="add">
           <div @click="openAddLists('main')" class="add-button">
             <img src="@/assets/images/icon-music-blue.png" class="add-icon" alt="">
@@ -74,11 +74,11 @@
                   <div v-if="element.type === 'music'" class="list-left handle">
                     <img src="@/assets/images/icon-music-blue.png" alt="" class="list-icon">
                     <!-- <p class="list-name">{{index + 1}}. {{element.name}}</p> -->
-                    <p class="list-name">{{index + 1}}. {{element.name}}</p>
+                    <p class="list-name">{{element.name}}</p>
                   </div>
                   <div v-if="element.type === 'mc'" class="list-left handle">
                     <img src="@/assets/images/icon-mc-blue.png" alt="" class="list-icon">
-                    <p class="list-name">{{index + 1}}. MC</p>
+                    <p class="list-name">MC</p>
                   </div>
                   <img src="@/assets/images/button-cross.png" @click="removeMusic(musicLists, index)" class="list-right">
                 </div>
@@ -89,7 +89,7 @@
       </div>
       
       <div class="_container">
-        <p class="_label">END SE</p><Helper :helperObject="helper.tune"></Helper>
+        <p class="_label">END SE</p><Helper :helperObject="helper.endSe"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !setList.isEndSe}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !setList.isEndSe}">
             <p class="_multi-text">END SE 有り</p>
@@ -125,7 +125,7 @@
       </div>
 
       <div class="_container">
-        <p class="_label">アンコール</p>
+        <p class="_label">アンコール</p><Helper :helperObject="helper.encore"></Helper>
         <div class="_box">
           <div class="_text-inner">
             <p class="_text">アンコール有り</p>
@@ -136,7 +136,7 @@
 
       <div v-if="setList.isEncore" class="encore">
         <div class="_container">
-          <p class="_label">アンコール SE</p><Helper :helperObject="helper.tune"></Helper>
+          <p class="_label">アンコール SE</p><Helper :helperObject="helper.encoreSe"></Helper>
           <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !setList.isSeOfEncore}">
             <div class="_multi-inner" :class="{'_multi-inner-end': !setList.isSeOfEncore}">
               <p class="_multi-text">アンコール SE 有り</p>
@@ -213,7 +213,7 @@
         </div>
 
         <div class="_container">
-          <p class="_label">アンコール END SE</p><Helper :helperObject="helper.tune"></Helper>
+          <p class="_label">アンコール END SE</p><Helper :helperObject="helper.encoreEndSe"></Helper>
           <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !setList.isEndSeOfEncore}">
             <div class="_multi-inner" :class="{'_multi-inner-end': !setList.isEndSeOfEncore}">
               <p class="_multi-text">アンコール END SE 有り</p>
@@ -250,7 +250,7 @@
       </div>
 
       <div class="_container">
-        <label for="textForSound" class="_label">その他要望など</label>
+        <label for="textForSound" class="_label">その他、要望など</label><Helper :helperObject="helper.note"></Helper>
         <textarea v-model="setList.text" @blur="v$.setList.text.$touch()" placeholder="200文字以内で入力 任意" :class="{'_input-error': v$.setList.text.$error}" class="_input-textarea"></textarea>
         <p v-if="v$.setList.text.$error" class="_input-error-message">200文字以内で入力してください。</p>
       </div>
@@ -259,7 +259,7 @@
         <button  :disabled="v$.setList.$invalid || inactiveButton" @click="createSetList()" :class="{'_invalid-button': v$.setList.$invalid}" class="_button-s">作成</button>
       </div>
       <div v-if="this.mode === 'edit'" class="_button-container">
-        <button  :disabled="v$.setList.$invalid || inactiveButton" @click="editSetList()" :class="{'_invalid-button': v$.setList.$invalid}" class="_button-s _marginM">編集</button>
+        <button  :disabled="v$.setList.$invalid || inactiveButton" @click="editSetList()" :class="{'_invalid-button': v$.setList.$invalid}" class="_button-s _marginM">保存</button>
         <button  :disabled="inactiveButton" @click="deleteSetList()"  class="_button-red">削除</button>
       </div>
 
@@ -333,10 +333,38 @@ export default {
       isShownAadListsOfEncore: false,
 
       helper:{
-        tune:{
-          id:"tune",
-          text:"説明文をここに入力。説明文をここに入力。説明文をここに入力。\n説明文をここに入力。"
-        }
+        name:{
+          title:"セットリスト名",
+          text:"セットリストの名前を記入して下さい。\n記入した名前で保存され、保存セットリスト一覧に表示されます。\nセットリスト名は完成したセットリスト(PDF)の内容には記載されません。"
+        },
+        se:{
+          title:"SE",
+          text:"オープニングSEがある場合は設定して下さい。\n\n【音源の種類を選択】\n該当するものを選択して下さい。\n\n【開始指示を入力】\nSEを再生するキッカケを記入して下さい。\n\n例）セッティング終了後ハケてから再生\n【終了指示を入力】\nSEを終了するキッカケを記入して下さい。\n\n例）流し切り\n例）メンバーの合図でF・O　(フェードアウト)\n例）楽器全体INでC・O(カットアウト)\n\n【用語説明】\n流し切り (曲が終わるまで)\nF・O (フェードアウト)少しずつ音量を下げていく\nC・O (カットアウト)急に消す"
+        },
+        list:{
+          title:"セットリスト（曲順）",
+          text:"【楽曲の追加】で登録済みの楽曲から使用する曲を選択するとリストに追加されます。\n【楽曲の追加】と【MCの追加】で上から順番に曲順を並べて下さい。\n追加後、ドラッグ＆ドロップで順番を並び変えることも可能です。\n曲名の右端【×】ボタンで削除。"
+        },
+        endSe:{
+          title:"END SE",
+          text:"エンドSEがある場合は設定して下さい。\n例）ラストの曲終わりで再生\n\n【終了指示を入力】\nSEを終了するキッカケを記入して下さい。\n\n例）メンバーがハケたらF・O　(フェードアウト)"
+        },
+        encore:{
+          title:"アンコール",
+          text:"アンコール有りにするとアンコール用のリストが表示されます。\n本編のリスト同様【楽曲の追加】と【MCの追加】で上から順番に曲順を並べて下さい。"
+        },
+        encoreSe:{
+          title:"アンコールSE",
+          text:"アンコールにてオープニングSEがある場合は設定して下さい。"
+        },
+        encoreEndSe:{
+          title:"アンコールEND SE",
+          text:"アンコールにてEND SEがある場合は設定して下さい。"
+        },
+        note:{
+          title:"その他、要望など",
+          text:"全体の要望や、ライブスルーの機能で表現出来ない事があれば記入して下さい。"
+        },
       },
 
       // アラートモーダル用
@@ -433,7 +461,7 @@ export default {
       }
     },
     addMc(type, displayLists){
-      if(type === "main" && this.musicLists.length >= 19){
+      if(type === "main" && this.musicLists.length >= 17){
         this._stop(true)
         this.isAlertShown = true
       }else if(type === "encore" && this.musicListsOfEncore.length >= 5){

@@ -10,7 +10,7 @@
         <p v-if="v$.music.name.$error" class="_input-error-message">18文字以内で入力してください。</p>
       </div>
       <div class="_container">
-        <label for="tune" class="_label">曲調</label><Helper :helperObject="helper.tune"></Helper>
+        <label for="tune" class="_label">曲調</label>
         <div class="_select-box">
           <label for="tune" class="_select-icon"><img src="@/assets/images/icon-arrow-b.png" alt="" class="_arrow"></label>
           <select v-model="music.tune" @blur="v$.music.tune.$touch()" required :class="{'_input-error': v$.music.tune.$error, '_input-select-exist': music.tune !== null}" class="_input-select" >
@@ -20,17 +20,17 @@
         </div>
       </div>
       <div class="_container">
-        <label for="textForSound" class="_label">音響要望</label>
+        <label for="textForSound" class="_label">音響要望</label><Helper :helperObject="helper.sound"></Helper>
         <textarea v-model="music.textForSound" @blur="v$.music.textForSound.$touch()" placeholder="100文字以内で入力 任意" :class="{'_input-error': v$.music.textForSound.$error}" class="_input-textarea"></textarea>
         <p v-if="v$.music.textForSound.$error" class="_input-error-message">100文字以内で入力してください。</p>
       </div>
       <div class="_container">
-        <label for="textForLighting" class="_label">照明要望</label>
+        <label for="textForLighting" class="_label">照明要望</label><Helper :helperObject="helper.light"></Helper>
         <textarea v-model="music.textForLighting" @blur="v$.music.textForLighting.$touch()" placeholder="100文字以内で入力 任意" :class="{'_input-error': v$.music.textForLighting.$error}" class="_input-textarea"></textarea>
         <p v-if="v$.music.textForLighting.$error" class="_input-error-message">100文字以内で入力してください。</p>
       </div>
       <div class="_container">
-        <p class="_label">音源</p>
+        <p class="_label">音源</p><Helper :helperObject="helper.source"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !music.isSource}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !music.isSource}">
             <p class="_multi-text">音源を使用</p>
@@ -137,10 +137,18 @@ export default {
 
       music: new Music(),
       helper:{
-        tune:{
-          id:"tune",
-          text:"説明文をここに入力。説明文をここに入力。説明文をここに入力。\n説明文をここに入力。"
-        }
+        sound:{
+          title:"音響要望",
+          text:"音響への要望がある場合は入力。"
+        },
+        light:{
+          title:"照明要望",
+          text:"照明への要望がある場合は入力。"
+        },
+        source:{
+          title:"音源",
+          text:"曲のオケ等、PAから再生する音源がある場合はチェックを入れて音源の種類・時間を設定して下さい。"
+        },
       },
 
     }

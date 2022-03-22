@@ -3,10 +3,11 @@
     <Spinner v-if="inactiveButton"></Spinner>
     <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content">
+      <p class="_description _marginS" :class="{'_description-center':mq.current === 'lg'}">各楽曲に使用するCDのトラック番号を入力して下さい。</p>
       <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
 
       <div v-if="setList.se.typeOfSource === 'CD'" class="_container">
-        <label class="_label">SE</label><Helper :helperObject="helper.tune"></Helper>
+        <label class="_label">SE</label>
         <div class="_select-box">
           <label class="_select-icon"><img src="@/assets/images/icon-arrow-b.png" alt="" class="_arrow"></label>
           <select v-model="setList.se.truckNumber" :class="{'_input-select-exist': setList.se.truckNumber !== null}" class="_input-select" >
@@ -83,7 +84,6 @@
 
 import SubHeader from '@/components/SubHeader.vue'
 import Mixin from '@/mixin/mixin.js'
-import Helper from '@/components/Helper.vue'
 import Spinner from '@/components/Spinner.vue'
 import Footer from '@/components/Footer.vue'
 
@@ -96,7 +96,6 @@ export default {
   components: {
     Spinner,
     SubHeader,
-    Helper,
     Footer
   },
   mixins:[
