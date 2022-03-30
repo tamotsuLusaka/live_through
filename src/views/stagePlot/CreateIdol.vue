@@ -10,36 +10,15 @@
         <p v-if="v$.idol.name.$error" class="_input-error-message">18文字以内で入力してください。</p>
       </div>
       <div class="_container">
-        <label for="tune" class="_label">メンバーリスト</label><Helper :helperObject="helper.member"></Helper>
-        <div v-if="!addMemberSwitch" @click="inputMember()" class="_link-mini-white _marginSS">
+        <label class="_label">メンバーリスト</label><Helper :helperObject="helper.member"></Helper>
+        <div @click="addMember()" class="_link-mini-white _marginSS">
           <img src="@/assets/images/icon-person-blue.png" class="_link-mini-icon" alt="">
           <p class="_link-mini-text">メンバーを追加</p>
         </div>
-        <div v-else class="add-member _marginSS">
-          <div class="_multi-box _multi-box-start">
-            <div class="_multi-inner">
-              <input type="text" v-model="member.name" maxlength="10" placeholder="メンバー名を10字以内で入力" class="_multi-input-text">
-            </div>
-          </div>
-          <div class="_multi-box">
-            <div class="_multi-inner">
-              <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
-              <select v-model="member.micNumber" :class="{'_input-select-exist': member.micNumber !== null}" class="_multi-select" >
-                <option :value="null" disabled >マイクナンバーを選択 任意</option>
-                <option v-for="select in noUsedNumber" :key="select" :value="select" :style="{'color': '#131313'}" >マイクナンバー：{{select}}</option>
-              </select>
-            </div>
-          </div>
-          <div class="_multi-box _multi-box-end">
-            <div class="_multi-inner _multi-inner-end">
-              <p @click="addMember()" class="_multi-text add-text">追加</p>
-            </div>
-          </div>
-        </div>
         <div v-for="(member, index) in idol.lists" :key="index" class="_multi-box" :class="{'_multi-box-start': index === 0, '_multi-box-end': idol.lists.length -1 === index}" >
-          <div class="_multi-inner" :class="{'_multi-inner-end': idol.lists.length -1 === index}">
+          <div @click="editMember(member.id)" class="_multi-inner" :class="{'_multi-inner-end': idol.lists.length -1 === index}">
+            <img  src="@/assets/images/icon-arrow-r.png" alt="" class="_multi-icon _arrow">
             <p class="_multi-text"><span v-if="member.micNumber !== null">Mic.{{member.micNumber}}：</span>{{member.name}}</p>
-            <img @click="deleteMember(index)" src="@/assets/images/button-cross.png" alt="" class="_multi-icon cross">
           </div>
         </div>
       </div>
@@ -48,7 +27,7 @@
         <p class="_label">ワイヤレスマイク</p><Helper :helperObject="helper.mic"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !idol.isBroughtMic}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !idol.isBroughtMic}">
-            <p class="_multi-text">持ち込み有り</p>
+            <p class="_multi-text">持込み有り</p>
             <Toggle v-model="idol.isBroughtMic" @click="_clearObject(idol.mic)" class="_multi-toggle" />
           </div>
         </div>
@@ -56,7 +35,7 @@
           <div class="_multi-inner">
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
             <select v-model="idol.mic.type" @blur="v$.idol.mic.type.$touch()" required :class="{'_input-select-exist': idol.mic.type !== null}" class="_multi-select" >
-              <option :value="null" disabled >持ち込み機材を選択</option>
+              <option :value="null" disabled >持込み機材を選択</option>
               <option v-for="select in $store.getters['select/lineW']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >{{select.text}}</option>
             </select>
           </div>
@@ -67,7 +46,7 @@
           </div>
         </div>
         <p v-if="v$.idol.mic.text.$error || v$.idol.mic.text.$error" class="_input-error-message">50文字以内で入力してください。</p>
-        <p v-if="!idol.isBroughtMic" class="_explanation _marginSS-up">※持ち込みをしない場合は主催レンタル</p>
+        <p v-if="!idol.isBroughtMic" class="_explanation _marginSS-up">※持込みをしない場合は主催レンタル</p>
       </div>
 
       <div class="_container">
@@ -109,15 +88,9 @@
 
       <div class="_container">
         <p class="_label">イヤモニ</p><Helper :helperObject="helper.monitor"></Helper>
-        <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !idol.isMonitor}">
-          <div class="_multi-inner" :class="{'_multi-inner-end': !idol.isMonitor}">
-            <p class="_multi-text">有り</p>
-            <Toggle v-model="idol.isMonitor" @click="_clearObject(idol.monitor), offMonitor()" class="_multi-toggle" />
-          </div>
-        </div>
-        <div v-if="idol.isMonitor" class="_multi-box" :class="{'_multi-box-end': !idol.isBroughtMonitor}">
+        <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !idol.isBroughtMonitor}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !idol.isBroughtMonitor}">
-            <p class="_multi-text">持ち込み有り</p>
+            <p class="_multi-text">持込み有り</p>
             <Toggle v-model="idol.isBroughtMonitor" @click="_clearObject(idol.monitor)" class="_multi-toggle" />
           </div>
         </div>
@@ -126,7 +99,7 @@
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
             <select v-model="idol.monitor.type" @blur="v$.idol.monitor.type.$touch()" required :class="{'_input-select-exist': idol.monitor.type !== null}" class="_multi-select" >
               <option :value="null" disabled >種類を選択</option>
-              <option v-for="select in $store.getters['select/line']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >{{select.text}}</option>
+              <option v-for="select in $store.getters['select/lineForMonitor']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >{{select.text}}</option>
             </select>
           </div>
         </div>
@@ -186,7 +159,7 @@ const contains = (param) => helpers.withParams(
   
 
 export default {
-  name: 'CreateBand',
+  name: 'CreateIdol',
   components: {
     Spinner,
     SubHeader,
@@ -233,7 +206,7 @@ export default {
         },
         mic:{
           title:"ワイヤレスマイク",
-          text:"ワイヤレスマイクの持ち込み有りの場合は詳細を選択・入力して下さい。\n※ワイヤレスマイクについては持込み可能か、レンタルの際は本数・料金等を主催者もしくは会場へご確認して下さい。"
+          text:"ワイヤレスマイクの持込み有りの場合は詳細を選択・入力して下さい。\n※ワイヤレスマイクについては持込み可能か、レンタルの際は本数・料金等を主催者もしくは会場へご確認して下さい。"
         },
         music:{
           title:"音源（オケ）",
@@ -262,6 +235,9 @@ export default {
         console.log(error.message)
       })
     }
+
+    // storeを初期化しとく
+    this.$store.commit("data/setIdol", null)
   },
   mounted(){
     
@@ -290,34 +266,19 @@ export default {
         this._goToTop()
       })
     },
-    inputMember(){
+    addMember(){
       if(this.idol.lists.length < this.maxMember){
-        this.member.name = null
-        this.member.micNumber = null
-        const defaultMicNumbers = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
-        let usedMicNumber = []
-        for(let element of this.idol.lists) {
-          usedMicNumber.push(element.micNumber)
-        }
-        this.noUsedNumber = defaultMicNumbers.filter(i => usedMicNumber.indexOf(i) == -1)
-        this.addMemberSwitch = true
+        this.$store.commit("data/setIdol", this.idol)
+        this.$router.push({name: 'AddIdolMember'})
       }else{
         this.alertMessage = "メンバー追加の上限に達しています。"
         this._stop(true)
         this.isAlertShown = true
       }
     },
-    addMember(){
-      if(this.member.name !== null){
-        let newMember = {name: null, micNumber: null}
-        newMember.name = this.member.name
-        newMember.micNumber = this.member.micNumber
-        this.addMemberSwitch = false
-        this.idol.lists.push(newMember)
-      }
-    },
-    deleteMember(index){
-      this.idol.lists.splice(index, 1)
+    editMember(memberId){
+      this.$store.commit("data/setIdol", this.idol)
+      this.$router.push({name: 'EditIdolMember', params:{memberId: memberId}})
     },
     closeAlert(){
       this._stop(false)

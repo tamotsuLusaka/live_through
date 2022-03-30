@@ -9,7 +9,7 @@ export default class Instrument{
   isBroughtMic = false
   mic = {type: null, brand: null, model: null} // type: (line)
   isAmp = false
-  amp = {type: null, brandOfHead: null, brandOfCab: null, brandOfCombo: null, position:{x: null, y: null, xSpan: 1, ySpan: 1}} // type: ここはidを保存 "rent","rentCombo", "head", "cab", "head&cab", "combo" 
+  amp = {type: null, brandOfHead: null, modelOfHead: null, brandOfCab: null, modelOfCab: null, brandOfCombo: null, modelOfCombo: null, position:{x: null, y: null, xSpan: 1, ySpan: 1}} // type: ここはidを保存 "rent","rentCombo", "head", "cab", "head&cab", "combo" 
   idBroughtDi = false
   di = {brand: null, model: null}
   // isDrum = false
@@ -29,7 +29,7 @@ export default class Instrument{
   rentKeyboard = {number: null}
   bringKeyboardLists = [] //{name: String, channel: (twoChannel), terminal: (terminal), isDi: Bool}
   isAmpForKeyboard = false
-  ampForKeyboard = {type: null} //type: "レンタル", "持ち込み" (ampForKeyboard)
+  ampForKeyboard = {type: null} //type: "レンタル", "持込み" (ampForKeyboard)
   // isMicForInstrument = false
   isBroughtMicForInstrument = false
   micForInstrument = {type: null, brand: null, model: null} // type: (line)"

@@ -11,13 +11,6 @@
         <div @click="goEdit()" class="_link-mini-line-blue _marginS">
           <p class="_link-mini-text">セットリストの編集</p>
         </div>
-        <router-link :to="{name: 'TruckNumber', params:{id: $route.params.id}}" class="_link-mini-line-blue _marginS">
-          <p class="_link-mini-text">音源トラックナンバーの入力</p>
-        </router-link>
-        <router-link v-if="isNecessarySource" :to="{name: 'Complement', params:{id: $route.params.id}}" class="_link-mini-line-blue _marginS">
-          <p class="_link-mini-text">音源設定の入力</p>
-        </router-link>
-
         <div @click="goExport()" class="_link-mini-blue _marginS">
           <img src="@/assets/images/icon-pdf-white.png" class="_link-mini-icon " alt="">
           <p class="_link-mini-text">PDFで書き出し</p>
@@ -37,22 +30,18 @@
         <div v-if="isNecessarySource" class="_container">
           <div class="_label-white">音源設定</div>
           <div class="_multi-box _multi-box-start">
-            <router-link :to="{name: 'Complement', params:{id: $route.params.id}}" v-if="setList.output.channel === null" class="_multi-inner">
+            <router-link :to="{name: 'Complement', params:{id: $route.params.id}}" class="_multi-inner">
               <img  src="@/assets/images/icon-arrow-r.png" alt="" class="_multi-icon _arrow">
-              <p class="_multi-text red">チャンネル数未入力</p>
+              <p v-if="setList.output.channel === null" class="_multi-text red">チャンネル数未入力</p>
+              <p v-else class="_multi-text">チャンネル数：{{setList.output.channel}}</p>
             </router-link>
-            <div v-else class="_multi-inner" >
-              <p class="_multi-text">チャンネル数：{{setList.output.channel}}</p>
-            </div>
           </div>
           <div class="_multi-box _multi-box-end">
-            <router-link :to="{name: 'Complement', params:{id: $route.params.id}}" v-if="setList.output.terminal === null" class="_multi-inner _multi-inner-end">
+            <router-link :to="{name: 'Complement', params:{id: $route.params.id}}" class="_multi-inner _multi-inner-end">
               <img  src="@/assets/images/icon-arrow-r.png" alt="" class="_multi-icon _arrow">
-              <p class="_multi-text red">端子種類未入力</p>
+              <p v-if="setList.output.terminal === null" class="_multi-text red">端子種類未入力</p>
+              <p v-else class="_multi-text">端子種類：{{setList.output.terminal}}</p>
             </router-link>
-            <div v-else class="_multi-inner" >
-              <p class="_multi-text">端子種類：{{setList.output.terminal}}</p>
-            </div>
           </div>
         </div>
         <div v-if="setList.text !== null" class="_container">
@@ -62,9 +51,20 @@
               <div class="_textarea">{{setList.text}}</div>
             </div>
           </div>
-          
         </div>
       </div>
+    </div>
+    <div class="re-button">
+      <div class="re-button-content">
+        <div @click="goEdit()" class="_link-mini-line-blue _marginS">
+          <p class="_link-mini-text">セットリストの編集</p>
+        </div>
+        <div @click="goExport()" class="_link-mini-blue _marginS">
+          <img src="@/assets/images/icon-pdf-white.png" class="_link-mini-icon " alt="">
+          <p class="_link-mini-text">PDFで書き出し</p>
+        </div>
+      </div>
+
     </div>
     <Footer></Footer>
     <Alert :isShown="isAlertShownForTruckNumber" :message="alertMessageForTruckNumber" @closeAlert="closeAlert()"></Alert>
@@ -222,6 +222,7 @@ export default {
         this.$store.commit('data/setExportSetList', null)
         this.setList.lists = this.lists
         this.setList.listsOfEncore = this.listsOfEncore
+        this.setList.isNecessarySource = this.isNecessarySource
         this.$store.commit('data/setExportSetList', this.setList)
         this.$router.push({name: 'ExportSetList', params:{id: this.setList.id}})
       }
@@ -276,7 +277,15 @@ export default {
   color: var(--white);
   margin-bottom: 30px;
 }
-
+.re-button{
+  width: 100%;
+  background-color: var(--white);
+}
+.re-button-content{
+  width: 90%;
+  padding:60px 0 60px;
+  margin: 0 auto;
+}
 @media screen and (min-width:600px){
   .show-top-content{
     max-width: 600px;
@@ -285,7 +294,10 @@ export default {
   .show-bottom-content{
     max-width: 600px;
     height:auto;
-    min-height: calc(100vh - 778px);
+  }
+  .re-button-content{
+    max-width: 600px;
+    height:auto;
   }
 }
 

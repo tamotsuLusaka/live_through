@@ -23,9 +23,9 @@
           <img v-if="pageType === 'stagePlot'" src="@/assets/images/icon-stage-blue.png" alt="" class="pc-link-icon">
           <img v-else src="@/assets/images/icon-stage-gray.png" alt="" class="pc-link-icon">
         </router-link>
-        <router-link :to="{name: 'SetList'}" class="pc-sub-header-link">
-          <img v-if="pageType === 'profile'" src="@/assets/images/icon-person-blue.png" alt="" class="pc-link-icon">
-          <img v-else src="@/assets/images/icon-person-gray.png" alt="" class="pc-link-icon">
+        <router-link :to="{name: 'Setting'}" class="pc-sub-header-link">
+          <img v-if="pageType === 'setting'" src="@/assets/images/icon-setting-blue.png" alt="" class="pc-link-icon">
+          <img v-else src="@/assets/images/icon-setting-gray.png" alt="" class="pc-link-icon">
         </router-link>
       </div>
     </div>
@@ -39,13 +39,12 @@
           <ul>
             <li @click="link('SetList')" class="menu-link"><img src="@/assets/images/icon-mic-blue.png" class="menu-icon" alt=""><span>セットリスト</span></li>
             <li @click="link('StagePlot')" class="menu-link"><img src="@/assets/images/icon-stage-blue.png" class="menu-icon" alt=""><span>ステージプロット</span></li>
-            <li  class="menu-link"><img src="@/assets/images/icon-person-blue.png" class="menu-icon" alt=""><span>プロフィール</span></li>
-            <li @click="signOut()" class="menu-link"><img src="@/assets/images/icon-signout-red.png" class="menu-icon" alt=""><span>ログアウト</span></li>
+            <li @click="link('Setting')" class="menu-link"><img src="@/assets/images/icon-setting-blue.png" class="menu-icon" alt=""><span>設定</span></li>
           </ul>
         </div>
         <div class="menu-bottom">
-          <p  class="menu-sub">利用規約</p>
-          <p  class="menu-sub">プライバシーポリシー</p>
+          <router-link :to="{name: 'Rule'}"  class="menu-sub">利用規約</router-link >
+          <router-link :to="{name: 'Policy'}"  class="menu-sub">プライバシーポリシー</router-link >
           <div class="right">Copyright LIVE THROUGH All Rights Reserved.</div>
         </div>
       </div>
@@ -56,7 +55,7 @@
 
 <script>
 import Mixin from '@/mixin/mixin.js'
-import auth from '@/firebase/modules/auth.js'
+
 
 export default {
   props:{
@@ -90,11 +89,6 @@ export default {
     close(){
       this._stop(false)
       this.isShown = false
-    },
-    signOut(){
-      this._stop(false)
-      auth.signOut()
-      this.$router.push({name: 'Home'})
     },
     goBack(){
       this.$router.back()

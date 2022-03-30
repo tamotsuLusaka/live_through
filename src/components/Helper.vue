@@ -83,9 +83,10 @@ export default {
 }
 .help-title{
   text-align: center;
-  font-size: 1.7rem;
+  font-size: 1.8rem;
   color: var(--blue);
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  font-weight: 700;
 }
 .help-text{
   text-align: justify;

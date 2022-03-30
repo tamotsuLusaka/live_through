@@ -6,6 +6,7 @@ export default{
     band: null,
     instrument: null,
     exportBand: null,
+    idol: null,
     exportIdol:null
   },
   getters:{
@@ -14,6 +15,7 @@ export default{
     band: state => state.band,
     instrument: state => state.instrument,
     exportBand: state => state.exportBand,
+    idol: state => state.idol,
     exportIdol: state => state.exportIdol,
   },
   mutations:{
@@ -31,6 +33,9 @@ export default{
     },
     setExportBand(state, payload){
       state.exportBand = payload
+    },
+    setIdol(state, payload){
+      state.idol = payload
     },
     setExportIdol(state, payload){
       state.exportIdol = payload

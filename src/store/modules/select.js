@@ -102,35 +102,41 @@ export default{
     ],
     line:[
       {text: "有線", plot: "有線"},
-      {text: "ワイヤレス2.4GHz", plot: "W/L 2.4GHz"},
-      {text: "ワイヤレスB帯", plot: "W/L B帯"},
-      {text: "ワイヤレスWS帯", plot: "W/L WS帯"},
+      {text: "ワイヤレスマイク（2.4GHz帯）", plot: "W/L 2.4GHz"},
+      {text: "ワイヤレスマイク（B帯）", plot: "W/L B帯"},
+      {text: "ワイヤレスマイク（WS帯）", plot: "W/L WS帯"},
     ],
     lineW:[
-      {text: "ワイヤレス2.4GHz", plot: "W/L 2.4GHz"},
-      {text: "ワイヤレスB帯", plot: "W/L B帯"},
-      {text: "ワイヤレスWS帯", plot: "W/L WS帯"},
+      {text: "ワイヤレスマイク（2.4GHz帯）", plot: "W/L 2.4GHz"},
+      {text: "ワイヤレスマイク（B帯）", plot: "W/L B帯"},
+      {text: "ワイヤレスマイク（WS帯）", plot: "W/L WS帯"},
+    ],
+    lineForMonitor:[
+      {text: "有線", plot: "有線"},
+      {text: "ワイヤレス（2.4GHz帯）", plot: "W/L 2.4GHz"},
+      {text: "ワイヤレス（B帯）", plot: "W/L B帯"},
+      {text: "ワイヤレス（WS帯）", plot: "W/L WS帯"},
     ],
     site:[
       {text: "右側"},
       {text: "左側"},
     ],
     instrument:[
-      {value: "Vo", plot: "Vocal", text: "ボーカル", xSpan: 3, ySpan: 3},
-      {value: "Cho", plot: "Chorus", text: "コーラス", xSpan: 3, ySpan: 3},
-      {value: "MC", plot: "MC", text: "MC", xSpan: 3, ySpan: 3},
-      {value: "Gt", plot: "Guitar", text: "ギター", xSpan: 3, ySpan: 3},
-      {value: "Ba", plot: "Bass", text: "ベース", xSpan: 3, ySpan: 3},
-      {value: "Dr", plot: "Drums", text: "ドラム", xSpan: 5, ySpan: 4},
-      {value: "AG", plot: "AG", text: "アコースティックギター", xSpan: 3, ySpan: 3},
-      {value: "Key", plot: "Keyboard", text: "キーボード", xSpan: 3, ySpan: 3},
-      {value: "Per", plot: "Per", text: "パーカッション", xSpan: 3, ySpan: 3},
-      {value: "Sax", plot: "Sax", text: "サックス", xSpan: 3, ySpan: 3},
-      {value: "Tp", plot: "Trumpet", text: "トランペット", xSpan: 3, ySpan: 3},
-      {value: "Tb", plot: "Trombone", text: "トロンボーン", xSpan: 3, ySpan: 3},
-      {value: "Vl", plot: "Violin", text: "バイオリン", xSpan: 3, ySpan: 3},
-      {value: "DJ", plot: "DJ", text: "DJ", xSpan: 3, ySpan: 3},
-      {value: "etc", plot: "etc", text: "その他", xSpan: 3, ySpan: 3},
+      {value: "Vo", plot: "Vocal", text: "ボーカル", view:"ボーカル(楽器無し)", xSpan: 3, ySpan: 3},
+      {value: "Gt", plot: "Guitar", text: "ギター", view:"ギター", xSpan: 3, ySpan: 3},
+      {value: "Ba", plot: "Bass", text: "ベース", view:"ベース", xSpan: 3, ySpan: 3},
+      {value: "Dr", plot: "Drums", text: "ドラム", view:"ドラム", xSpan: 5, ySpan: 4},
+      {value: "AG", plot: "AG", text: "アコースティックギター", view:"アコースティックギター", xSpan: 3, ySpan: 3},
+      {value: "Key", plot: "Keyboard", text: "キーボード", view:"キーボード", xSpan: 3, ySpan: 3},
+      {value: "Per", plot: "Per", text: "パーカッション", view:"パーカッション", xSpan: 3, ySpan: 3},
+      {value: "Sax", plot: "Sax", text: "サックス", view:"サックス", xSpan: 3, ySpan: 3},
+      {value: "Tp", plot: "Trumpet", text: "トランペット", view:"トランペット", xSpan: 3, ySpan: 3},
+      {value: "Tb", plot: "Trombone", text: "トロンボーン", view:"トロンボーン", xSpan: 3, ySpan: 3},
+      {value: "Vl", plot: "Violin", text: "バイオリン", view:"バイオリン", xSpan: 3, ySpan: 3},
+      {value: "DJ", plot: "DJ", text: "DJ", view:"DJ", xSpan: 3, ySpan: 3},
+      {value: "MC", plot: "MC", text: "MC", view:"MC(ラップ等)", xSpan: 3, ySpan: 3},
+      {value: "Cho", plot: "Chorus", text: "コーラス", view:"コーラス(楽器無し)", xSpan: 3, ySpan: 3},
+      {value: "etc", plot: "etc", text: "その他", view:"その他", xSpan: 3, ySpan: 3},
     ],
     typeOfVocal:[
       {text: "ボーカル"},
@@ -138,12 +144,11 @@ export default{
       {text: "MC"},
     ],
     amp:[
-      {id: "rent", text: "レンタル", plotRent: "Amp Head&Cabi", plotBring: "", xSpan: 2, ySpan: 2},
-      {id: "rentCombo", text: "コンボレンタル", plotRent: "Amp Combo", plotBring: "", xSpan: 2, ySpan: 2},
-      {id: "head", text: "ヘッド持ち込み・キャビレンタル", plotRent: "Amp Cabi", plotBring: "[Amp Head]",  xSpan: 2, ySpan: 2},
-      {id: "cab", text: "ヘッドレンタル・キャビ持ち込み", plotRent: "Amp Head", plotBring: "[Amp Cabi]",  xSpan: 2, ySpan: 2},
-      {id: "head&cab", text: "ヘッド&キャビ持ち込み", plotRent: "", plotBring: "[Amp Head&Cabi]",  xSpan: 2, ySpan: 2},
-      {id: "combo", text: "コンボアンプ持ち込み", plotRent: "", plotBring: "[Amp Combo]",  xSpan: 2, ySpan: 2}
+      {id: "rent", text: "ヘッド&キャビ【レンタル】", plotRent: "Amp Head&Cabi", plotBring: "", xSpan: 2, ySpan: 2},
+      {id: "head", text: "ヘッド【持込み】・キャビ【レンタル】", plotRent: "Amp Cabi", plotBring: "[Amp Head]",  xSpan: 2, ySpan: 2},
+      {id: "head&cab", text: "ヘッド&キャビ【持込み】", plotRent: "", plotBring: "[Amp Head&Cabi]",  xSpan: 2, ySpan: 2},
+      {id: "rentCombo", text: "コンボアンプ【レンタル】", plotRent: "Amp Combo", plotBring: "", xSpan: 2, ySpan: 2},
+      {id: "combo", text: "コンボアンプ【持込み】", plotRent: "", plotBring: "[Amp Combo]",  xSpan: 2, ySpan: 2}
     ],
     sync:[
       {text: "PC"},
@@ -151,22 +156,21 @@ export default{
       {text: "その他"},
     ],
     acousticGuitar:[
-      {text: "ライン", plot: "Line"},
-      {text: "マイク", plot: "Mic"},
+      {text: "ラインのみ", plot: "Line"},
       {text: "ライン&マイク", plot: "Line&Mic"}
     ],
     ampForKeyboard:[
       {text: "レンタル"},
-      {text: "持ち込み"},
+      {text: "持込み"},
     ],
     // 下記はそのままドラムのdbに持たせる
     drum:[
       {id: "bass", text: "バスドラム", plot:"Kick", use: false},
       {id: "snare", text: "スネア", plot:"Snare", use: false},
       {id: "hiHat", text: "ハイハット", plot:"HiHat", use: false},
-      {id: "floorTom", text: "フロアタム", plot:"Floor Tom", use: false},
-      {id: "tom13", text: "タム13\"", plot:"Rack Tom 13\"", use: false},
-      {id: "tom12", text: "タム12\"", plot:"Rack Tom 12\"", use: false},
+      {id: "floorTom", text: "フロアタム", plot:"F.Tom", use: false},
+      {id: "tom13", text: "タム13\"", plot:"R.Tom 13\"", use: false},
+      {id: "tom12", text: "タム12\"", plot:"R.Tom 12\"", use: false},
       {id: "rideCymbal", text: "ライドシンバル", plot:"Ride", use: false},
       {id: "crash18", text: "クラッシュ18\"", plot:"Crash 18\"", use: false},
       {id: "crash16", text: "クラッシュ16\"", plot:"Crash 16\"", use: false},
@@ -194,6 +198,7 @@ export default{
     twoChannel: state => state.twoChannel,
     line: state => state.line,
     lineW: state => state.lineW,
+    lineForMonitor: state => state.lineForMonitor,
     site: state => state.site,
     instrument:state => state.instrument,
     typeOfVocal:state => state.typeOfVocal,
@@ -238,10 +243,32 @@ export default{
       return name
     },
 
+    // 楽器のviewを呼び出す用
+    getInstrumentView: (state) => (type) =>{
+      let name = ""
+      state.instrument.forEach((object)=>{
+        if(object.text === type){
+          name = object.view
+        }
+      })
+      return name
+    },
+
     // ラインのplotを呼び出す用
     getLinePlot: (state) => (type) =>{
       let name = ""
       state.line.forEach((object)=>{
+        if(object.text === type){
+          name = object.plot
+        }
+      })
+      return name
+    },
+
+    // ラインのplotを呼び出す用
+    getLineForMonitorPlot: (state) => (type) =>{
+      let name = ""
+      state.lineForMonitor.forEach((object)=>{
         if(object.text === type){
           name = object.plot
         }
@@ -299,7 +326,7 @@ export default{
       })
       return name
     },
-    // 持ち込みアンプのplotを呼び出す用
+    // 持込みアンプのplotを呼び出す用
     getAmpPlotBring: (state) => (type) =>{
       let name = ""
       state.amp.forEach((object)=>{

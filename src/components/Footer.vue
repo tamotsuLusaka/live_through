@@ -2,9 +2,9 @@
   <div v-if="mq.current === 'lg'" class="footer">
     <img src="@/assets/images/logo-white.png" class="logo" alt="">
     <div class="link-container">
-      ｜<router-link :to="{name: 'Home'}" class="link">利用規約</router-link>｜<router-link :to="{name: 'Home'}" class="link">プライバシーポリシー</router-link>｜
+      ｜<router-link :to="{name: 'Rule'}" class="link">利用規約</router-link>｜<router-link :to="{name: 'Policy'}" class="link">プライバシーポリシー</router-link>｜
     </div>
-    <div class="right">Copyright LIVE THROUGH All Rights Reserved.</div>
+    <div class="right">Copyright LIVE Through All Rights Reserved.</div>
   </div>
   
 </template>

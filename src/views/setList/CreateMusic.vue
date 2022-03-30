@@ -54,7 +54,7 @@
         <div v-if="music.isSource" class="_multi-box">
           <div class="_multi-inner">
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
-            <select v-model="music.source.min" @blur="v$.music.source.min.$touch()" required :class="{'_input-error': v$.music.source.min.$error, '_input-select-exist': music.source.min !== null}" class="_multi-select" >
+            <select v-model="music.source.min" @blur="v$.music.source.min.$touch()" :class="{'_input-select-exist': music.source.min !== null}" class="_multi-select" >
               <option :value="null" disabled >音源の時間【分】を選択</option>
               <option v-for="n in 59" :key="n" :value="n" :style="{'color': '#131313'}" >音源の分数：{{n}}分</option>
             </select>
@@ -63,7 +63,7 @@
         <div v-if="music.isSource" class="_multi-box _multi-box-end" >
           <div class="_multi-inner _multi-inner-end">
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
-            <select v-model="music.source.sec" @change="_selectColor($event)" @blur="v$.music.source.sec.$touch()" required :class="{'_input-error': v$.music.source.sec.$error, '_input-select-exist': music.source.sec !== null}" class="_multi-select" >
+            <select v-model="music.source.sec" @change="_selectColor($event)"  :class="{'_input-select-exist': music.source.sec !== null}" class="_multi-select" >
               <option :value="null" disabled >音源の時間【秒】を選択</option>
               <option v-for="n in 59" :key="n" :value="n" :style="{'color': '#131313'}" >音源の秒数：{{n}}秒</option>
             </select>
@@ -76,7 +76,7 @@
         <button  :disabled="v$.music.$invalid || inactiveButton" @click="createMusic()" :class="{'_invalid-button': v$.music.$invalid}" class="_button-s">登録</button>
       </div>
       <div v-if="this.mode === 'edit'" class="_button-container">
-        <button  :disabled="v$.music.$invalid || inactiveButton" @click="editMusic()" :class="{'_invalid-button': v$.music.$invalid}" class="_button-s _marginM">編集</button>
+        <button  :disabled="v$.music.$invalid || inactiveButton" @click="editMusic()" :class="{'_invalid-button': v$.music.$invalid}" class="_button-s _marginM">登録</button>
         <button  :disabled="inactiveButton" @click="deleteMusic()"  class="_button-red">削除</button>
       </div>
     </div>
@@ -235,12 +235,6 @@ export default {
           },
           nameOfSource:{
             maxLength: maxLength(6)
-          },
-          min:{
-            isChecked: contains(this.music.isSource)
-          },
-          sec:{
-            isChecked: contains(this.music.isSource)
           },
         }
       }

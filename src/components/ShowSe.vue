@@ -12,13 +12,11 @@
       </div>
     </div>
     <div v-if="seObject.typeOfSource === 'CD'" class="_multi-box" :class="{'_multi-box-end': seObject.textForOpen === null && seObject.textForClose === null}">
-      <router-link :to="{name: 'TruckNumber', params:{id: $route.params.id}}" v-if="seObject.truckNumber === null" class="_multi-inner" :class="{'_multi-inner-end': seObject.textForOpen === null && seObject.textForClose === null}">
+      <router-link :to="{name: 'TruckNumber', params:{id: $route.params.id}}"  class="_multi-inner" :class="{'_multi-inner-end': seObject.textForOpen === null && seObject.textForClose === null}">
         <img  src="@/assets/images/icon-arrow-r.png" alt="" class="_multi-icon _arrow">
-        <p class="_multi-text red">音源トラックナンバー未入力</p>
+        <p v-if="seObject.truckNumber === null" class="_multi-text red">音源トラックナンバー未入力</p>
+        <p v-else class="_multi-text">音源トラックナンバー：{{seObject.truckNumber}}</p>
       </router-link>
-      <div v-else class="_multi-inner" :class="{'_multi-inner-end': seObject.textForOpen === null && seObject.textForClose === null}">
-        <p class="_multi-text">音源トラックナンバー：{{seObject.truckNumber}}</p>
-      </div>
     </div>
     <div v-if="seObject.textForOpen !== null" class="_multi-box" :class="{'_multi-box-end': seObject.textForClose === null}">
       <div class="_flex-multi-inner" :class="{'_multi-inner-end': seObject.textForClose === null}">

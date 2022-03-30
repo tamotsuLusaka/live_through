@@ -3,11 +3,10 @@ export default class Idol{
   id = null
   type = null //"idol"
   name = null
-  lists = [] //[{name: String, micNumber: Number}]
+  lists = [] //[{id: String, name: String, micNumber: Number}]
   isBroughtMic = false
   mic = {type: null, text: null} // type: (line)
   source = {type: null, other: null, channel: null, terminal: null}
-  isMonitor = false
   isBroughtMonitor = false
   monitor = {type: null, channel: null}//type: (line), channel: (twoChannel)
   text = null
@@ -24,7 +23,6 @@ export default class Idol{
     this.isBroughtMic = idol.isBroughtMic
     this.mic = idol.mic
     this.source = idol.source
-    this.isMonitor = idol.isMonitor
     this.isBroughtMonitor = idol.isBroughtMonitor
     this.monitor = idol.monitor
     this.text = idol.text

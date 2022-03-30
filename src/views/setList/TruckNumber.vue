@@ -12,7 +12,7 @@
           <label class="_select-icon"><img src="@/assets/images/icon-arrow-b.png" alt="" class="_arrow"></label>
           <select v-model="setList.se.truckNumber" :class="{'_input-select-exist': setList.se.truckNumber !== null}" class="_input-select" >
             <option :value="null"  disabled class="_select-default">トラックナンバーを選択</option>
-            <option v-for="number in 100" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
+            <option v-for="number in 50" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
           </select>
         </div>
       </div>
@@ -23,7 +23,7 @@
           <label class="_select-icon"><img src="@/assets/images/icon-arrow-b.png" alt="" class="_arrow"></label>
           <select v-model="setList.lists[music.order].truckNumber" :class="{'_input-select-exist': setList.lists[music.order].truckNumber !== null}" class="_input-select" >
             <option :value="null"  disabled class="_select-default">トラックナンバーを選択</option>
-            <option v-for="number in 100" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
+            <option v-for="number in 50" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
           </select>
         </div>
       </div>
@@ -34,7 +34,7 @@
           <label class="_select-icon"><img src="@/assets/images/icon-arrow-b.png" alt="" class="_arrow"></label>
           <select v-model="setList.endSe.truckNumber" :class="{'_input-select-exist': setList.endSe.truckNumber !== null}" class="_input-select" >
             <option :value="null"  disabled class="_select-default">トラックナンバーを選択</option>
-            <option v-for="number in 100" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
+            <option v-for="number in 50" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
           </select>
         </div>
       </div>
@@ -45,7 +45,7 @@
           <label class="_select-icon"><img src="@/assets/images/icon-arrow-b.png" alt="" class="_arrow"></label>
           <select v-model="setList.seOfEncore.truckNumber" :class="{'_input-select-exist': setList.seOfEncore.truckNumber !== null}" class="_input-select" >
             <option :value="null"  disabled class="_select-default">トラックナンバーを選択</option>
-            <option v-for="number in 100" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
+            <option v-for="number in 50" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
           </select>
         </div>
       </div>
@@ -56,7 +56,7 @@
           <label class="_select-icon"><img src="@/assets/images/icon-arrow-b.png" alt="" class="_arrow"></label>
           <select v-model="setList.listsOfEncore[music.order].truckNumber" :class="{'_input-select-exist': setList.listsOfEncore[music.order].truckNumber !== null}" class="_input-select" >
             <option :value="null"  disabled class="_select-default">トラックナンバーを選択</option>
-            <option v-for="number in 100" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
+            <option v-for="number in 50" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
           </select>
         </div>
       </div>
@@ -67,13 +67,13 @@
           <label class="_select-icon"><img src="@/assets/images/icon-arrow-b.png" alt="" class="_arrow"></label>
           <select v-model="setList.endSeOfEncore.truckNumber" :class="{'_input-select-exist': setList.endSeOfEncore.truckNumber !== null}" class="_input-select" >
             <option :value="null"  disabled class="_select-default">トラックナンバーを選択</option>
-            <option v-for="number in 100" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
+            <option v-for="number in 50" :key="number" :style="{'color': '#131313'}" :value="number"  >トラックナンバー：{{number}}</option>
           </select>
         </div>
       </div>
 
       <div class="_button-container">
-        <button  @click="save()"  class="_button-s">保存</button>
+        <button  @click="save()"  class="_button-s">決定</button>
       </div>
     </div>
     <Footer></Footer>

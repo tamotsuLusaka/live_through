@@ -37,7 +37,7 @@
           <div v-if="idol.isBroughtMic" class="_multi-box _multi-box-start">
             <div class="_flex-multi-inner">
               <p class="_multi-sub_title-blue">ワイヤレスマイク</p>
-              <p class="text">持ち込み有り</p>
+              <p class="text">持込み有り</p>
               <p class="text">{{idol.mic.type}}</p>
               <p class="text">メモ：{{idol.mic.text}}</p>
             </div>
@@ -45,7 +45,7 @@
           <div v-if="!idol.isBroughtMic" class="_multi-box _multi-box-start">
             <div class="_flex-multi-inner">
               <p class="_multi-sub_title-blue">ワイヤレスマイク</p>
-              <p class="text">持ち込み無し</p>
+              <p class="text">持込み無し</p>
             </div>
           </div>
 
@@ -60,24 +60,12 @@
             </div>
           </div>
           <!-- イヤモニ -->
-          <div v-if="!idol.isMonitor" class="_multi-box">
+          <div v-if="idol.isBroughtMonitor" class="_multi-box">
             <div class="_flex-multi-inner">
               <p class="_multi-sub_title-blue">イヤモニ</p>
-              <p class="text">無し</p>
-            </div>
-          </div>
-          <div v-if="idol.isMonitor && idol.isBroughtMonitor" class="_multi-box">
-            <div class="_flex-multi-inner">
-              <p class="_multi-sub_title-blue">イヤモニ</p>
-              <p class="text">持ち込み有り</p>
+              <p class="text">持込み有り</p>
               <p class="text">{{idol.monitor.type}}</p>
               <p class="text">チャンネル：{{idol.monitor.channel}}</p>
-            </div>
-          </div>
-          <div v-if="idol.isMonitor && !idol.isBroughtMonitor" class="_multi-box">
-            <div class="_flex-multi-inner">
-              <p class="_multi-sub_title-blue">イヤモニ</p>
-              <p class="text">持ち込み無し</p>
             </div>
           </div>
           <!-- 備考 -->

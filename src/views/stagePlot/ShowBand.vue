@@ -36,7 +36,7 @@
             <!-- ボーカル -->
             <div v-if="tag(instrument.type) !== 'VOCAL' && instrument.isVocal" class="_multi-box">
               <div class="_flex-multi-inner">
-                <p class="_multi-sub_title-blue">ボーカルタイプ</p>
+                <p class="_multi-sub_title-blue">マイクの使用用途</p>
                 <p class="text">{{instrument.vocal.part}}</p>
               </div>
             </div>
@@ -44,7 +44,7 @@
             <div v-if="instrument.isBroughtMic" class="_multi-box">
               <div class="_flex-multi-inner">
                 <p class="_multi-sub_title-blue">マイク</p>
-                <p class="text">持ち込み有り</p>
+                <p class="text">持込み有り</p>
                 <p class="text">{{instrument.mic.type}}</p>
                 <p class="text">メーカー：{{instrument.mic.brand}}</p>
                 <p class="text">メーカー：{{instrument.mic.model}}</p>
@@ -53,7 +53,7 @@
             <div v-if="instrument.isVocal &&  !instrument.isBroughtMic" class="_multi-box">
               <div class="_flex-multi-inner">
                 <p class="_multi-sub_title-blue">マイク</p>
-                <p class="text">持ち込み無し</p>
+                <p class="text">持込み無し</p>
               </div>
             </div>
             <!-- アンプ -->
@@ -78,7 +78,7 @@
             <div v-if="instrument.idBroughtDi" class="_multi-box">
               <div class="_flex-multi-inner">
                 <p class="_multi-sub_title-blue">DI</p>
-                <p class="text">持ち込み有り</p>
+                <p class="text">持込み有り</p>
                 <p class="text">{{instrument.di.brand}}</p>
                 <p class="text">{{instrument.di.model}}</p>
               </div>
@@ -94,7 +94,7 @@
             </div>
             <div v-if="instrument.type === 'ドラム'" class="_multi-box">
               <div class="_flex-multi-inner">
-                <p class="_multi-sub_title-blue">持ち込み機材</p>
+                <p class="_multi-sub_title-blue">持込み機材</p>
                 <p class="text">{{instrument.drum.bring}}</p>
               </div>
             </div>
@@ -132,7 +132,7 @@
             </div>
             <div v-if="instrument.type === 'キーボード'" class="_multi-box">
               <div class="_flex-multi-inner">
-                <p class="_multi-sub_title-blue">キーボード（持ち込み）</p>
+                <p class="_multi-sub_title-blue">キーボード（持込み）</p>
                 <div v-if="instrument.bringKeyboardLists.length !== 0">
                   <div v-for="(item, index) in instrument.bringKeyboardLists" :key="item">
                     <p class="text">{{item.name}}</p>
@@ -147,8 +147,8 @@
               <div class="_flex-multi-inner">
                 <p class="_multi-sub_title-blue">PAへのラインアウト</p>
                 <p class="text">アウト端子：{{instrument.lineOutForViolin.terminal}}</p>
-                <p v-if="instrument.lineOutForViolin.isDi" class="text">DI持ち込み有り</p>
-                <p v-else class="text">DI持ち込み無し</p>
+                <p v-if="instrument.lineOutForViolin.isDi" class="text">DI持込み有り</p>
+                <p v-else class="text">DI持込み無し</p>
               </div>
             </div>
 
@@ -157,12 +157,12 @@
               <div class="_flex-multi-inner">
                 <p class="_multi-sub_title-blue">楽器用マイク</p>
                 <div v-if="instrument.isBroughtMicForInstrument">
-                  <p class="text">持ち込み有り</p>
+                  <p class="text">持込み有り</p>
                   <p class="text">{{instrument.micForInstrument.type}}</p>
                   <p class="text">メーカー：{{instrument.micForInstrument.brand}}</p>
                   <p class="text">メーカー：{{instrument.micForInstrument.model}}</p>
                 </div>
-                <p v-else class="text">持ち込み無し</p>
+                <p v-else class="text">持込み無し</p>
               </div>
             </div>
             <!-- ラインアウト -->
@@ -187,32 +187,20 @@
                 <p class="text">アウト端子：{{instrument.sync.terminal}}</p>
               </div>
             </div>
-            <div v-if="instrument.type !== 'ドラム' && instrument.type !== 'バイオリン' && tag(instrument.type) !== 'BRASS' && !instrument.isSync" class="_multi-box">
-              <div class="_flex-multi-inner">
-                <p class="_multi-sub_title-blue">同期</p>
-                <p class="text">無し</p>
-              </div>
-            </div>
             <!-- イヤモニ -->
-              <div v-if="instrument.isBroughtMonitor" class="_multi-box">
+            <div v-if="instrument.isBroughtMonitor" class="_multi-box">
               <div class="_flex-multi-inner">
                 <p class="_multi-sub_title-blue">イヤモニ</p>
-                <p class="text">持ち込み有り</p>
+                <p class="text">持込み有り</p>
                 <p class="text">{{instrument.monitor.type}}</p>
                 <p class="text">チャンネル：{{instrument.monitor.channel}}</p>
                 <p class="text">アウト端子：{{instrument.monitor.terminal}}</p>
               </div>
             </div>
-            <div v-if="!instrument.isBroughtMonitor" class="_multi-box">
-              <div class="_flex-multi-inner">
-                <p class="_multi-sub_title-blue">イヤモニ</p>
-                <p class="text">持ち込み無し</p>
-              </div>
-            </div>
             <!-- 電源 -->
             <div class="_multi-box _multi-box-end">
               <div class="_flex-multi-inner _multi-inner-end">
-                <p class="_multi-sub_title-blue">電源</p>
+                <p class="_multi-sub_title-blue">足元電源</p>
                 <p v-if="instrument.isPower" class="text">有り</p>
                 <p v-else class="text">無し</p>
               </div>

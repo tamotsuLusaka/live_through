@@ -6,12 +6,10 @@
     <td v-else-if="music.type ==='se' || music.type ==='endSe'" class="_PDF-no _PDF-text-m"><div v-if="music.format === 'encore'">EN</div></td>
     <td v-else class="_PDF-no _PDF-text-m"></td>
 
-    <td v-if="music.type === 'music'" class="_PDF-title _PDF-text-m">{{music.data.name}}</td>
-    <td v-else-if="music.type === 'mc'" class="_PDF-title _PDF-text-m">MC</td>
-    <td v-else-if="music.format === 'main'&& music.type ==='se'" class="_PDF-title _PDF-text-m">SE</td>
-    <td v-else-if="music.format === 'main'&& music.type ==='endSe'" class="_PDF-title _PDF-text-m">END SE</td>
-    <td v-else-if="music.format === 'encore'&& music.type ==='se'" class="_PDF-title _PDF-text-m">アンコール SE</td>
-    <td v-else-if="music.format === 'encore'&& music.type ==='endSe'" class="_PDF-title _PDF-text-m">アンコール END SE</td>
+    <td v-if="music.type === 'music'" class="_PDF-title _PDF-text-ml">{{music.data.name}}</td>
+    <td v-else-if="music.type === 'mc'" class="_PDF-title _PDF-text-l">MC</td>
+    <td v-else-if="music.type ==='se'" class="_PDF-title _PDF-text-l">SE</td>
+    <td v-else-if="music.type ==='endSe'" class="_PDF-title _PDF-text-l">END SE</td>
     <td v-else class="_PDF-title _PDF-text-m"></td>
 
     <td v-if="music.type === 'music'" class="_PDF-source">
@@ -23,7 +21,7 @@
     </td>
     <td v-else-if="music.type === 'mc'" class="_PDF-source"></td>
     <td v-else-if="music.type === 'se' || music.type === 'endSe'" class="_PDF-source">
-      <div v-if="music.typeOfSource === 'CD'" class="_PDF-text-s">CD<br>Tr.{{music.truckNumber}}</div>
+      <div v-if="music.typeOfSource === 'CD'" class="_PDF-text-s">CD<br><span class="_PDF-tr">Tr.{{music.truckNumber}}</span></div>
       <div v-else-if="music.typeOfSource === 'PC'" class="_PDF-text-s">PC</div>
       <div v-else-if="music.typeOfSource === 'その他'" class="_PDF-text-s">{{music.nameOfSource}}</div>
     </td>

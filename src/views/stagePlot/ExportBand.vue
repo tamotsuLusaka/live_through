@@ -4,41 +4,11 @@
     <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="content">
       <img src="@/assets/images/logo-c.png" alt="" class="logo">
-      <p class="_description _marginS">プロット作成日の入力と出力フォーマットを選択し【PDF書き出し】でステージプロットが完成します。<br>※作成されたPDFはサイト上に保存されません。ご使用端末に保存して下さい。</p>
-      <div class="_container">
-        <p class="_label">作成日</p>
-        <div class="_multi-box _multi-box-start">
-          <div class="_multi-inner">
-            <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
-            <select v-model="exportPreparation.date.year" @blur="v$.exportPreparation.date.year.$touch()" required :class="{'_input-select-exist': exportPreparation.date.year !== null}" class="_multi-select" >
-              <option :value="null" disabled >年</option>
-              <option v-for="n in 30" :key="n" :value="n + 2021" :style="{'color': '#131313'}" >{{n + 2021}}年</option>
-            </select>
-          </div>
-        </div>
-        <div class="_multi-box">
-          <div class="_multi-inner">
-            <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
-            <select v-model="exportPreparation.date.month" @blur="v$.exportPreparation.date.month.$touch()" required :class="{'_input-select-exist': exportPreparation.date.month !== null}" class="_multi-select" >
-              <option :value="null" disabled >月</option>
-              <option v-for="n in 12" :key="n" :value="n" :style="{'color': '#131313'}" >{{n}}月</option>
-            </select>
-          </div>
-        </div>
-        <div class="_multi-box _multi-box-end">
-          <div class="_multi-inner _multi-inner-end">
-            <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
-            <select v-model="exportPreparation.date.day" @blur="v$.exportPreparation.date.day.$touch()" required :class="{'_input-select-exist': exportPreparation.date.day !== null}" class="_multi-select" >
-              <option :value="null" disabled >日</option>
-              <option v-for="n in daysMax" :key="n" :value="n" :style="{'color': '#131313'}" >{{n}}日</option>
-            </select>
-          </div>
-        </div>
-      </div>
+      <p class="_description _marginS">【PDF書き出し】でステージプロットが完成します。<br>※作成されたPDFはサイト上に保存されません。ご使用端末に保存して下さい。</p>
       <div class="_button-container">
-        <button :disabled="v$.exportPreparation.$invalid || inactiveButton" @click="exportPDF()" :class="{'_invalid-button': v$.exportPreparation.$invalid}" class="_button-s _marginM">PDF書き出し</button>
+        <button :disabled="inactiveButton" @click="exportPDF()" class="_button-s _marginM">PDF書き出し</button>
         <p class="_description _marginS">※PDF書き出し保存がうまくいかない場合は下記【画像を表示】でJPEG画像が表示されます。表示された画像を保存して下さい。</p>
-        <button :disabled="v$.exportPreparation.$invalid || inactiveButton" @click="viewImage()" :class="{'_invalid-button': v$.exportPreparation.$invalid}" class="_button-s">画像を表示</button>
+        <button :disabled="inactiveButton" @click="viewImage()" class="_button-s">画像を表示</button>
       </div>
 
       <!-- <a id="download" target="_blank">ダウンロードスイッチ</a> -->
@@ -54,7 +24,11 @@
           <p class="title-name t-l">{{userName}}</p>
           <p class="title-sub t-m">Stage Plot</p>
         </div>
-        <div class="day t-s">{{exportPreparation.date.year}}.{{exportPreparation.date.month}}.{{exportPreparation.date.day}}</div>
+        <div class="head">
+          <div class="t-m red">※赤字は持込みになります。</div>
+          <div class="day t-s">{{exportPreparation.date.year}}.{{exportPreparation.date.month}}.{{exportPreparation.date.day}}</div>
+        </div>
+        
 
         <div class="stage">
           <div v-for="instrument in band.lists" :key="instrument.id" class="stage-container">
@@ -62,10 +36,10 @@
               <div class="box-info">
                 <div class="box-left">
                   <div class="box-left-top">
-                    <p v-if="instrument.vocal.part === 'ボーカル'" class="t-s">Vocal</p>
-                    <p v-if="instrument.type !== 'ボーカル' && instrument.type !== 'その他' " class="t-s">{{$store.getters['select/getInstrumentPlot'](instrument.type)}}</p>
-                    <p v-if="instrument.type === 'その他' " class="t-s">{{instrument.etc}}</p>
-                    <p v-if="instrument.type !== 'コーラス' && instrument.vocal.part === 'コーラス'" class="box-text t-s">Cho</p>
+                    <p v-if="instrument.vocal.part === 'ボーカル'" class="t-s bold">Vocal</p>
+                    <p v-if="instrument.type !== 'ボーカル' && instrument.type !== 'その他' " class="t-s bold">{{$store.getters['select/getInstrumentPlot'](instrument.type)}}</p>
+                    <p v-if="instrument.type === 'その他' " class="t-s bold">{{instrument.etc}}</p>
+                    <p v-if="instrument.type !== 'コーラス' && instrument.vocal.part === 'コーラス'" class="box-text t-s bold">Cho</p>
                     <p class="t-s">{{instrument.member}}</p>
                     <p v-if="instrument.isLineOutForAcousticGuitar" class="t-s">楽器アウト:<br>{{$store.getters['select/getAcousticGuitarPlot'](instrument.acousticGuitar.type)}}</p>
                   </div>
@@ -84,7 +58,7 @@
                 </div>
                 <div class="box-right">
                   <div class="box-right-top">
-                    <p class="t-s red">[持込]</p>
+                    <p v-if="instrument.isBroughtMic" class="t-s red">[持込]</p>
                     <p v-if="instrument.isBroughtMic" class="box-text-hide t-s red box-margin">{{instrument.mic.model}}</p>
                     <p v-if="instrument.isBroughtMicForInstrument" class="t-s red">楽器Mic:<span v-if="instrument.micForInstrument.type === '有線'">有線</span><span v-else>W/L</span></p>
                     <p v-if="instrument.isBroughtMicForInstrument" class="box-text-hide t-s red box-margin">{{instrument.micForInstrument.model}}</p>
@@ -117,9 +91,9 @@
             <div class="box drum-box" v-if="instrument.type === 'ドラム'" :style="{'top': `${100 / 9 * instrument.position.y}%`, 'left': `${100 / 15 * instrument.position.x}%`, 'width': `${100 / 15 * instrument.position.xSpan}%`, 'height': `${100 / 9 * instrument.position.ySpan}%`}">
               <div class="drum-box-info">
                 <div class="drum-box-left">
-                  <p v-if="instrument.vocal.part === 'ボーカル'" class="t-s">Vocal</p>
-                  <p class="t-s">{{$store.getters['select/getInstrumentPlot'](instrument.type)}}</p>
-                  <p v-if="instrument.type !== 'コーラス' && instrument.vocal.part === 'コーラス'" class="box-text t-s">Cho</p>
+                  <p v-if="instrument.vocal.part === 'ボーカル'" class="t-s bold">Vocal</p>
+                  <p class="t-s bold">{{$store.getters['select/getInstrumentPlot'](instrument.type)}}</p>
+                  <p v-if="instrument.type !== 'コーラス' && instrument.vocal.part === 'コーラス'" class="box-text t-s bold">Cho</p>
                   <p class="t-s">{{instrument.member}}</p>
                 </div>
                 <div class="drum-box-center">
@@ -157,33 +131,32 @@
             <div class="info-box">
               <div v-for="instrument in band.lists" :key="instrument.id">
                 <div class="info-instrument">
-                  <span v-if="instrument.type !== 'ボーカル' && instrument.vocal.part === 'ボーカル'">Vocal、</span>
-                  <span v-if="instrument.type !== 'その他'">{{$store.getters['select/getInstrumentPlot'](instrument.type)}}/</span>
-                  <span v-if="instrument.type === 'その他'">{{instrument.etc}}/</span>
-                  <span>{{instrument.member}}：</span>
+                  <span v-if="instrument.type !== 'ボーカル' && instrument.vocal.part === 'ボーカル'">Vocal. </span>
+                  <span v-if="instrument.type !== 'その他'">{{$store.getters['select/getInstrumentPlot'](instrument.type)}}</span>
+                  <span v-if="instrument.type === 'その他'">{{instrument.etc}}</span>
+                  <span v-if="instrument.type !== 'コーラス' && instrument.vocal.part === 'コーラス'">.Chorus</span>
+                  <span>/{{instrument.member}}：</span>
                   <!-- DI -->
-                  <span v-if="instrument.type === 'ベース' || instrument.isLineOutForAcousticGuitar" class="info-t"><span v-if="instrument.idBroughtDi">DI、</span></span>
-                  <span v-if=" instrument.type === 'キーボード' && instrument.rentKeyboard !== null" class="info-t">DI、</span>
-                  <span v-if="instrument.type === 'バイオリン' && !instrument.lineOutForViolin.isDi" class="info-t">DI、</span>
-                  <span v-if="instrument.lineOutLists.length !== 0" class="info-t"><span v-if="!diCheck(instrument.lineOutLists)">DI、</span></span>
-                  <span v-if="instrument.bringKeyboardLists.length !== 0" class="info-t"><span v-if="!diCheck(instrument.bringKeyboardLists)">DI、</span></span>
+                  <span v-if="instrument.type === 'ベース' || instrument.isLineOutForAcousticGuitar" class="info-t"><span v-if="instrument.idBroughtDi">DI </span></span>
+                  <span v-if=" instrument.type === 'キーボード' && instrument.rentKeyboard !== null" class="info-t">DI </span>
+                  <span v-if="instrument.type === 'バイオリン' && !instrument.lineOutForViolin.isDi" class="info-t">DI </span>
+                  <span v-if="instrument.lineOutLists.length !== 0" class="info-t"><span v-if="!diCheck(instrument.lineOutLists)">DI </span></span>
+                  <span v-if="instrument.bringKeyboardLists.length !== 0" class="info-t"><span v-if="!diCheck(instrument.bringKeyboardLists)">DI </span></span>
                   <!-- アンプ -->
-                  <span v-if="instrument.amp.type === 'rent'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}、</span>
-                  <span v-if="instrument.amp.type === 'rentCombo'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}、</span>
-                  <span v-if="instrument.amp.type === 'head'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}、</span>
-                  <span v-if="instrument.amp.type === 'cab'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}、</span>
+                  <span v-if="instrument.amp.type === 'rent'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}</span>
+                  <span v-if="instrument.amp.type === 'rentCombo'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}</span>
+                  <span v-if="instrument.amp.type === 'head'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}</span>
+                  <span v-if="instrument.amp.type === 'cab'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}</span>
                   <!-- キーボード -->
-                  <span v-if="instrument.rentKeyboard.number !== null">Keyboard×{{instrument.rentKeyboard.number}}、</span>
+                  <span v-if="instrument.rentKeyboard.number !== null">Keyboard×{{instrument.rentKeyboard.number}}</span>
                   <!-- ドラム -->
                   <span v-if="instrument.type === 'ドラム'"><span v-for="item in instrument.drum.rent" :key="item"><span v-if="item.use">{{item.plot}}, </span></span></span>
-                  <!-- パーカッション -->
-                  <span v-if="instrument.type === 'パーカッション'"><span v-for="item in instrument.percussion.bring" :key="item"><span v-if="!item.use">{{item.plot}}, </span></span></span>
                 </div>
               </div>
             </div>
           </div>
           <div class="info-container">
-            <p class="info-title">持ち込み機材</p>
+            <p class="info-title">持込み機材</p>
             <div class="info-box">
               <div v-for="instrument in band.lists" :key="instrument.id">
                 <div class="info-instrument">
@@ -192,35 +165,34 @@
                   <span v-if="instrument.type === 'その他'">{{instrument.etc}}/</span>
                   <span>{{instrument.member}}：</span>
                   <!-- マイク -->
-                  <span v-if="instrument.isBroughtMic" class="info-t">[Mic] {{$store.getters['select/getLinePlot'](instrument.mic.type)}}-{{instrument.mic.brand}}/{{instrument.mic.model}}、</span>
+                  <span v-if="instrument.isBroughtMic" class="info-t">[Mic] <span v-if="instrument.mic.type !== '有線'">{{$store.getters['select/getLinePlot'](instrument.mic.type)}}-</span>{{instrument.mic.brand}}/{{instrument.mic.model}}</span>
                   <!-- 楽器マイク -->
-                  <span v-if="instrument.isBroughtMicForInstrument" class="info-t">[楽器Mic] {{$store.getters['select/getLinePlot'](instrument.micForInstrument.type)}}-{{instrument.micForInstrument.brand}}/{{instrument.micForInstrument.model}}、</span>
+                  <span v-if="instrument.isBroughtMicForInstrument" class="info-t">[楽器Mic] <span v-if="instrument.micForInstrument.type !== '有線'">{{$store.getters['select/getLinePlot'](instrument.micForInstrument.type)}}-</span>{{instrument.micForInstrument.brand}}/{{instrument.micForInstrument.model}}</span>
                   <!-- アコギ -->
-                  <span v-if="instrument.isLineOutForAcousticGuitar" class="info-t">[Out] {{$store.getters['select/getAcousticGuitarPlot'](instrument.acousticGuitar.type)}}-{{instrument.acousticGuitar.text}}、</span>
+                  <span v-if="instrument.isLineOutForAcousticGuitar" class="info-t">[Out] {{$store.getters['select/getAcousticGuitarPlot'](instrument.acousticGuitar.type)}}-{{instrument.acousticGuitar.text}}</span>
                   <!-- DI -->
-                  <span v-if="instrument.type === 'ベース' || instrument.isLineOutForAcousticGuitar" class="info-t"><span v-if="instrument.idBroughtDi">[DI] {{instrument.di.brand}}/{{instrument.di.model}}、</span></span>
-                  <span v-if=" instrument.type === 'キーボード' && instrument.bringKeyboardLists.length !== 0" class="info-t"><span v-for="item in instrument.bringKeyboardLists" :key="item">[Keyboard]{{item.name}}-{{$store.getters['select/getChannelPlot'](item.channel)}}-{{$store.getters['select/getTerminalPlot'](item.terminal)}}<span v-if="item.isDi">-DI、</span><span v-else>、</span></span></span>
-                  <span v-if="instrument.type === 'バイオリン' && instrument.lineOutForViolin.isDi" class="info-t">[DI]、</span>
+                  <span v-if="instrument.type === 'ベース' || instrument.isLineOutForAcousticGuitar" class="info-t"><span v-if="instrument.idBroughtDi">[DI] {{instrument.di.brand}}/{{instrument.di.model}}</span></span>
+                  <span v-if=" instrument.type === 'キーボード' && instrument.bringKeyboardLists.length !== 0" class="info-t"><span v-for="item in instrument.bringKeyboardLists" :key="item">[Keyboard]{{item.name}}-{{$store.getters['select/getChannelPlot'](item.channel)}}-{{$store.getters['select/getTerminalPlot'](item.terminal)}}<span v-if="item.isDi">-DI</span></span></span>
+                  <span v-if="instrument.type === 'バイオリン' && instrument.lineOutForViolin.isDi" class="info-t">[DI]</span>
                   <!-- ラインアウト -->
-                  <span v-if="instrument.lineOutLists.length !== 0" class="info-t"><span v-for="item in instrument.lineOutLists" :key="item">[Line out]{{item.name}}-{{$store.getters['select/getChannelPlot'](item.channel)}}-{{$store.getters['select/getTerminalPlot'](item.terminal)}}<span v-if="item.isDi">-DI、</span><span v-else>、</span></span></span>
+                  <span v-if="instrument.lineOutLists.length !== 0" class="info-t"><span v-for="item in instrument.lineOutLists" :key="item">[Line out]{{item.name}}-{{$store.getters['select/getChannelPlot'](item.channel)}}-{{$store.getters['select/getTerminalPlot'](item.terminal)}}<span v-if="item.isDi">-DI</span></span></span>
                   <!-- キーボード -->
-                  <span v-if="instrument.bringKeyboardLists.length !== 0" class="info-t"><span v-for="item in instrument.bringKeyboardLists" :key="item">[Keyboard] {{item.name}}-{{$store.getters['select/getChannelPlot'](item.channel)}}-{{$store.getters['select/getTerminalPlot'](item.terminal)}}<span v-if="item.isDi">-DI、</span><span v-else>、</span></span></span>
-                  <span v-if="instrument.ampForKeyboard.type === '持ち込み'">[Amp]</span>
+                  <span v-if="instrument.bringKeyboardLists.length !== 0" class="info-t"><span v-for="item in instrument.bringKeyboardLists" :key="item">[Keyboard] {{item.name}}-{{$store.getters['select/getChannelPlot'](item.channel)}}-{{$store.getters['select/getTerminalPlot'](item.terminal)}}<span v-if="item.isDi">-DI</span></span></span>
+                  <span v-if="instrument.ampForKeyboard.type === '持込み'">[Amp]</span>
                   <!-- アンプ -->
-                  <span v-if="instrument.amp.type === 'head'">{{$store.getters['select/getAmpPlotBring'](instrument.amp.type)}}&nbsp;{{instrument.amp.brandOfHead}}、</span>
-                  <span v-if="instrument.amp.type === 'cab'">{{$store.getters['select/getAmpPlotBring'](instrument.amp.type)}}&nbsp;{{instrument.amp.brandOfCab}}、</span>
-                  <span v-if="instrument.amp.type === 'combo'">{{$store.getters['select/getAmpPlotBring'](instrument.amp.type)}}&nbsp;{{instrument.amp.brandOfCombo}}、</span>
-                  <span v-if="instrument.amp.type === 'head&cab'">[Amp Head]&nbsp;{{instrument.amp.brandOfHead}}、[Amp Cabi]&nbsp;{{instrument.amp.brandOfCab}}、</span>
+                  <span v-if="instrument.amp.type === 'head'" class="info-t">{{$store.getters['select/getAmpPlotBring'](instrument.amp.type)}}&nbsp;{{instrument.amp.brandOfHead}}/{{instrument.amp.modelOfHead}}</span>
+                  <span v-if="instrument.amp.type === 'cab'" class="info-t">{{$store.getters['select/getAmpPlotBring'](instrument.amp.type)}}&nbsp;{{instrument.amp.brandOfCab}}/{{instrument.amp.modelOfCab}}</span>
+                  <span v-if="instrument.amp.type === 'combo'" class="info-t">{{$store.getters['select/getAmpPlotBring'](instrument.amp.type)}}&nbsp;{{instrument.amp.brandOfCombo}}/{{instrument.amp.modelOfCombo}}</span>
+                  <span v-if="instrument.amp.type === 'head&cab'" class="info-t">[Amp Head]&nbsp;{{instrument.amp.brandOfHead}}/{{instrument.amp.modelOfHead}} [Amp Cabi]&nbsp;{{instrument.amp.brandOfCab}}/{{instrument.amp.modelOfCab}}</span>
                   <!-- ドラム -->
-                  <span v-if="instrument.type === 'ドラム'">[DrSet] <span v-for="item in instrument.drum.rent" :key="item"><span v-if="!item.use">{{item.plot}}, </span></span></span>
-                  <span v-if="instrument.type === 'ドラム' && instrument.drum.bring !== null">{{instrument.drum.bring}}、</span>
+                  <span v-if="instrument.type === 'ドラム' && instrument.drum.bring !== null" class="info-t">[DrSet] {{instrument.drum.bring}}</span>
                   <!-- パーカッション -->
-                  <span v-if="instrument.type === 'パーカッション'">[percussion]<span v-for="item in instrument.percussion.bring" :key="item"><span v-if="item.use">{{item.plot}}, </span></span></span>
+                  <span v-if="instrument.type === 'パーカッション'" class="info-t">[Percussion]<span v-for="item in instrument.percussion.bring" :key="item"><span v-if="item.use">{{item.plot}}, <span>{{instrument.percussion.other}}</span></span></span></span>
                   <!-- 同期 -->
-                  <span v-if="instrument.isSync">[同期] {{instrument.sync.type}}-{{$store.getters['select/getChannelForSyncPlot'](instrument.sync.channel)}}-{{$store.getters['select/getTerminalPlot'](instrument.sync.terminal)}}、</span>
-                  <span v-if="instrument.isSyncForDrum">[同期] {{instrument.syncForDrum.type}}-{{$store.getters['select/getChannelForSyncPlot'](instrument.syncForDrum.channel)}}-{{$store.getters['select/getTerminalPlot'](instrument.syncForDrum.terminal)}}、</span>
+                  <span v-if="instrument.isSync" class="info-t">[同期] {{instrument.sync.type}}-{{$store.getters['select/getChannelForSyncPlot'](instrument.sync.channel)}}-{{$store.getters['select/getTerminalPlot'](instrument.sync.terminal)}}</span>
+                  <span v-if="instrument.isSyncForDrum" class="info-t">[同期] {{instrument.syncForDrum.type}}-{{$store.getters['select/getChannelForSyncPlot'](instrument.syncForDrum.channel)}}-{{$store.getters['select/getTerminalPlot'](instrument.syncForDrum.terminal)}}</span>
                   <!-- イヤモニ -->
-                  <span v-if="instrument.isBroughtMonitor" class="info-t">[IEM] {{$store.getters['select/getLinePlot'](instrument.monitor.type)}}-{{$store.getters['select/getChannelPlot'](instrument.monitor.channel)}}、</span>
+                  <span v-if="instrument.isBroughtMonitor" class="info-t">[IEM] {{$store.getters['select/getLineForMonitorPlot'](instrument.monitor.type)}}-{{$store.getters['select/getChannelPlot'](instrument.monitor.channel)}}</span>
                 </div>
               </div>
             </div>
@@ -267,9 +239,6 @@ import db from '@/firebase/modules/db.js'
 import { jsPDF } from 'jspdf'
 import * as html2canvas from 'html2canvas'
 
-import useVuelidate from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
-
 export default {
   name: 'SetList',
   components: {
@@ -281,7 +250,7 @@ export default {
     Mixin
   ],
   setup(){
-    return { v$: useVuelidate()}
+
   },
   data(){
     return{
@@ -316,10 +285,6 @@ export default {
       isView: false,
       isView2: false,
 
-      // 楽器に番号振ろうとした残骸
-      // instrumentNameLists:[],
-      // overlapLists:[],
-      // overlapObjectLists: [],
     }
   },
   async created(){
@@ -329,63 +294,10 @@ export default {
       this.userName = doc.data().name
     })
 
-    // for(let element of this.band.lists){
-    //   let result = this.instrumentNameLists.some(value => value === element.type)
-    //   if(result){
-    //     let check = this.overlapLists.some(value => value === element.type)
-    //     if(!check){
-    //       this.overlapLists.push(element.type)
-    //     }
-    //   }else{
-    //     this.instrumentNameLists.push(element.type)
-    //   }
-    // }
-    // for(let type of this.overlapLists){
-    //   let typeObject = null
-    //   let typeOfLists = []
-    //   for(let instrument of this.band.lists){
-    //     if(instrument.type === type){
-    //       typeOfLists.push(instrument)
-    //     }
-    //   }
-    //   console.log(typeOfLists)
-    //   typeObject[this.$store.getters['select/getInstrumentPlot'](type)] = 1
-    //   this.overlapObjectLists.push(typeObject)
-    // }
-    // console.log(JSON.stringify(this.overlapObjectLists))
-
-   
-
-    
-
-
-    // if(this.setList.isSe && this.setList.isEndSe){
-    //   this.mainCounter = this.mainCounter + 2
-    // }else if(this.setList.isSe || this.setList.isEndSe){
-    //   this.mainCounter = this.mainCounter + 1
-    // }
-    // this.mainCounter = this.mainCounter + this.setList.lists.length
-
-    // if(this.setList.isSeOfEncore && this.setList.isEndSeOfEncore){
-    //   this.encoreCounter = this.encoreCounter + 2
-    // }else if(this.setList.isSeOfEncore || this.setList.isEndSeOfEncore){
-    //   this.encoreCounter = this.encoreCounter + 1
-    // }
-    // this.encoreCounter = this.encoreCounter + this.setList.listsOfEncore.length
-    // if(this.mainCounter + this.encoreCounter <= 13){
-    //   this.sheetType = "single"
-    // }else{
-    //   // 2枚目にいく時
-    //   this.sheetType = "double"
-    //   for (const target of this.setList.lists){
-    //     if(this.listsForFirst.length <= 13){
-    //       this.listsForFirst.push(target)
-    //     }else{
-    //       this.listsForSecond.push(target)
-    //     }
-    //   }
-    // }
-
+    const today = new Date()
+    this.exportPreparation.date.year = today.getFullYear()
+    this.exportPreparation.date.month = today.getMonth()+1
+    this.exportPreparation.date.day = today.getDate()
   },
   mounted(){
     
@@ -465,7 +377,7 @@ export default {
       this.inactiveButton = false
     },
 
-    // リストの中にDI持ち込みがあるかチェック
+    // リストの中にDI持込みがあるかチェック
     diCheck(lists){
       let check = false
       for(let element of lists)
@@ -479,38 +391,9 @@ export default {
 
   },
   watch:{
-    'exportPreparation.date.year': function(){
-      this.daysMax = new Date(this.exportPreparation.date.year, this.exportPreparation.date.month, 0).getDate()
-    },
-    'exportPreparation.date.month': function(){
-      this.daysMax = new Date(this.exportPreparation.date.year, this.exportPreparation.date.month, 0).getDate()
-    },
-    'exportPreparation.type': function(){
-      if(this.exportPreparation.type === "stageTurnOver"){
-        this.isTurnOver = true
-      }else{
-        this.isTurnOver = false
-      }
-    }
-  },
-  validations(){
-    return{
-      exportPreparation:{
-        date:{
-          year:{
-            required
-          },
-          month:{
-            required
-          },
-          day:{
-            required
-          }
-        },
-      }
 
-    }
   },
+
 
 }
 
@@ -534,10 +417,13 @@ export default {
 }
 .t-l{
   font-weight: 700;
-  font-size: 24px;
+  font-size: 36px;
 }
 .red{
   color: var(--red);
+}
+.bold{
+  font-weight: 700;
 }
 .content{
   width: 90%;
@@ -567,20 +453,23 @@ export default {
   text-align: center;
 }
 .title-name{
-  margin-bottom: 10px;
 }
 .title-sub{
   font-weight: 700;
 }
+.head{
+  display: flex;
+  justify-content: space-between;
+}
 .day{
-  text-align: right;
+
 }
 
 .stage{
   position: relative;
   width: 100%;
   height: calc(1100px / 15 * 9);
-  border: 1px solid black;
+  border: 2px solid black;
   margin-bottom: 30px;
 }
 .box{
@@ -662,7 +551,7 @@ export default {
 }
 
 .drum-box{
-  border: 1px solid var(--black);
+  border: 2px solid var(--black);
 }
 .drum-box-info{
   top: 0;
@@ -724,8 +613,8 @@ export default {
 .amp-box-box{
   margin: 0 auto;
   width: 100px;
-  height: 60px;
-  border: 1px solid var(--black);
+  height: 80px;
+  border: 2px solid var(--black);
   position: relative;
 }
 .amp-box-title{
@@ -770,7 +659,7 @@ export default {
   font-size: 12px;
 }
 .info-t{
-  margin-right: 5px;
+  margin-right: 10px;
   word-break: break-all;
 }
 

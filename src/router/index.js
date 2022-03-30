@@ -19,8 +19,13 @@ import EditPosition from '@/views/stagePlot/EditPosition.vue'
 import ShowBand from '@/views/stagePlot/ShowBand.vue'
 import ExportBand from '@/views/stagePlot/ExportBand.vue'
 import CreateIdol from '@/views/stagePlot/CreateIdol.vue'
+import AddIdolMember from '@/views/stagePlot/AddIdolMember.vue'
 import ShowIdol from '@/views/stagePlot/ShowIdol.vue'
 import ExportIdol from '@/views/stagePlot/ExportIdol.vue'
+import Setting from '@/views/setting/Setting.vue'
+import EditUser from '@/views/setting/EditUser.vue'
+import Policy from '@/views/Policy.vue'
+import Rule from '@/views/Rule.vue'
 
 const routes = [
   {
@@ -162,6 +167,18 @@ const routes = [
     props: true
   },
   {
+    path: '/stage_plot/idol/member',
+    name: 'AddIdolMember',
+    component: AddIdolMember,
+    props: true
+  },
+  {
+    path: '/stage_plot/idol/member/:memberId',
+    name: 'EditIdolMember',
+    component: AddIdolMember,
+    props: true
+  },
+  {
     path: '/stage_plot/idol/:id',
     name: 'ShowIdol',
     component: ShowIdol,
@@ -171,6 +188,30 @@ const routes = [
     path: '/stage_plot/idol/:id/export',
     name: 'ExportIdol',
     component: ExportIdol,
+    props: true
+  },
+  {
+    path: '/setting',
+    name: 'Setting',
+    component: Setting,
+    props: true
+  },
+  {
+    path: '/setting/user',
+    name: 'EditUser',
+    component: EditUser,
+    props: true
+  },
+  {
+    path: '/policy',
+    name: 'Policy',
+    component: Policy,
+    props: true
+  },
+  {
+    path: '/rule',
+    name: 'Rule',
+    component: Rule,
     props: true
   },
 ]

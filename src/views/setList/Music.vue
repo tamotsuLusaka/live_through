@@ -18,6 +18,10 @@
             <img  src="@/assets/images/icon-arrow-r.png" alt="" class="_multi-icon _arrow">
           </router-link>
         </div>
+        <router-link :to="{name:'SetList'}" class="return">
+          <img  src="@/assets/images/icon-arrow-l-white.png" alt="" class="return-arrow">
+          <p class="return-text">セットリスト一覧</p>
+        </router-link>
       </div>
     </div>
     <Footer></Footer>
@@ -85,33 +89,17 @@ export default {
 
 <style scoped>
 /* ログイン */
-.name{
+.return{
+  display: flex;
+  margin-top: 30px;
+}
+.return-arrow{
+  width: 16px;
+  height: 16px;
+}
+.return-text{
   color: var(--white);
-  margin-bottom: 30px;
-}
-.set_list{
-  margin-bottom: 80px;
-}
-
-/* 未ログイン */
-.top{
-  width: 100%;
-  height: 100vh;
-  background-position: center;
-  background-size: cover;
-  position: relative;
-}
-.logo{
-  width: 70%;
-  position: absolute;
-  left: 50%;
-  top:40%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-.sign{
-  width: 100%;
-  position: absolute;
-  bottom: 50px;
+  line-height: 1.6rem;
+  font-size: 1.4rem;
 }
 </style>

@@ -4,41 +4,11 @@
     <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="content">
       <img src="@/assets/images/logo-c.png" alt="" class="logo">
-      <p class="_description _marginS">プロット作成日の入力と出力フォーマットを選択し【PDF書き出し】でステージプロットが完成します。<br>※作成されたPDFはサイト上に保存されません。ご使用端末に保存して下さい。</p>
-      <div class="_container">
-        <p class="_label">作成日</p>
-        <div class="_multi-box _multi-box-start">
-          <div class="_multi-inner">
-            <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
-            <select v-model="exportPreparation.date.year" @blur="v$.exportPreparation.date.year.$touch()" required :class="{'_input-select-exist': exportPreparation.date.year !== null}" class="_multi-select" >
-              <option :value="null" disabled >年</option>
-              <option v-for="n in 30" :key="n" :value="n + 2021" :style="{'color': '#131313'}" >{{n + 2021}}年</option>
-            </select>
-          </div>
-        </div>
-        <div class="_multi-box">
-          <div class="_multi-inner">
-            <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
-            <select v-model="exportPreparation.date.month" @blur="v$.exportPreparation.date.month.$touch()" required :class="{'_input-select-exist': exportPreparation.date.month !== null}" class="_multi-select" >
-              <option :value="null" disabled >月</option>
-              <option v-for="n in 12" :key="n" :value="n" :style="{'color': '#131313'}" >{{n}}月</option>
-            </select>
-          </div>
-        </div>
-        <div class="_multi-box _multi-box-end">
-          <div class="_multi-inner _multi-inner-end">
-            <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
-            <select v-model="exportPreparation.date.day" @blur="v$.exportPreparation.date.day.$touch()" required :class="{'_input-select-exist': exportPreparation.date.day !== null}" class="_multi-select" >
-              <option :value="null" disabled >日</option>
-              <option v-for="n in daysMax" :key="n" :value="n" :style="{'color': '#131313'}" >{{n}}日</option>
-            </select>
-          </div>
-        </div>
-      </div>
+      <p class="_description _marginS">【PDF書き出し】でステージプロットが完成します。<br>※作成されたPDFはサイト上に保存されません。ご使用端末に保存して下さい。</p>
       <div class="_button-container">
-        <button :disabled="v$.exportPreparation.$invalid || inactiveButton" @click="exportPDF()" :class="{'_invalid-button': v$.exportPreparation.$invalid}" class="_button-s _marginM">PDF書き出し</button>
+        <button :disabled=" inactiveButton" @click="exportPDF()"  class="_button-s _marginM">PDF書き出し</button>
         <p class="_description _marginS">※PDF書き出し保存がうまくいかない場合は下記【画像を表示】でJPEG画像が表示されます。表示された画像を保存して下さい。</p>
-        <button :disabled="v$.exportPreparation.$invalid || inactiveButton" @click="viewImage()" :class="{'_invalid-button': v$.exportPreparation.$invalid}" class="_button-s">画像を表示</button>
+        <button :disabled="inactiveButton" @click="viewImage()"  class="_button-s">画像を表示</button>
       </div>
 
       <!-- <a id="download" target="_blank">ダウンロードスイッチ</a> -->
@@ -94,9 +64,9 @@
           <div class="info-container">
             <div class="info-box">
               <p v-if="idol.isBroughtMic" class="info-t">ワイヤレスマイク：{{$store.getters['select/getLinePlot'](idol.mic.type)}}<span v-if="idol.mic.text !== null">-{{idol.mic.text}}</span></p>
-              <p v-if="!idol.isBroughtMic" class="info-t">ワイヤレスマイク：持ち込み無し（主催レンタル）</p>
+              <p v-if="!idol.isBroughtMic" class="info-t">ワイヤレスマイク：持込み無し（主催レンタル）</p>
               <p class="info-t">音源：<span v-if="idol.source.type === 'その他'">{{idol.source.other}}</span><span v-else>{{idol.source.type}}</span>-{{$store.getters['select/getChannelPlot'](idol.source.channel)}}-{{$store.getters['select/getTerminalPlot'](idol.source.terminal)}}</p>
-              <p v-if="idol.isMonitor" class="info-t">IEM：<span v-if="idol.isBroughtMonitor">{{idol.source.other}}持ち込み{{$store.getters['select/getLinePlot'](idol.monitor.type)}}-{{$store.getters['select/getChannelPlot'](idol.monitor.channel)}}</span><span v-else>持ち込み無し</span></p>
+              <p v-if="idol.isMonitor" class="info-t">IEM：<span v-if="idol.isBroughtMonitor">{{idol.source.other}}持込み{{$store.getters['select/getLinePlot'](idol.monitor.type)}}-{{$store.getters['select/getChannelPlot'](idol.monitor.channel)}}</span><span v-else>持込み無し</span></p>
               <p v-else class="info-t">IEM：無し</p>
             </div>
           </div>
@@ -106,7 +76,7 @@
           <p>備考：{{idol.text}}</p>
         </div>
 
-        <img src="@/assets/images/logo.png" class="logo" alt="">
+        <img src="@/assets/images/logo.png" class="pdf-logo" alt="">
 
       </div>
 
@@ -128,11 +98,9 @@ import db from '@/firebase/modules/db.js'
 import { jsPDF } from 'jspdf'
 import * as html2canvas from 'html2canvas'
 
-import useVuelidate from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
 
 export default {
-  name: 'SetList',
+  name: 'ExportIdol',
   components: {
     Spinner,
     SubHeader,
@@ -141,9 +109,6 @@ export default {
   mixins:[
     Mixin
   ],
-  setup(){
-    return { v$: useVuelidate()}
-  },
   data(){
     return{
       pageType: "stagePlot",
@@ -197,7 +162,10 @@ export default {
         }
       })
     }
-
+    const today = new Date()
+    this.exportPreparation.date.year = today.getFullYear()
+    this.exportPreparation.date.month = today.getMonth()+1
+    this.exportPreparation.date.day = today.getDate()
   },
   mounted(){
     
@@ -248,37 +216,7 @@ export default {
 
   },
   watch:{
-    'exportPreparation.date.year': function(){
-      this.daysMax = new Date(this.exportPreparation.date.year, this.exportPreparation.date.month, 0).getDate()
-    },
-    'exportPreparation.date.month': function(){
-      this.daysMax = new Date(this.exportPreparation.date.year, this.exportPreparation.date.month, 0).getDate()
-    },
-    'exportPreparation.type': function(){
-      if(this.exportPreparation.type === "stageTurnOver"){
-        this.isTurnOver = true
-      }else{
-        this.isTurnOver = false
-      }
-    }
-  },
-  validations(){
-    return{
-      exportPreparation:{
-        date:{
-          year:{
-            required
-          },
-          month:{
-            required
-          },
-          day:{
-            required
-          }
-        },
-      }
 
-    }
   },
 
 }
@@ -303,7 +241,7 @@ export default {
 }
 .t-l{
   font-weight: 700;
-  font-size: 24px;
+  font-size: 36px;
 }
 .red{
   color: var(--red);
@@ -439,7 +377,7 @@ export default {
   margin: 10px 0;
   font-size: 15px;
 }
-.logo{
+.pdf-logo{
   position: absolute;
   bottom: 20px;
   right: 10px;

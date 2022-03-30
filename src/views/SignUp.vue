@@ -22,7 +22,6 @@
         </div>
         <p v-if="v$.user.password.$error" class="_input-error-message">8文字以上の英数字で入力してください。</p>
       </div>
-
       <div class="_container">
         <p class="_label">居住地</p>
         <div class="_multi-box _multi-box-start" >
@@ -41,8 +40,17 @@
         </div>
         <p v-if="v$.user.city.$error" class="_input-error-message">10文字以内で市町村名のみを入力してください。</p>
       </div>
+      <div class="_container">
+        <div class="check">
+          <div class="tag" @click="check()">
+            <span v-if="isChecked" class="tag-active"></span>
+          </div>
+          <p class="tag-text"><router-link :to="{name: 'Rule'}">利用規約</router-link>に同意</p>
+        </div>
+
+      </div>
       <div class="_button-container">
-        <button :disabled="v$.user.$invalid || inactiveButton" @click="signUp()" :class="{'_invalid-button': v$.user.$invalid}" class="_button-s">アカウント作成</button>
+        <button :disabled="v$.user.$invalid || inactiveButton || !isChecked" @click="signUp()" :class="{'_invalid-button': v$.user.$invalid || !isChecked}" class="_button-s">アカウント作成</button>
       </div>
     </div>
     <Footer></Footer>
@@ -87,7 +95,9 @@ export default {
       user: new User(),
       // パスワードの表示切り替えステータス
       passwordInputType: "password",
-      showPasswordIcon: require("@/assets/images/visibility-on.png")
+      showPasswordIcon: require("@/assets/images/visibility-on.png"),
+
+      isChecked: false
     }
   },
   methods:{
@@ -125,6 +135,9 @@ export default {
         }
          
       })
+    },
+    check(){
+      this.isChecked = !this.isChecked
     }
   },
 	
@@ -165,5 +178,32 @@ export default {
 </script>
 
 <style scoped>
-
+.check{
+  display: flex;
+  justify-content: center;
+  margin: 40px auto 0;
+}
+.tag{
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--gray-hi);
+  box-sizing: border-box;
+  background-color: var(--white);
+}
+.tag-active{
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: var(--blue);
+  border-radius: 10px;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.tag-text{
+  line-height: 20px;
+  margin-left: 10px;
+}
 </style>

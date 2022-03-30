@@ -24,13 +24,11 @@
         </div>
       </div>
       <div v-if="music.data.source.typeOfSource === 'CD'" class="_multi-box">
-        <router-link :to="{name: 'TruckNumber', params:{id: $route.params.id}}" v-if="music.truckNumber === null" class="_multi-inner">
-          <img  src="@/assets/images/icon-arrow-r.png" alt="" class="_multi-icon _arrow">
-          <p class="_multi-text red">音源トラックナンバー未入力</p>
+        <router-link :to="{name: 'TruckNumber', params:{id: $route.params.id}}"  class="_multi-inner">
+          <img src="@/assets/images/icon-arrow-r.png" alt="" class="_multi-icon _arrow">
+          <p v-if="music.truckNumber === null" class="_multi-text red">音源トラックナンバー未入力</p>
+          <p v-else class="_multi-text">音源トラックナンバー：{{music.truckNumber}}</p>
         </router-link>
-        <div v-else class="_multi-inner" :class="{'_multi-inner-end': isEnd3}">
-          <p class="_multi-text">音源トラックナンバー：{{music.truckNumber}}</p>
-        </div>
       </div>
       <div v-if="music.data.isSource" class="_multi-box" :class="{'_multi-box-end': music.data.textForSound === null && music.data.textForLighting === null}">
         <div class="_multi-inner" :class="{'_multi-inner-end': music.data.textForSound === null && music.data.textForLighting === null}">

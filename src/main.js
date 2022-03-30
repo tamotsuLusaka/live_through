@@ -13,7 +13,7 @@ createApp(App)
   .use(Vue3Mq, {
     breakpoints: { 
       md: 0,
-      lg: 768,
+      lg: 600,
     }
   })
   // .use(firebase)

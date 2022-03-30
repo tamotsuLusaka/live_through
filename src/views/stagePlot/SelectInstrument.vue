@@ -6,7 +6,7 @@
       <label for="name" class="_label">パートの選択</label><Helper :helperObject="helper.part"></Helper>
       <div v-for="(instrument, index) in instruments" :key="index" class="_multi-box" :class="{'_multi-box-start': index === 0, '_multi-box-end': instruments.length -1 === index}" >
         <router-link :to="{name: 'CreateInstrument', params:{id: $route.params.id}, query:{instrument: instrument.text}}" class="_multi-inner" :class="{'_multi-inner-end': instruments.length -1 === index}">
-          <p class="_multi-text">{{instrument.text}}</p>
+          <p class="_multi-text">{{instrument.view}}</p>
           <img  src="@/assets/images/icon-arrow-r.png" alt="" class="_multi-icon _arrow">
         </router-link>
       </div>

@@ -21,7 +21,7 @@
           </div>
         </div>
         <div class="music">
-          <router-link :to="{name: 'Music'}" class="_link-mini-white">
+          <router-link :to="{name: 'Music'}" class="_link-mini-white yellow">
             <img src="@/assets/images/icon-music-blue.png" class="_link-mini-icon" alt="">
             <p class="_link-mini-text">楽曲の登録・編集</p>
           </router-link>
@@ -46,14 +46,13 @@
                 <p class="_flow-text">登録した楽曲を SE や MC も含め、ライブ当日の順番に並べる。</p>
               </div>
               <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
-              <div class="_flow-box _marginL">
+              <div class="_flow-box">
                 <p class="_flow-title">PDF(もしくは JPEG)書き出し</p>
                 <p class="_flow-text">作成した曲順等を確認して問題なければ書き出しで完成。ご使用端末に保存。</p>
               </div>
             </div>
           </div>
         </div>
-
       </div>
       <Footer></Footer>
     </div>
@@ -134,6 +133,9 @@ export default {
 }
 .music{
   margin-bottom: 60px;
+}
+.yellow{
+  background-color: var(--yellow-hi);
 }
 
 

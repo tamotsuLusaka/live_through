@@ -25,6 +25,11 @@ export default {
     user.updatedAt = serverTimestamp()
     return setDoc(doc(db, "user", user.id),{...user})
   },
+  editUser(user){
+    user.updatedAt = serverTimestamp()
+    const docRef = doc(db, 'user', user.id)
+    return updateDoc(docRef, {...user})
+  },
   getUser(userId){
     const docRef = doc(db, "user", userId)
     return getDoc(docRef)

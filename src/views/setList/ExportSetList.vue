@@ -12,7 +12,7 @@
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
             <select v-model="exportPreparation.date.year" @blur="v$.exportPreparation.date.year.$touch()" required :class="{'_input-select-exist': exportPreparation.date.year !== null}" class="_multi-select" >
               <option :value="null" disabled >年</option>
-              <option v-for="n in 30" :key="n" :value="n + 2021" :style="{'color': '#131313'}" >{{n + 2021}}年</option>
+              <option v-for="n in 2" :key="n" :value="n + currentYear - 1" :style="{'color': '#131313'}" >{{n + currentYear - 1}}年</option>
             </select>
           </div>
         </div>
@@ -70,7 +70,7 @@
           <tr>
             <th class="_PDF-head _PDF-text-m">No</th>
             <th class="_PDF-head _PDF-text-m">TITLE</th>
-            <th class="_PDF-head _PDF-text-m">音源Tr.</th>
+            <th class="_PDF-head _PDF-text-m">音源</th>
             <th class="_PDF-head _PDF-text-m">曲調</th>
             <th class="_PDF-head _PDF-text-m">TIME</th>
             <th class="_PDF-head _PDF-text-m">音響への要望</th>
@@ -90,7 +90,7 @@
           <tr>
             <th class="_PDF-head _PDF-text-m" >No</th>
             <th class="_PDF-head _PDF-text-m">TITLE</th>
-            <th class="_PDF-head _PDF-text-m">音源Tr.</th>
+            <th class="_PDF-head _PDF-text-m">音源</th>
             <th class="_PDF-head _PDF-text-m">曲調</th>
             <th class="_PDF-head _PDF-text-m">TIME</th>
             <th class="_PDF-head _PDF-text-m">音響への要望</th>
@@ -100,7 +100,7 @@
         </table>
         
         <div class="_PDF-bottom">
-          <div class="_PDF-output"><span>音源チャンネル数：{{setList.output.channel}}</span><span>音源端子：{{setList.output.terminal}}</span></div>
+          <div v-if="setList.isNecessarySource" class="_PDF-output">【持込み音源出力】<span>チャンネル数：{{setList.output.channel}}</span><span>端子：{{setList.output.terminal}}</span></div>
           <div class="_PDF-text-m">その他、要望など</div>
           <div class="_PDF-note _PDF-text-m">
             {{setList.text}}
@@ -122,7 +122,7 @@
           <tr>
             <th class="_PDF-head _PDF-text-m">No</th>
             <th class="_PDF-head _PDF-text-m">TITLE</th>
-            <th class="_PDF-head _PDF-text-m">音源Tr.</th>
+            <th class="_PDF-head _PDF-text-m">音源</th>
             <th class="_PDF-head _PDF-text-m">曲調</th>
             <th class="_PDF-head _PDF-text-m">TIME</th>
             <th class="_PDF-head _PDF-text-m">音響への要望</th>
@@ -135,7 +135,7 @@
           <tr>
             <th class="_PDF-head _PDF-text-m">No</th>
             <th class="_PDF-head _PDF-text-m">TITLE</th>
-            <th class="_PDF-head _PDF-text-m">音源Tr.</th>
+            <th class="_PDF-head _PDF-text-m">音源</th>
             <th class="_PDF-head _PDF-text-m">曲調</th>
             <th class="_PDF-head _PDF-text-m">TIME</th>
             <th class="_PDF-head _PDF-text-m">音響への要望</th>
@@ -175,7 +175,7 @@
           <tr>
             <th class="_PDF-head _PDF-text-m">No</th>
             <th class="_PDF-head _PDF-text-m">TITLE</th>
-            <th class="_PDF-head _PDF-text-m">音源Tr.</th>
+            <th class="_PDF-head _PDF-text-m">音源</th>
             <th class="_PDF-head _PDF-text-m">曲調</th>
             <th class="_PDF-head _PDF-text-m">TIME</th>
             <th class="_PDF-head _PDF-text-m">音響への要望</th>
@@ -195,7 +195,7 @@
           <tr>
             <th class="_PDF-head _PDF-text-m">No</th>
             <th class="_PDF-head _PDF-text-m">TITLE</th>
-            <th class="_PDF-head _PDF-text-m">音源Tr.</th>
+            <th class="_PDF-head _PDF-text-m">音源</th>
             <th class="_PDF-head _PDF-text-m">曲調</th>
             <th class="_PDF-head _PDF-text-m">TIME</th>
             <th class="_PDF-head _PDF-text-m">音響への要望</th>
@@ -214,7 +214,7 @@
       <!-- ステージ用 -->
       <div id="pdf-stage" class="_pdf" :class="{'PDF-bg-black': isTurnOver}">
         <div class="PDF-stage-content">
-          <div class="PDF-stage-name" :class="{'PDF-text-white': isTurnOver}">{{userName}}<span class="_PDF-text-l"  :class="{'PDF-text-white': isTurnOver}">({{exportPreparation.date.year}}.{{exportPreparation.date.month}}.{{exportPreparation.date.day}})</span></div>
+          <div class="PDF-stage-name" :class="{'PDF-text-white': isTurnOver}">{{userName}}<span class="_PDF-text-xl"  :class="{'PDF-text-white': isTurnOver}">({{exportPreparation.date.year}}.{{exportPreparation.date.month}}.{{exportPreparation.date.day}})</span></div>
           <ul class="PDF-list" :class="{'PDF-text-white': isTurnOver}">
             <li v-for="music in listsOfOll" :key="music">
               <span v-if="music.type === 'music'"><span v-if="music.format === 'encore'">EN </span>{{music.displayOrder}}. {{music.data.name}}</span>
@@ -231,7 +231,7 @@
       <!-- ステージ用2枚構成 -->
       <div id="pdf-stage-1" class="_pdf" :class="{'PDF-bg-black': isTurnOver}">
         <div class="PDF-stage-content">
-          <div class="PDF-stage-name" :class="{'PDF-text-white': isTurnOver}">{{userName}}<span class="_PDF-text-l" :class="{'PDF-text-white': isTurnOver}">1枚目：{{exportPreparation.date.year}}.{{exportPreparation.date.month}}.{{exportPreparation.date.day}}</span></div>
+          <div class="PDF-stage-name" :class="{'PDF-text-white': isTurnOver}">{{userName}}<span class="_PDF-text-xl" :class="{'PDF-text-white': isTurnOver}">1枚目：{{exportPreparation.date.year}}.{{exportPreparation.date.month}}.{{exportPreparation.date.day}}</span></div>
           <ul class="PDF-list" :class="{'PDF-text-white': isTurnOver}">
             <li v-for="music in listsForFirst" :key="music">
               <span v-if="music.type === 'music'"><span v-if="music.format === 'encore'">EN </span>{{music.displayOrder}}. {{music.data.name}}</span>
@@ -247,7 +247,7 @@
 
       <div id="pdf-stage-2" class="_pdf" :class="{'PDF-bg-black': isTurnOver}">
         <div class="PDF-stage-content">
-          <div class="PDF-stage-name" :class="{'PDF-text-white': isTurnOver}">{{userName}}<span class="_PDF-text-l" :class="{'PDF-text-white': isTurnOver}">2枚目：{{exportPreparation.date.year}}.{{exportPreparation.date.month}}.{{exportPreparation.date.day}}</span></div>
+          <div class="PDF-stage-name" :class="{'PDF-text-white': isTurnOver}">{{userName}}<span class="_PDF-text-xl" :class="{'PDF-text-white': isTurnOver}">2枚目：{{exportPreparation.date.year}}.{{exportPreparation.date.month}}.{{exportPreparation.date.day}}</span></div>
           <ul class="PDF-list" :class="{'PDF-text-white': isTurnOver}">
             <li v-for="music in listsForSecond" :key="music">
               <span v-if="music.type === 'music'"><span v-if="music.format === 'encore'">EN </span>{{music.displayOrder}}. {{music.data.name}}</span>
@@ -334,6 +334,8 @@ export default {
         },
         type: null
       },
+      currentYear: null,
+
       isTurnOver: false,
       renderImage: null,
       renderImage2: null,
@@ -347,7 +349,7 @@ export default {
         },
         export:{
           title:"出力フォーマット",
-          text:"出力フォーマットを選択して下さい。\n【音響照明用】→提出用 ※要望・詳細込み\n\n【ステージ用】（黒文字、白バック）→ご自身用 ※曲順のみ。\n\n【反転ステージ用】（白文字、黒バック）→ご自身用 ※曲順のみ。反転"
+          text:"出力フォーマットを選択して下さい。\n\n【音響照明用】→提出用 ※要望・詳細込み\n\n【ステージ用】（黒文字、白バック）→ご自身用 ※曲順のみ。\n\n【反転ステージ用】（白文字、黒バック）→ご自身用 ※曲順のみ。反転"
         },
       }
     }
@@ -394,6 +396,8 @@ export default {
       })
     }
 
+    const date = new Date()
+    this.currentYear = date.getFullYear()
   },
   mounted(){
     

@@ -27,7 +27,7 @@
       </div>
 
       <div v-if="tag !== 'VOCAL'" class="_container">
-        <p class="_label">ボーカル・コーラス・/MC</p><Helper :helperObject="helper.vocal"></Helper>
+        <p class="_label">ボーカル・コーラス・MC</p><Helper :helperObject="helper.vocal"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isVocal}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.isVocal}">
             <p class="_multi-text">有り</p>
@@ -39,7 +39,7 @@
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
             <select v-model="instrument.vocal.part" @blur="v$.instrument.vocal.part.$touch()" required :class="{'_input-select-exist': instrument.vocal.part !== null}" class="_multi-select" >
               <option :value="null" disabled >パートを選択</option>
-              <option v-for="select in $store.getters['select/typeOfVocal']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >パートの種類：{{select.text}}</option>
+              <option v-for="select in $store.getters['select/typeOfVocal']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >{{select.text}}<span v-if="select.text === 'MC'">(喋りのみに使用)</span></option>
             </select>
           </div>
         </div>
@@ -58,7 +58,7 @@
         <p class="_label">マイク</p><Helper :helperObject="helper.mic"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isBroughtMic}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.isBroughtMic}">
-            <p class="_multi-text">持ち込み有り</p>
+            <p class="_multi-text">持込み有り</p>
             <Toggle v-model="instrument.isBroughtMic" @click="_clearObject(instrument.mic)" class="_multi-toggle" />
           </div>
         </div>
@@ -66,7 +66,7 @@
           <div class="_multi-inner">
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
             <select v-model="instrument.mic.type" @blur="v$.instrument.mic.type.$touch()" required :class="{'_input-select-exist': instrument.mic.type !== null}" class="_multi-select" >
-              <option :value="null" disabled >持ち込み機材を選択</option>
+              <option :value="null" disabled >持込み機材を選択</option>
               <option v-for="select in $store.getters['select/line']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >{{select.text}}</option>
             </select>
           </div>
@@ -90,28 +90,43 @@
           <div class="_multi-inner" :class="{'_multi-inner-end': instrument.amp.type === null || instrument.amp.type === 'rent' || instrument.amp.type === 'rentCombo'}">
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
             <select v-model="instrument.amp.type" @blur="v$.instrument.amp.type.$touch()" required :class="{'_input-select-exist': instrument.amp.type !== null}" class="_multi-select" >
-              <option :value="null" disabled >レンタル・持ち込み機材を選択</option>
+              <option :value="null" disabled >レンタル・持込み機材を選択</option>
               <option v-for="select in $store.getters['select/amp']" :key="select.id" :value="select.id" :style="{'color': '#131313'}" >{{select.text}}</option>
             </select>
           </div>
         </div>
-        <div v-if="instrument.amp.type === 'head' || instrument.amp.type === 'head&cab'"  class="_multi-box" :class="{'_multi-box-error': v$.instrument.amp.brandOfHead.$error, '_multi-box-end': instrument.amp.type === 'head'}">
-          <div class="_multi-inner" :class="{'_multi-inner-end': instrument.amp.type === 'head'}">
+        <div v-if="instrument.amp.type === 'head' || instrument.amp.type === 'head&cab'"  class="_multi-box" :class="{'_multi-box-error': v$.instrument.amp.brandOfHead.$error}">
+          <div class="_multi-inner">
             <input type="text" v-model="instrument.amp.brandOfHead" @blur="v$.instrument.amp.brandOfHead.$touch()" placeholder="ヘッドメーカー名を10字以内で入力" class="_multi-input-text">
           </div>
         </div>
-        <div v-if="instrument.amp.type === 'cab' || instrument.amp.type === 'head&cab'" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.instrument.amp.brandOfCab.$error}">
+        <div v-if="instrument.amp.type === 'head' || instrument.amp.type === 'head&cab'"  class="_multi-box" :class="{'_multi-box-error': v$.instrument.amp.modelOfHead.$error, '_multi-box-end': instrument.amp.type === 'head'}">
+          <div class="_multi-inner" :class="{'_multi-inner-end': instrument.amp.type === 'head'}">
+            <input type="text" v-model="instrument.amp.modelOfHead" @blur="v$.instrument.amp.modelOfHead.$touch()" placeholder="ヘッド型名を10字以内で入力" class="_multi-input-text">
+          </div>
+        </div>
+        <div v-if="instrument.amp.type === 'cab' || instrument.amp.type === 'head&cab'" class="_multi-box" :class="{'_multi-box-error': v$.instrument.amp.brandOfCab.$error}">
           <div class="_multi-inner _multi-inner-end">
             <input type="text" v-model="instrument.amp.brandOfCab" @blur="v$.instrument.amp.brandOfCab.$touch()" placeholder="キャビメーカー名を10字以内で入力" class="_multi-input-text">
           </div>
         </div>
-        <div v-if="instrument.amp.type === 'combo'" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.instrument.amp.brandOfCombo.$error}">
+        <div v-if="instrument.amp.type === 'cab' || instrument.amp.type === 'head&cab'" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.instrument.amp.modelOfCab.$error}">
+          <div class="_multi-inner _multi-inner-end">
+            <input type="text" v-model="instrument.amp.modelOfCab" @blur="v$.instrument.amp.modelOfCab.$touch()" placeholder="キャビ型名を10字以内で入力" class="_multi-input-text">
+          </div>
+        </div>
+        <div v-if="instrument.amp.type === 'combo'" class="_multi-box" :class="{'_multi-box-error': v$.instrument.amp.brandOfCombo.$error}">
           <div class="_multi-inner _multi-inner-end">
             <input type="text" v-model="instrument.amp.brandOfCombo" @blur="v$.instrument.amp.brandOfCombo.$touch()" placeholder="コンボメーカー名を10字以内で入力" class="_multi-input-text">
           </div>
         </div>
+        <div v-if="instrument.amp.type === 'combo'" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.instrument.amp.brandOfCombo.$error}">
+          <div class="_multi-inner _multi-inner-end">
+            <input type="text" v-model="instrument.amp.modelOfCombo" @blur="v$.instrument.amp.modelOfCombo.$touch()" placeholder="コンボ型名を10字以内で入力" class="_multi-input-text">
+          </div>
+        </div>
         <div class="_marginS">
-          <p v-if="v$.instrument.amp.brandOfHead.$error || v$.instrument.amp.brandOfCab.$error || v$.instrument.amp.brandOfCombo.$error" class="_input-error-message">10文字以内で入力してください。</p>
+          <p v-if="v$.instrument.amp.brandOfHead.$error || v$.instrument.amp.brandOfCab.$error || v$.instrument.amp.brandOfCombo.$error || v$.instrument.amp.modelOfHead.$error || v$.instrument.amp.modelOfCab.$error || v$.instrument.amp.modelOfCombo.$error" class="_input-error-message">10文字以内で入力してください。</p>
         </div>
         <div @click="editPosition(true)" class="_link-mini-white _marginS">
           <img src="@/assets/images/icon-pin-blue.png" class="_link-mini-icon" alt="">
@@ -125,7 +140,7 @@
         <p class="_label">アコギ出力</p><Helper :helperObject="helper.acousticGuitar"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isLineOutForAcousticGuitar}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.isLineOutForAcousticGuitar}">
-            <p class="_multi-text">有り</p>
+            <p class="_multi-text">ライン有り</p>
             <Toggle v-model="instrument.isLineOutForAcousticGuitar" @click="_clearObject(instrument.acousticGuitar), _clearObject(instrument.acousticGuitar), offDi()" class="_multi-toggle" />
           </div>
         </div>
@@ -134,22 +149,40 @@
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
             <select v-model="instrument.acousticGuitar.type" @blur="v$.instrument.vocal.part.$touch()" required :class="{'_input-select-exist': instrument.acousticGuitar.type !== null}" class="_multi-select" >
               <option :value="null" disabled >出力の種類を選択</option>
-              <option v-for="select in $store.getters['select/acousticGuitar']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >出力：{{select.text}}</option>
+              <option v-for="select in $store.getters['select/acousticGuitar']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >{{select.text}}</option>
             </select>
+          </div>
+        </div>
+        <div v-if="instrument.isLineOutForAcousticGuitar" class="_multi-box" >
+          <div class="_multi-inner">
+            <p class="_multi-text">DI持込み有り</p>
+            <Toggle v-model="instrument.idBroughtDi" @click="_clearObject(instrument.di)" class="_multi-toggle" />
+          </div>
+        </div>
+        <div v-if="instrument.idBroughtDi" class="_multi-box" :class="{'_multi-box-error': v$.instrument.di.brand.$error}">
+          <div class="_multi-inner">
+            <input type="text" v-model="instrument.di.brand" @blur="v$.instrument.di.brand.$touch()" placeholder="DIメーカー名を10字以内で入力" class="_multi-input-text">
+          </div>
+        </div>
+        <div v-if="instrument.idBroughtDi" class="_multi-box" :class="{'_multi-box-error': v$.instrument.di.model.$error}">
+          <div class="_multi-inner">
+            <input type="text" v-model="instrument.di.model" @blur="v$.instrument.di.model.$touch()" placeholder="DI型番を10字以内で入力" class="_multi-input-text">
           </div>
         </div>
         <div v-if="instrument.isLineOutForAcousticGuitar" class="_multi-box _multi-box-end">
           <div class="_flex-multi-inner _multi-inner-end">
-            <textarea v-model="instrument.acousticGuitar.text" @blur="v$.instrument.acousticGuitar.text.$touch()" placeholder="備考を50文字以内で入力 任意" :class="{'_input-error': v$.instrument.acousticGuitar.text.$error}" class="_multi-input-textarea"></textarea>
+            <textarea v-model="instrument.acousticGuitar.text" @blur="v$.instrument.acousticGuitar.text.$touch()" placeholder="備考を30文字以内で入力 任意" :class="{'_input-error': v$.instrument.acousticGuitar.text.$error}" class="_multi-input-textarea"></textarea>
           </div>
         </div>
+        <p v-if="v$.instrument.di.brand.$error || v$.instrument.di.model.$error" class="_input-error-message">10文字以内で入力してください。</p>
+        <p v-if="v$.instrument.acousticGuitar.text.$error" class="_input-error-message">30文字以内で入力してください。</p>
       </div>
 
-      <div v-if="instrument.type === 'ベース' || instrument.isLineOutForAcousticGuitar" class="_container">
+      <div v-if="instrument.type === 'ベース'" class="_container">
         <p class="_label">DI</p><Helper :helperObject="helper.di"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.idBroughtDi}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.idBroughtDi}">
-            <p class="_multi-text">持ち込み有り</p>
+            <p class="_multi-text">持込み有り</p>
             <Toggle v-model="instrument.idBroughtDi" @click="_clearObject(instrument.di)" class="_multi-toggle" />
           </div>
         </div>
@@ -180,8 +213,8 @@
       </div>
       <!-- ドラム専用 -->
       <div v-if="instrument.type === 'ドラム'" class="_container">
-        <label for="textForLighting" class="_label">持ち込みドラム機材</label><Helper :helperObject="helper.bringDrum"></Helper>
-        <textarea v-model="instrument.drum.bring" @blur="v$.instrument.drum.bring.$touch()" placeholder="持ち込みドラム機材があれば全て入力" :class="{'_input-error': v$.instrument.drum.bring.$error}" class="_input-textarea"></textarea>
+        <label for="textForLighting" class="_label">持込みドラム機材</label><Helper :helperObject="helper.bringDrum"></Helper>
+        <textarea v-model="instrument.drum.bring" @blur="v$.instrument.drum.bring.$touch()" placeholder="持込みドラム機材があれば全て入力" :class="{'_input-error': v$.instrument.drum.bring.$error}" class="_input-textarea"></textarea>
         <p v-if="v$.instrument.drum.bring.$error" class="_input-error-message">50文字以内で入力してください。</p>
       </div>
       <!-- ドラム専用 -->
@@ -259,7 +292,7 @@
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
             <select v-model="instrument.rentKeyboard.number" @blur="v$.instrument.rentKeyboard.number.$touch()" required :class="{'_input-select-exist': instrument.rentKeyboard.number !== null}" class="_multi-select" >
               <option :value="null" disabled >レンタル台数を選択</option>
-              <option v-for="select in 10" :key="select" :value="select" :style="{'color': '#131313'}" >レンタル台数：{{select}}台</option>
+              <option v-for="select in 2" :key="select" :value="select" :style="{'color': '#131313'}" >レンタル台数：{{select}}台</option>
             </select>
           </div>
         </div>
@@ -267,10 +300,10 @@
 
       <!-- キーボード専用 -->
       <div v-if="instrument.type === 'キーボード'" class="_container">
-        <p class="_label">キーボード（持ち込み）</p><Helper :helperObject="helper.bringKeyboard"></Helper>
+        <p class="_label">キーボード（持込み）</p><Helper :helperObject="helper.bringKeyboard"></Helper>
         <div @click="addKeyboard()" class="_link-mini-white _marginSS">
           <img src="@/assets/images/icon-keyboard-blue.png" class="_link-mini-icon" alt="">
-          <p class="_link-mini-text">持ち込みキーボードを追加</p>
+          <p class="_link-mini-text">持込みキーボードを追加</p>
         </div>
 
         <div v-for="keyboard, index in instrument.bringKeyboardLists" :key="keyboard">
@@ -300,7 +333,7 @@
             </div>
             <div class="_multi-box">
               <div class="_multi-inner">
-                <p class="_multi-text">DI持ち込み有り</p>
+                <p class="_multi-text">DI持込み有り</p>
                 <Toggle v-model="keyboard.isDi" class="_multi-toggle" />
               </div>
             </div>
@@ -335,7 +368,7 @@
 
       <!-- パーカッション専用 -->
       <div v-if="instrument.type === 'パーカッション'" class="_container">
-        <p class="_label">持ち込みパーカッション</p>
+        <p class="_label">持込みパーカッション</p>
         <div v-for="(item, index) in instrument.percussion.bring" :key="item.id">
           <div class="_multi-box" :class="{'_multi-box-start': index === 0}">
             <div class="_multi-inner">
@@ -356,7 +389,7 @@
         <p class="_label">楽器用マイク</p>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isBroughtMicForInstrument}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.isBroughtMicForInstrument}">
-            <p class="_multi-text">持ち込み有り</p>
+            <p class="_multi-text">持込み有り</p>
             <Toggle v-model="instrument.isBroughtMicForInstrument" @click="_clearObject(instrument.micForInstrument)" class="_multi-toggle" />
           </div>
         </div>
@@ -364,7 +397,7 @@
           <div class="_multi-inner">
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
             <select v-model="instrument.micForInstrument.type" @blur="v$.instrument.micForInstrument.type.$touch()" required :class="{'_input-select-exist': instrument.micForInstrument.type !== null}" class="_multi-select" >
-              <option :value="null" disabled >持ち込み機材を選択</option>
+              <option :value="null" disabled >持込み機材を選択</option>
               <option v-for="select in $store.getters['select/line']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >{{select.text}}</option>
             </select>
           </div>
@@ -386,7 +419,7 @@
         <p class="_label">PAへのラインアウト</p><Helper :helperObject="helper.line"></Helper>
         <div @click="addLineOut()" class="_link-mini-white _marginSS">
           <img src="@/assets/images/icon-keyboard-blue.png" class="_link-mini-icon" alt="">
-          <p class="_link-mini-text">持ち込み機材を追加</p>
+          <p class="_link-mini-text">持込み機材を追加</p>
         </div>
 
         <div v-for="item, index in instrument.lineOutLists" :key="item">
@@ -416,7 +449,7 @@
             </div>
             <div class="_multi-box">
               <div class="_multi-inner">
-                <p class="_multi-text">DI持ち込み有り</p>
+                <p class="_multi-text">DI持込み有り</p>
                 <Toggle v-model="item.isDi" class="_multi-toggle" />
               </div>
             </div>
@@ -443,7 +476,7 @@
         </div>
         <div class="_multi-box _multi-box-end">
           <div class="_multi-inner _multi-inner-end">
-            <p class="_multi-text">DIの持ち込み有り</p>
+            <p class="_multi-text">DIの持込み有り</p>
             <Toggle v-model="instrument.lineOutForViolin.isDi" class="_multi-toggle" />
           </div>
         </div>
@@ -490,7 +523,7 @@
         <p class="_label">イヤモニ</p><Helper :helperObject="helper.monitor"></Helper>
         <div class="_multi-box _multi-box-start" :class="{'_multi-box-end': !instrument.isBroughtMonitor}">
           <div class="_multi-inner" :class="{'_multi-inner-end': !instrument.isBroughtMonitor}">
-            <p class="_multi-text">持ち込み有り</p>
+            <p class="_multi-text">持込み有り</p>
             <Toggle v-model="instrument.isBroughtMonitor" @click="_clearObject(instrument.monitor)" class="_multi-toggle" />
           </div>
         </div>
@@ -499,7 +532,7 @@
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
             <select v-model="instrument.monitor.type" @blur="v$.instrument.monitor.type.$touch()" required :class="{'_input-select-exist': instrument.monitor.type !== null}" class="_multi-select" >
               <option :value="null" disabled >種類を選択</option>
-              <option v-for="select in $store.getters['select/line']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >{{select.text}}</option>
+              <option v-for="select in $store.getters['select/lineForMonitor']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >{{select.text}}</option>
             </select>
           </div>
         </div>
@@ -601,7 +634,7 @@ export default {
       listIndex: null, //編集時に使う楽器リストのインデックス番号
       tag: null, //楽器の大グループ "VOCAL", "BRASS"
 
-      maxItem: 2, //ラインアウト、持ち込みキーボードの限界数
+      maxItem: 2, //ラインアウト、持込みキーボードの限界数
 
       helper:{
         member:{
@@ -633,7 +666,7 @@ export default {
           text:"会場でレンタル希望の機材を全て選択して下さい。"
         },
         bringDrum:{
-          title:"持ち込みドラム機材",
+          title:"持込みドラム機材",
           text:"持込み機材を全て入力して下さい。\n改行無しで入力して下さい。※英語表記でも可\n\n例）スネア、キックペダル、チャイナ\n例）Snare、KickPedal、China"
         },
         tom:{
@@ -649,8 +682,8 @@ export default {
           text:"キーボードをレンタル希望の場合は選択して下さい。\n※キーボードレンタルに関しましては予め会場にご確認下さい。"
         },
         bringKeyboard:{
-          title:"キーボード（持ち込み）",
-          text:"キーボードの持ち込みがある場合は、【持ち込みキーボードを追加】よりキーボードの詳細を入力・選択して下さい。\n複数台の持ち込みであれば、更に【持ち込みキーボードを追加】を繰り返し、持ち込みキーボードの台数分すべて設定して下さい。"
+          title:"キーボード（持込み）",
+          text:"キーボードの持込みがある場合は、【持込みキーボードを追加】よりキーボードの詳細を入力・選択して下さい。\n複数台の持込みであれば、更に【持込みキーボードを追加】を繰り返し、持込みキーボードの台数分すべて設定して下さい。"
         },
         sync:{
           title:"同期",
@@ -658,11 +691,11 @@ export default {
         },
         line:{
           title:"PAへのラインアウト",
-          text:"PAへのライン出力が必要な持ち込み機材（PAD他、電子楽器やDJ機材等）がある場合は【持ち込み機材を追加】から機材名・チャンネル数・アウト端子・DI\n持ち込み有無を選択して下さい。\n複数台あれば、更に【持ち込み機材を追加】を繰り返し、ライン出力が必要な持ち込み機材の台数分すべて設定して下さい。"
+          text:"PAへのライン出力が必要な持込み機材（PAD他、電子楽器やDJ機材等）がある場合は【持込み機材を追加】から機材名・チャンネル数・アウト端子・DI\n持込み有無を選択して下さい。\n複数台あれば、更に【持込み機材を追加】を繰り返し、ライン出力が必要な持込み機材の台数分すべて設定して下さい。"
         },
         lineForViolin:{
           title:"PAへのラインアウト",
-          text:"PAへのライン出力の端子を選択して下さい。\nまた、DIの持ち込みがあれば持込み有りにチェックを入れてください。"
+          text:"PAへのライン出力の端子を選択して下さい。\nまた、DIの持込みがあれば持込み有りにチェックを入れてください。"
         },
         monitor:{
           title:"イヤモニ",
@@ -887,10 +920,19 @@ export default {
           brandOfHead:{
             maxLength: maxLength(10)
           },
+          modelOfHead:{
+            maxLength: maxLength(10)
+          },
           brandOfCab:{
             maxLength: maxLength(10)
           },
+          modelOfCab:{
+            maxLength: maxLength(10)
+          },
           brandOfCombo:{
+            maxLength: maxLength(10)
+          },
+          modelOfCombo:{
             maxLength: maxLength(10)
           },
         },
@@ -917,7 +959,7 @@ export default {
             isChecked: contains(this.instrument.isLineOutForAcousticGuitar),
           },
           text:{
-            maxLength: maxLength(50)
+            maxLength: maxLength(30)
           },
         },
         rentKeyboard:{
