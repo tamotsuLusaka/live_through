@@ -11,7 +11,15 @@
         <template v-for="xPos in colCount" :key="`r${yPos-1}c${xPos-1}-cell`">
 
       <!-- Blank cells -->
-          <div class="cell" :style="`margin: ${cellMargin}; grid-row: ${yPos} / ${yPos}; grid-column: ${xPos} / ${xPos}; height: ${cellHeight}px`"></div>
+          <div
+            class="cell"
+            :class="{'center-cross': xPos === Math.round(colCount / 2) || yPos === Math.round(rowCount / 2)}"
+            :style="`
+              margin: ${cellMargin};
+              grid-row: ${yPos} / ${yPos};
+              grid-column: ${xPos} / ${xPos};
+              height: ${cellHeight}px`"
+          ></div>
 
       <!-- Cells being filled beforehand -->
           <template v-if="Object.keys(filledCells[yPos-1][xPos-1]).length > 0 && filledCells[yPos-1][xPos-1].isTopLeft">
@@ -320,6 +328,10 @@ export default {
   margin: -2px 0 0 -2px;
   border: 1px solid rgb(212, 212, 212);
   background-color: var(--white);
+}
+
+.center-cross {
+  background-color: var(--yellow-hi);
 }
 
 .filled, .selected {
