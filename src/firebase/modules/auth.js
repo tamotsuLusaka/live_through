@@ -19,7 +19,7 @@ export default {
   signIn(email, password){
     return signInWithEmailAndPassword(auth, email, password)
   },
-  isSignedIn(){
+  onSignedIn(){
     onAuthStateChanged(auth, (user)=>{
       if(user){
         store.commit('auth/setIsSignedIn', true)
@@ -40,6 +40,7 @@ export default {
       console.log(error.message)
       console.log("ログアウト失敗")
     })
-  }
+  },
+
 
 }

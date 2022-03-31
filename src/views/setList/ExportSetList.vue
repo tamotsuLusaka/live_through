@@ -355,6 +355,7 @@ export default {
     }
   },
   async created(){
+    this._authCheck()
     this.setList = this.$store.getters['data/exportSetList']
     await db.getUser(this.$store.getters['auth/userId'])
     .then((doc)=>{
@@ -396,6 +397,7 @@ export default {
       })
     }
 
+    this._userCheck(this.setList.userId)
     const date = new Date()
     this.currentYear = date.getFullYear()
   },

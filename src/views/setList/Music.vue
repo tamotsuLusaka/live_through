@@ -12,6 +12,7 @@
           </div>
         </router-link>
         <div class="_label-white">楽曲一覧</div><Helper :helperObject="helper.list"></Helper>
+        <p v-if="musics.length === 0" class="_not-yet">保存済みの楽曲はありません</p>
         <div v-for="(music, index) in musics" :key="index" class="_multi-box" :class="{'_multi-box-start': index === 0, '_multi-box-end': musics.length -1 === index}" >
           <router-link :to="{name: 'EditMusic', params:{id: music.id}}" class="_multi-inner" :class="{'_multi-inner-end': musics.length -1 === index}">
             <p class="_multi-text">{{music.name}}</p>
@@ -64,6 +65,7 @@ export default {
     }
   },
   created(){
+    this._authCheck()
     db.getMusics(this.$store.getters['auth/userId'])
     .then((querySnapShot)=>{
       querySnapShot.forEach(doc => {

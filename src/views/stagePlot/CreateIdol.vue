@@ -225,10 +225,12 @@ export default {
     }
   },
   created(){
+    this._authCheck()
     if(this.$route.params.id){
       db.getIdol(this.$route.params.id)
       .then((doc)=>{
         this.idol = doc.data()
+        this._userCheck(this.idol.userId)
       })
       .catch((error)=>{
         this.errorMessage = "データの取得に失敗しました。"

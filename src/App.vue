@@ -20,7 +20,7 @@ export default{
   methods: {
   },
   beforeCreate(){
-    auth.isSignedIn()
+    auth.onSignedIn()
     
   },
   created(){

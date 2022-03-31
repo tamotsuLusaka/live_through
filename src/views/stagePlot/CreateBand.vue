@@ -112,11 +112,12 @@ export default {
     }
   },
   created(){
+    this._authCheck()
     if(this.$route.params.id){
       db.getBand(this.$route.params.id)
       .then((doc)=>{
         this.band = doc.data()
-
+        this._userCheck(this.band.userId)
         this.isBandFetched = true
       })
       .catch((error)=>{

@@ -8,13 +8,13 @@
         <div v-if="isBack" @click="goBack()"><img src="@/assets/images/icon-arrow-l.png" alt="矢印" class="_arrow sp-sub-header-arrow"></div>
         <p class="sp-sub-header-title">{{ pageTitle }}</p>
       </div>
-      <img v-if="pageType !== 'sign'" src="@/assets/images/burger.png" @click="open()" alt="burger" class="sp-sub-header-burger">
+      <img v-if="isSignedIn" src="@/assets/images/burger.png" @click="open()" alt="burger" class="sp-sub-header-burger">
     </div>
     <div v-if="mq.current === 'lg'" class="pc-sub-header">
       <router-link :to="{name: 'Home'}" class="pc-sub-header-left">
         <img src="@/assets/images/logo.png" class="pc-sub-header-logo" alt="">
       </router-link>
-      <div v-if="pageType !== 'sign'" class="pc-sub-header-right">
+      <div v-if="isSignedIn" class="pc-sub-header-right">
         <router-link :to="{name: 'SetList'}" class="pc-sub-header-link">
           <img v-if="pageType === 'setList'" src="@/assets/images/icon-mic-blue.png" alt="" class="pc-link-icon">
           <img v-else src="@/assets/images/icon-mic-gray.png" alt="" class="pc-link-icon">
@@ -31,7 +31,7 @@
     </div>
     <p v-if="mq.current === 'lg' && isPcTitle" class="pc-sub-header-title">{{ pageTitle }}</p>
 
-    <div class="menu" :class="{'appear': isShown}">
+    <div v-if="isSignedIn" class="menu" :class="{'appear': isShown}">
       <img src="@/assets/images/cross.png" @click="close()" class="menu-close" alt="">
       <div class="menu-container">
         <div class="menu-top">
@@ -75,7 +75,8 @@ export default {
   },
   data(){
     return{
-      isShown: false
+      isShown: false,
+      isSignedIn: this.$store.getters['auth/isSignedIn']
     }
   },
   mixins:[

@@ -124,6 +124,7 @@ export default {
     }
   },
   async created(){
+    this._authCheck()
     await db.getMusics(this.$store.getters['auth/userId'])
     .then((querySnapShot)=>{
       querySnapShot.forEach(doc => {
@@ -138,7 +139,7 @@ export default {
     await db.getSetList(this.$route.params.id)
     .then((doc)=>{
       this.setList = doc.data()
-      this.backPath = `/set_list/${this.setList.id}`
+      this._userCheck(this.setList.userId)
     })
     .catch((error)=>{
       this.errorMessage = "データの取得に失敗しました。"

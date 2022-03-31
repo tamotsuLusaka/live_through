@@ -137,6 +137,16 @@ export default{
 
     //   return lists
     // }
+    _authCheck(){
+      if(!this.$store.getters['auth/isSignedIn']){
+        this.$router.push({name: 'Home'})
+      }
+    },
+    _userCheck(dataUserId){
+      if(this.$store.getters['auth/userId'] !== dataUserId){
+        this.$router.push({name: 'Home'})
+      }
+    }
   },
 
 

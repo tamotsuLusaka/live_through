@@ -12,7 +12,8 @@
               </div>
             </div>
           </router-link>
-          <div v-if="setLists.length !== 0" class="_label-white">保存済みセットリスト一覧</div><Helper v-if="setLists.length !== 0" :helperObject="helper.list"></Helper>
+          <div class="_label-white">保存済みセットリスト一覧</div><Helper v-if="setLists.length !== 0" :helperObject="helper.list"></Helper>
+          <p v-if="setLists.length === 0" class="_not-yet">保存済みのセットリストはありません</p>
           <div v-for="(setList, index) in setLists" :key="index" class="_multi-box" :class="{'_multi-box-start': index === 0, '_multi-box-end': setLists.length -1 === index}" >
             <router-link :to="{name: 'ShowSetList', params:{id: setList.id}}" class="_multi-inner" :class="{'_multi-inner-end': setLists.length -1 === index}">
               <p class="_multi-text">{{setList.name}}</p>
@@ -97,6 +98,7 @@ export default {
     }
   },
   created(){
+    this._authCheck()
     db.getSetLists(this.$store.getters['auth/userId'])
     .then((querySnapShot)=>{
       querySnapShot.forEach(doc => {

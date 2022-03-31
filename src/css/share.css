@@ -256,6 +256,16 @@ a{
   background-color: var(--white-line);
 }
 
+/* リストを表示するときにまだデータがないとき用 */
+._not-yet{
+  width: 100%;
+  margin: 0 auto;
+  background-color: var(--white);
+  border-radius: 4px;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+}
 
 /* 入力用フォーム */
 
@@ -578,7 +588,8 @@ a{
   height: 50px;
   border-radius: 4px;
   background-color: var(--white);
-  color: var(--blue)
+  color: var(--blue);
+  cursor: pointer;
 }
 ._link-mini-red{
   display: block;
@@ -588,7 +599,8 @@ a{
   height: 50px;
   border-radius: 4px;
   background-color: var(--red);
-  color: var(--white)
+  color: var(--white);
+  cursor: pointer;
 }
 ._link-mini-blue{
   display: block;
@@ -598,7 +610,8 @@ a{
   height: 50px;
   border-radius: 4px;
   background-color: var(--blue);
-  color: var(--white)
+  color: var(--white);
+  cursor: pointer;
 }
 ._link-mini-line-blue{
   display: block;
@@ -611,6 +624,7 @@ a{
   color: var(--blue);
   border: 4px solid var(--blue);
   box-sizing: border-box;
+  cursor: pointer;
 }
 ._link-mini-line-white{
   display: block;
@@ -623,6 +637,7 @@ a{
   color: var(--white);
   border: 4px solid var(--white);
   box-sizing: border-box;
+  cursor: pointer;
 }
 ._link-mini-icon{
   position: absolute;

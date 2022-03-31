@@ -27,7 +27,7 @@
         <div class="_multi-box _multi-box-start" >
           <div class="_multi-inner">
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
-            <select v-model="user.prefecture"  @change="_selectColor($event)" @blur="v$.user.prefecture.$touch()" required id="prefecture" :class="{'_input-error': v$.user.prefecture.$error}" class="_multi-select" >
+            <select v-model="user.prefecture"  @change="_selectColor($event)" @blur="v$.user.prefecture.$touch()" required id="prefecture" :class="{'_input-select-exist': user.prefecture !== null}" class="_multi-select" >
               <option :value="null" disabled class="_select-default">都道府県の選択</option>
               <option v-for="prefecture in $store.getters['select/prefecture']" :key="prefecture.id" :value="prefecture.text" :style="{'color': '#131313'}" >{{prefecture.text}}</option>
             </select>

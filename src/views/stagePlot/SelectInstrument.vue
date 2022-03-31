@@ -55,7 +55,7 @@ export default {
     }
   },
   created(){
-
+    this._authCheck()
   },
   mounted(){
     

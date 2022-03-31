@@ -121,9 +121,11 @@ export default {
     }
   },
   created(){
+    this._authCheck()
     db.getIdol(this.$route.params.id)
     .then((doc)=>{
       this.idol = doc.data()
+      this._userCheck(this.idol.userId)
     })
     .catch((error)=>{
       console.log(error.message)

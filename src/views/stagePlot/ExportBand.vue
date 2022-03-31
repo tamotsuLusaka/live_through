@@ -289,6 +289,7 @@ export default {
   },
   async created(){
     this.band = this.$store.getters['data/exportBand']
+    this._userCheck(this.band.userId)
     await db.getUser(this.$store.getters['auth/userId'])
     .then((doc)=>{
       this.userName = doc.data().name

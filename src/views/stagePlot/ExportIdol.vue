@@ -147,6 +147,7 @@ export default {
   },
   async created(){
     this.idol = this.$store.getters['data/exportIdol']
+    this._userCheck(this.idol.userId)
     await db.getUser(this.$store.getters['auth/userId'])
     .then((doc)=>{
       this.userName = doc.data().name

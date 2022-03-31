@@ -374,6 +374,7 @@ export default {
     }
   },
   async created(){
+    this._authCheck()
     await db.getMusics(this.$store.getters['auth/userId'])
     .then((querySnapShot)=>{
       if(querySnapShot.empty){
@@ -396,7 +397,7 @@ export default {
       db.getSetList(this.$route.params.id)
       .then((doc)=>{
         this.setList = doc.data()
-        this.backPath = `/set_list/${this.setList.id}`
+        this._userCheck(this.setList.userId)
         this.setList.lists.sort((a, b)=>{
           if(a.order < b.order){return -1}
           if(a.order > b.order){return 1}

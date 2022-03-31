@@ -132,6 +132,7 @@ export default {
     }
   },
   async created(){
+    this._authCheck()
     await db.getMusics(this.$store.getters['auth/userId'])
     .then((querySnapShot)=>{
       querySnapShot.forEach(doc => {
@@ -147,6 +148,7 @@ export default {
     await db.getSetList(this.$route.params.id)
     .then((doc)=>{
       this.setList = doc.data()
+      this._userCheck(this.setList.userId)
     })
     .catch((error)=>{
       console.log(error.message)

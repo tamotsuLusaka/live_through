@@ -87,7 +87,7 @@ export default {
     
   },
   created(){
-
+    this._authCheck()
   },
   methods:{
     createPlot(){

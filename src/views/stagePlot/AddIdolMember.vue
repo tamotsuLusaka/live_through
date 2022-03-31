@@ -94,6 +94,7 @@ export default {
     }
   },
   created(){
+    this._authCheck()
     this.idol = this.$store.getters['data/idol']
     if(this.$route.params.memberId){
       this.member = this.idol.lists.find(member=> member.id === this.$route.params.memberId)

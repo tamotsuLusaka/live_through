@@ -13,7 +13,8 @@
               </div>
             </div>
           </router-link>
-          <div v-if="stagePlots.length !== 0" class="_label-white">保存済みステージプロット一覧</div><Helper :helperObject="helper.list"></Helper>
+          <div class="_label-white">保存済みステージプロット一覧</div><Helper :helperObject="helper.list"></Helper>
+          <p v-if="stagePlots.length === 0" class="_not-yet">保存済みのステージプロットはありません</p>
           <div v-for="(stagePlot, index) in stagePlots" :key="index" class="_multi-box" :class="{'_multi-box-start': index === 0, '_multi-box-end': stagePlots.length -1 === index}" >
             <div v-if="stagePlot.type ==='band'">
               <router-link :to="{name: 'ShowBand', params:{id: stagePlot.id}}" class="_multi-inner" :class="{'_multi-inner-end': stagePlots.length -1 === index}">
@@ -135,6 +136,7 @@ export default {
     }
   },
   created(){
+    this._authCheck()
     db.getBands(this.$store.getters['auth/userId'])
     .then((querySnapShot)=>{
       querySnapShot.forEach(doc => {

@@ -154,12 +154,14 @@ export default {
     }
   },
   created(){
+    this._authCheck()
     if(this.$route.params.id){
       this.mode = "edit"
       this.pageTitle = "楽曲の編集"
       db.getMusic(this.$route.params.id)
       .then((doc)=>{
         this.music = doc.data()
+        this._userCheck(this.music.userId)
       })
       .catch((error)=>{
         this.errorMessage = "データの取得に失敗しました。"

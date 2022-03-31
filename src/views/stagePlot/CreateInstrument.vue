@@ -711,10 +711,12 @@ export default {
     }
   },
   async created(){
+    this._authCheck()
     console.log(`yes, created.`);
     await db.getBand(this.$route.params.id)
     .then((doc)=>{
       this.band = doc.data()
+      this._userCheck(this.band.userId)
     })
     .catch((error)=>{
       this.errorMessage = "データの取得に失敗しました。"
