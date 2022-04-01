@@ -5,7 +5,8 @@ export default class Instrument{
   member = null
   position = {x: null, y: null, xSpan: 1, ySpan: 1}
   isVocal = false
-  vocal = {part: null, monitor: 1} //part: "ボーカル", "コーラス", "MC", monitor モニターの数にはバリデーションかけずに選ばなければ初期値の1を入れている。ドラム専用を作ることを回避するため。コーラス選ばなければ数は変更できない。書き出しの時にコーラス以外はこの数字を反映させない。
+  vocal = {part: null} //part: "ボーカル", "コーラス", "MC", monitor モニターの数にはバリデーションかけずに選ばなければ初期値の1を入れている。ドラム専用を作ることを回避するため。コーラス選ばなければ数は変更できない。書き出しの時にコーラス以外はこの数字を反映させない。
+  speaker = null // nullは一つ 2 or 0が入る
   isBroughtMic = false
   mic = {type: null, brand: null, model: null} // type: (line)
   isAmp = false

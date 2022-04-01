@@ -101,7 +101,7 @@ export default{
       {text: "ステレオ"},
     ],
     line:[
-      {text: "有線", plot: "有線"},
+      {text: "有線マイク", plot: "有線"},
       {text: "ワイヤレスマイク（2.4GHz帯）", plot: "W/L 2.4GHz"},
       {text: "ワイヤレスマイク（B帯）", plot: "W/L B帯"},
       {text: "ワイヤレスマイク（WS帯）", plot: "W/L WS帯"},
@@ -118,8 +118,8 @@ export default{
       {text: "ワイヤレス（WS帯）", plot: "W/L WS帯"},
     ],
     site:[
-      {text: "右側"},
-      {text: "左側"},
+      {id: "right", text: "ドラムの上手側（ステージに向かって右）"},
+      {id: "left", text: "ドラムの下手側（ステージに向かって左）"},
     ],
     instrument:[
       {value: "Vo", plot: "Vocal", text: "ボーカル", view:"ボーカル(楽器無し)", xSpan: 3, ySpan: 3},

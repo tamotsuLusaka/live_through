@@ -56,6 +56,22 @@
                 <p class="text">持込み無し</p>
               </div>
             </div>
+            <!-- スピーカー -->
+            <div v-if="instrument.type !== 'ドラム'" class="_multi-box">
+              <div class="_flex-multi-inner">
+                <p class="_multi-sub_title-blue">モニタースピーカー</p>
+                <p v-if="instrument.vocal.part === 'ボーカル'" class="text">2台</p>
+                <p v-else-if="instrument.speaker === null" class="text">1台</p>
+                <p v-else-if="instrument.speaker === 2" class="text">2台</p>
+                <p v-else-if="instrument.speaker === 0" class="text">無し</p>
+              </div>
+            </div>
+            <div v-if="instrument.isVocal &&  !instrument.isBroughtMic" class="_multi-box">
+              <div class="_flex-multi-inner">
+                <p class="_multi-sub_title-blue">マイク</p>
+                <p class="text">持込み無し</p>
+              </div>
+            </div>
             <!-- アンプ -->
             <div v-if="instrument.isAmp" class="_multi-box">
               <div class="_flex-multi-inner">

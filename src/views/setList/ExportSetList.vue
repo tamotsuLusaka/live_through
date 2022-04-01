@@ -42,17 +42,17 @@
           <label class="_select-icon"><img src="@/assets/images/icon-arrow-b.png" alt="" class="_arrow"></label>
           <select v-model="exportPreparation.type" @blur="v$.exportPreparation.type.$touch()" required :class="{'_input-error': v$.exportPreparation.type.$error, '_input-select-exist': exportPreparation.type !== null}" class="_input-select" >
             <option :value="null" class="_select-default" disabled >フォーマットを選択</option>
-            <option :style="{'color': '#131313'}" :value="'normal'"  >音響照明用</option>
-            <option :style="{'color': '#131313'}" :value="'stage'"  >ステージ用</option>
-            <option :style="{'color': '#131313'}" :value="'stageTurnOver'"  >ステージ用（反転）</option>
+            <option :style="{'color': '#131313'}" :value="'normal'"  >【音響照明用】</option>
+            <option :style="{'color': '#131313'}" :value="'stage'"  >【ステージ用】（黒文字、白背景）</option>
+            <option :style="{'color': '#131313'}" :value="'stageTurnOver'"  >【反転ステージ用】（白文字、黒背景）</option>
           </select>
         </div>
       </div>
       <div class="_button-container">
         <button :disabled="v$.exportPreparation.$invalid || inactiveButton" @click="exportPDF()" :class="{'_invalid-button': v$.exportPreparation.$invalid}" class="_button-s _marginM">PDF書き出し</button>
-        <p class="_description _marginS">※PDF書き出し保存がうまくいかない場合は下記【画像を表示】でJPEG画像が表示されます。表示された画像を保存して下さい。</p>
-        <button :disabled="v$.exportPreparation.$invalid || inactiveButton" @click="viewImage()" :class="{'_invalid-button': v$.exportPreparation.$invalid}" class="_button-s">画像を表示</button>
+        <button :disabled="v$.exportPreparation.$invalid || inactiveButton" @click="viewImage()" :class="{'_invalid-button': v$.exportPreparation.$invalid}" class="_button-a">画像を表示</button>
       </div>
+      <p class="_description _marginS">※PDF書き出し保存がうまくいかない場合は下記【画像を表示】でJPEG画像が表示されます。表示された画像を保存して下さい。</p>
 
       <!-- <a id="download" target="_blank">ダウンロードスイッチ</a> -->
       <div class="render-container">

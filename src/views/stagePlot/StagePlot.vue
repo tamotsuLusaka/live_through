@@ -31,7 +31,7 @@
           </div>
         </div>
 
-        <div class="info">
+        <div class="_info">
           <div v-if="!isShownFlow" @click="showFlow()" class="_link-mini-line-white _marginS">
             <img src="@/assets/images/icon-book-white.png" class="_link-mini-icon" alt="">
             <p class="_link-mini-text">ステージプロット作成の流れ</p>

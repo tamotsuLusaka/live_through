@@ -35,7 +35,7 @@
       <img src="@/assets/images/cross.png" @click="close()" class="menu-close" alt="">
       <div class="menu-container">
         <div class="menu-top">
-          <img src="@/assets/images/logo.png" class="menu-logo" alt="ロゴ">
+          <img @click="link('Home')" src="@/assets/images/logo.png" class="menu-logo" alt="ロゴ">
           <ul>
             <li @click="link('SetList')" class="menu-link"><img src="@/assets/images/icon-mic-blue.png" class="menu-icon" alt=""><span>セットリスト</span></li>
             <li @click="link('StagePlot')" class="menu-link"><img src="@/assets/images/icon-stage-blue.png" class="menu-icon" alt=""><span>ステージプロット</span></li>
