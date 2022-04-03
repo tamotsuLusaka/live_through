@@ -367,7 +367,7 @@ export default {
   margin: 0 0 10px 10px;
 }
 .info-instrument span{
-  font-size: 12px;
+  font-size: 15px;
 }
 .info-t{
   margin:0 0 10px 5px;

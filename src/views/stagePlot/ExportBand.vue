@@ -125,7 +125,7 @@
         </div>
 
         <div class="info">
-          <div class="info-container">
+          <div class="info-left-container">
             <p class="info-title">会場レンタル</p>
             <div class="info-box">
               <div v-for="instrument in band.lists" :key="instrument.id">
@@ -154,7 +154,7 @@
               </div>
             </div>
           </div>
-          <div class="info-container">
+          <div class="info-right-container">
             <p class="info-title">持込み機材</p>
             <div class="info-box">
               <div v-for="instrument in band.lists" :key="instrument.id">
@@ -640,8 +640,12 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-.info-container{
-  width: 50%;
+.info-left-container{
+  width: 34%;
+  margin-right: 2%;
+}
+.info-right-container{
+  width: 64%;
 }
 .info-title{
   font-weight: 700;
@@ -649,14 +653,15 @@ export default {
 }
 .info-box{
   border-left: 5px solid var(--black);
-  height: 630px;
+  height: 600px;
 }
 .info-instrument{
-  margin: 0 0 10px 10px;
+  margin: 10px;
   text-align: justify;
+  line-height: 21px;
 }
 .info-instrument span{
-  font-size: 12px;
+  font-size: 15px;
 }
 .info-t{
   margin-right: 10px;
@@ -664,14 +669,14 @@ export default {
 }
 
 .note{
-  height: 60px;
-  margin: 10px 0;
-  font-size: 13px;
+  height: 90px;
+  margin: 16px 0;
+  font-size: 14px;
   display: flex;
   justify-content: space-between;
 }
 .note-left{
-  width: 85%;
+  width: 88%;
 }
 .note-left p{
   text-align: justify;
@@ -681,7 +686,7 @@ export default {
 }
 .pdf-logo{
   display: block;
-  margin-top: 40px;
+  margin-top: 50px;
   width: 100%;
 }
 .render-space{
