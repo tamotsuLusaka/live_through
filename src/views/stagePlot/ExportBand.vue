@@ -58,7 +58,7 @@
                 <div class="box-right">
                   <div class="box-right-top">
                     <p v-if="instrument.isBroughtMic" class="t-s red">[持込]</p>
-                    <p v-if="instrument.isBroughtMic" class="box-text-hide t-s red box-margin">{{instrument.mic.model}}</p>
+                    <p v-if="instrument.isBroughtMic" class="box-text-hide t-s red box-margin"><span v-if="instrument.mic.model === null || instrument.mic.model === ''">Mic</span>{{instrument.mic.model}}</p>
                     <p v-if="instrument.isBroughtMicForInstrument" class="t-s red">楽器Mic:<span v-if="instrument.micForInstrument.type === '有線マイク'">有線</span><span v-else>W/L</span></p>
                     <p v-if="instrument.isBroughtMicForInstrument" class="box-text-hide t-s red box-margin">{{instrument.micForInstrument.model}}</p>
                     <p v-if="instrument.isBroughtMonitor" class="t-s red">IEM:<span v-if="instrument.monitor.type === '有線マイク'">有線</span><span v-else>W/L</span></p>
@@ -103,7 +103,7 @@
                   <img v-if="instrument.isVocal" src="@/assets/images/stage-mic.png" class="drum-box-mic" alt="">
                   <img src="@/assets/images/stage-monitor-drum.png" class="drum-box-monitor" alt="">
                 </div>
-                <div :class="{'drum-box-more-left': instrument.syncForDrum.site === 'left', 'drum-box-more-right': instrument.syncForDrum.site === 'right'}" class="drum-box-more">
+                <div :class="{'drum-box-more-left': instrument.syncForDrum.site === 'left'}" class="drum-box-more">
                   <img v-if="instrument.isPower" src="@/assets/images/stage-tag-v.png" class="box-tag" alt="">
                   <div v-if="instrument.isSyncForDrum" class="sync  box-margin">
                     <img v-if="instrument.syncForDrum.type === 'PC'" src="@/assets/images/stage-tag-pc.png" class="box-tag" alt="">
@@ -112,7 +112,7 @@
                     <p class="t-s">{{$store.getters['select/getChannelForSyncPlot'](instrument.syncForDrum.channel)}}:{{$store.getters['select/getTerminalPlot'](instrument.syncForDrum.terminal)}}</p>
                   </div>
                   <p class="t-s red">[持込]</p>
-                  <p v-if="instrument.isBroughtMic" class="box-text-hide t-s red box-margin">{{instrument.mic.model}}</p>
+                  <p v-if="instrument.isBroughtMic" class="box-text-hide t-s red box-margin"><span v-if="instrument.mic.model === null || instrument.mic.model === ''">Mic</span>{{instrument.mic.model}}</p>
                   <p v-if="instrument.isBroughtMonitor" class="t-s red">IEM:<span v-if="instrument.monitor.type === '有線'">有線</span><span v-else>W/L</span></p>
                   <p v-if="instrument.isBroughtMonitor" class="box-text-hide t-s red">{{$store.getters['select/getChannelPlot'](instrument.monitor.channel)}}</p>
                 </div>
@@ -130,10 +130,10 @@
             <div class="info-box">
               <div v-for="instrument in band.lists" :key="instrument.id">
                 <div class="info-instrument">
-                  <span v-if="instrument.type !== 'ボーカル' && instrument.vocal.part === 'ボーカル'">Vocal. </span>
-                  <span v-if="instrument.type !== 'その他'">{{$store.getters['select/getInstrumentPlot'](instrument.type)}}</span>
-                  <span v-if="instrument.type === 'その他'">{{instrument.etc}}</span>
-                  <span v-if="instrument.type !== 'コーラス' && instrument.vocal.part === 'コーラス'">.Chorus</span>
+                  <span v-if="instrument.type !== 'ボーカル' && instrument.vocal.part === 'ボーカル'" class="info-n">Vocal. </span>
+                  <span v-if="instrument.type !== 'その他'" class="info-n">{{$store.getters['select/getInstrumentPlot'](instrument.type)}}</span>
+                  <span v-if="instrument.type === 'その他'" class="info-n">{{instrument.etc}}</span>
+                  <span v-if="instrument.type !== 'コーラス' && instrument.vocal.part === 'コーラス'" class="info-n">.Chorus</span>
                   <span>/{{instrument.member}}：</span>
                   <!-- DI -->
                   <span v-if="instrument.type === 'ベース' || instrument.isLineOutForAcousticGuitar" class="info-t"><span v-if="instrument.idBroughtDi">DI </span></span>
@@ -159,10 +159,11 @@
             <div class="info-box">
               <div v-for="instrument in band.lists" :key="instrument.id">
                 <div class="info-instrument">
-                  <span v-if="instrument.type !== 'ボーカル' && instrument.vocal.part === 'ボーカル'">Vocal、</span>
-                  <span v-if="instrument.type !== 'その他'">{{$store.getters['select/getInstrumentPlot'](instrument.type)}}/</span>
-                  <span v-if="instrument.type === 'その他'">{{instrument.etc}}/</span>
-                  <span>{{instrument.member}}：</span>
+                  <span v-if="instrument.type !== 'ボーカル' && instrument.vocal.part === 'ボーカル'" class="info-n">Vocal.</span>
+                  <span v-if="instrument.type !== 'その他'" class="info-n">{{$store.getters['select/getInstrumentPlot'](instrument.type)}}</span>
+                  <span v-if="instrument.type === 'その他'" class="info-n">{{instrument.etc}}</span>
+                  <span v-if="instrument.type !== 'コーラス' && instrument.vocal.part === 'コーラス'" class="info-n">.Chorus</span>
+                  <span>/{{instrument.member}}：</span>
                   <!-- マイク -->
                   <span v-if="instrument.isBroughtMic" class="info-t">[Mic] <span v-if="instrument.mic.type !== '有線マイク'">{{$store.getters['select/getLinePlot'](instrument.mic.type)}}-</span>{{instrument.mic.brand}}<span v-if="instrument.mic.brand && instrument.mic.model">/</span>{{instrument.mic.model}}</span>
                   <!-- 楽器マイク -->
@@ -199,14 +200,9 @@
         </div>
 
         <div class="note">
-          <div class="note-left">
             <p>備考：{{band.text}}</p>
-          </div>
-          <div class="note-right">
-            <img src="@/assets/images/logo.png" class="pdf-logo" alt="">
-          </div>
-          
         </div>
+        <img src="@/assets/images/logo.png" class="pdf-logo" alt="">
 
       </div>
 
@@ -592,12 +588,10 @@ export default {
 .drum-box-more{
   position: absolute;
   top: 50px;
+  left: 220px;
 }
 .drum-box-more-left{
   left: 100px;
-}
-.drum-box-more-right{
-  right: 30px;
 }
 .drum-box-bring{
   margin: 150px 10px 5px;
@@ -663,31 +657,29 @@ export default {
 .info-instrument span{
   font-size: 15px;
 }
+.info-n{
+  font-weight: 700;
+}
 .info-t{
   margin-right: 10px;
   word-break: break-all;
 }
 
 .note{
-  height: 90px;
-  margin: 16px 0;
+  position: absolute;
+  left: 5px;
+  bottom: 0;
+  height: 75px;
   font-size: 14px;
-  display: flex;
-  justify-content: space-between;
-}
-.note-left{
   width: 88%;
-}
-.note-left p{
   text-align: justify;
 }
-.note-right{
-  width: 10%;
-}
 .pdf-logo{
+  position: absolute;
+  right: 5px;
+  bottom: 10px;
   display: block;
-  margin-top: 50px;
-  width: 100%;
+  width: 100px;
 }
 .render-space{
   width: 100%;

@@ -92,7 +92,7 @@ export default {
 
       band: new Band(),
       isBandFetched: false,
-      maxMember: 6, //最大人数
+      maxMember: 7, //最大人数
 
       helper:{
         list:{
