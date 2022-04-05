@@ -5,6 +5,7 @@ export default class User{
   email = null
   prefecture = null
   city = null
+  isActive = true
   createdAt = null
   updatedAt = null
 
@@ -15,6 +16,7 @@ export default class User{
     this.email = user.email
     this.prefecture = user.prefecture
     this.city = user.city
+    this.isActive = user.isActive
     this.createdAt = user.createdAt
     this.updatedAt = user.updatedAt
   }

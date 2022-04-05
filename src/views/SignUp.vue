@@ -27,8 +27,8 @@
         <div class="_multi-box _multi-box-start" >
           <div class="_multi-inner">
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
-            <select v-model="user.prefecture"  @change="_selectColor($event)" @blur="v$.user.prefecture.$touch()" required id="prefecture" :class="{'_input-select-exist': user.prefecture !== null}" class="_multi-select" >
-              <option :value="null" disabled class="_select-default">都道府県の選択</option>
+            <select v-model="user.prefecture"  @blur="v$.user.prefecture.$touch()" required id="prefecture" :class="{'_input-select-exist': user.prefecture !== null}" class="_multi-select" >
+              <option :value="null" disabled class="_select-default">都道府県を選択</option>
               <option v-for="prefecture in $store.getters['select/prefecture']" :key="prefecture.id" :value="prefecture.text" :style="{'color': '#131313'}" >{{prefecture.text}}</option>
             </select>
           </div>
@@ -93,6 +93,7 @@ export default {
       inactiveButton: false,
       errorMessage:"",
       user: new User(),
+      userInfo: new User(),
       // パスワードの表示切り替えステータス
       passwordInputType: "password",
       showPasswordIcon: require("@/assets/images/visibility-on.png"),
@@ -114,10 +115,14 @@ export default {
       this.inactiveButton = true
       auth.signUp(this.user.email, this.user.password)
       .then((userCredential)=>{
-        this.user.id = userCredential.user.uid
-        db.createUser(this.user)
+        this.userInfo.id = userCredential.user.uid
+        this.userInfo.name = this.user.name
+        this.userInfo.email = this.user.email
+        this.userInfo.prefecture = this.user.prefecture
+        this.userInfo.city = this.user.city
+        db.createUser(this.userInfo)
         .then(()=>{
-          this.$store.commit('auth/setUserName', this.user.name)
+          this.$store.commit('auth/setUserName', this.userInfo.name)
           this.$router.push({name: 'Home'})
         })
         .catch((error)=>{

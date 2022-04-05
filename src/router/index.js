@@ -26,6 +26,7 @@ import Setting from '@/views/setting/Setting.vue'
 import EditUser from '@/views/setting/EditUser.vue'
 import Policy from '@/views/Policy.vue'
 import Rule from '@/views/Rule.vue'
+import Manager from '@/views/Manager.vue'
 
 const routes = [
   {
@@ -212,6 +213,12 @@ const routes = [
     path: '/rule',
     name: 'Rule',
     component: Rule,
+    props: true
+  },
+  {
+    path: '/manager',
+    name: 'Manager',
+    component: Manager,
     props: true
   },
 ]

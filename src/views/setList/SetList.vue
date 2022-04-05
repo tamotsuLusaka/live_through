@@ -67,7 +67,7 @@ import SubHeader from '@/components/SubHeader.vue'
 import Footer from '@/components/Footer.vue'
 import Helper from '@/components/Helper.vue'
 
-import db from '@/firebase/modules/db.js'
+import * as db from '@/firebase/modules/db.js'
 
 export default {
   name: 'SetList',

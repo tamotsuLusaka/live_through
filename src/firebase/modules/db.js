@@ -34,6 +34,10 @@ export default {
     const docRef = doc(db, "user", userId)
     return getDoc(docRef)
   },
+  getUsers(){
+    const q = query(collection(db, "user"))
+    return getDocs(q)
+  },
   async createMusic(music){
     music.createdAt = serverTimestamp()
     music.updatedAt = serverTimestamp()
