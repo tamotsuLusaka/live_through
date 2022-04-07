@@ -4,14 +4,14 @@
       <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
       <div class="_content-s">
         <div class="list">
-          <router-link :to="{name: 'CreateSetList'}" class="_link _marginM">
+          <div @click="newCreate()" class="_link _marginM">
             <div class="_link-container">
               <img src="@/assets/images/icon-mic-blue-t.png" class="_link-icon" alt="セットリスト">
               <div class="_link-box">
                 <p class="_link-p">セットリストの新規作成</p>
               </div>
             </div>
-          </router-link>
+          </div>
           <div class="_label-white">保存済みセットリスト一覧</div><Helper v-if="setLists.length !== 0" :helperObject="helper.list"></Helper>
           <p v-if="setLists.length === 0" class="_not-yet">保存済みのセットリストはありません</p>
           <div v-for="(setList, index) in setLists" :key="index" class="_multi-box" :class="{'_multi-box-start': index === 0, '_multi-box-end': setLists.length -1 === index}" >
@@ -56,6 +56,7 @@
         </div>
       </div>
       <Footer></Footer>
+      <Alert :isShown="isAlertShown" :message="alertMessage" @closeAlert="closeAlert()"></Alert>
     </div>
   </div>
 </template>
@@ -66,8 +67,9 @@ import Mixin from '@/mixin/mixin.js'
 import SubHeader from '@/components/SubHeader.vue'
 import Footer from '@/components/Footer.vue'
 import Helper from '@/components/Helper.vue'
+import Alert from '@/components/Alert.vue'
 
-import * as db from '@/firebase/modules/db.js'
+import db from '@/firebase/modules/db.js'
 
 export default {
   name: 'SetList',
@@ -75,6 +77,7 @@ export default {
     SubHeader,
     Footer,
     Helper,
+    Alert,
   },
   mixins:[
     Mixin
@@ -85,8 +88,11 @@ export default {
       pageTitle:"セットリスト",
       isBack: true,
       isPcTitle: false,
+      isAlertShown: false,
+      alertMessage: "セットリストの上限に達しています。不要なセットリストを削除してください。",
 
       setLists: [],
+      maxSetList: 5,
       isShownFlow: false,
 
       helper:{
@@ -115,6 +121,18 @@ export default {
   methods:{
     showFlow(){
       this.isShownFlow = !this.isShownFlow
+    },
+    newCreate(){
+      if(this.setLists.length < this.maxSetList){
+        this.$router.push({name: 'CreateSetList'})
+      }else{
+        this._stop(true)
+        this.isAlertShown = true
+      }
+    },
+    closeAlert(){
+      this._stop(false)
+      this.isAlertShown = false
     }
   },
   computed:{

@@ -4,7 +4,7 @@
       <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
       <div class="_content-s">
         <div class="list">
-          <router-link :to="{name: 'CreateStagePlot'}" class="_link _marginM">
+          <div @click="newCreate()" class="_link _marginM">
             <div class="_link-container">
               <img src="@/assets/images/icon-stage-blue-t.png" class="_link-icon" alt="セットリスト">
               <div class="_link-box">
@@ -12,7 +12,7 @@
                 <p  v-if="mq.current === 'lg'" class="_link-p">ステージプロットの新規作成</p>
               </div>
             </div>
-          </router-link>
+          </div>
           <div class="_label-white">保存済みステージプロット一覧</div><Helper :helperObject="helper.list"></Helper>
           <p v-if="stagePlots.length === 0" class="_not-yet">保存済みのステージプロットはありません</p>
           <div v-for="(stagePlot, index) in stagePlots" :key="index" class="_multi-box" :class="{'_multi-box-start': index === 0, '_multi-box-end': stagePlots.length -1 === index}" >
@@ -94,6 +94,7 @@
 
       </div>
       <Footer></Footer>
+      <Alert :isShown="isAlertShown" :message="alertMessage" @closeAlert="closeAlert()"></Alert>
     </div>
   </div>
 </template>
@@ -104,6 +105,7 @@ import Mixin from '@/mixin/mixin.js'
 import SubHeader from '@/components/SubHeader.vue'
 import Footer from '@/components/Footer.vue'
 import Helper from '@/components/Helper.vue'
+import Alert from '@/components/Alert.vue'
 
 import db from '@/firebase/modules/db.js'
 
@@ -113,6 +115,7 @@ export default {
     SubHeader,
     Footer,
     Helper,
+    Alert,
   },
   mixins:[
     Mixin
@@ -123,8 +126,11 @@ export default {
       pageTitle:"ステージプロット",
       isBack: true,
       isPcTitle: false,
+      isAlertShown: false,
+      alertMessage: "ステージプロットの上限に達しています。不要なステージプロットを削除してください。",
 
       stagePlots: [],
+      maxStagePlot: 5,
       isShownFlow: false,
 
       helper:{
@@ -162,6 +168,18 @@ export default {
   methods:{
     showFlow(){
       this.isShownFlow = !this.isShownFlow
+    },
+    newCreate(){
+      if(this.stagePlots.length < this.maxStagePlot){
+        this.$router.push({name: 'CreateStagePlot'})
+      }else{
+        this._stop(true)
+        this.isAlertShown = true
+      }
+    },
+    closeAlert(){
+      this._stop(false)
+      this.isAlertShown = false
     }
   },
   computed:{
