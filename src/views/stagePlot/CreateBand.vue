@@ -35,8 +35,9 @@
       </div>
 
       <div class="_button-container">
-        <button  :disabled="v$.band.$invalid || inactiveButton" @click="editBand()" :class="{'_invalid-button': v$.band.$invalid}" class="_button-s _marginM">保存</button>
-        <button  :disabled="inactiveButton" @click="deleteBand()"  class="_button-red">削除</button>
+        <button  :disabled="v$.band.$invalid || inactiveButton" @click="editBand()" :class="{'_invalid-button': v$.band.$invalid}" class="_button-s">保存</button>
+        <div v-if="v$.band.$invalid" class="_invalid-text"></div>
+        <button  :disabled="inactiveButton" @click="deleteBand()"  class="_button-red _marginM-up">削除</button>
       </div>
     </div>
     <Footer></Footer>

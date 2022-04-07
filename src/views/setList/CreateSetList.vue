@@ -257,10 +257,12 @@
       
       <div v-if="this.mode === 'create'" class="_button-container">
         <button  :disabled="v$.setList.$invalid || inactiveButton" @click="createSetList()" :class="{'_invalid-button': v$.setList.$invalid}" class="_button-s">保存</button>
+        <div v-if="v$.setList.$invalid" class="_invalid-text"></div>
       </div>
       <div v-if="this.mode === 'edit'" class="_button-container">
-        <button  :disabled="v$.setList.$invalid || inactiveButton" @click="editSetList()" :class="{'_invalid-button': v$.setList.$invalid}" class="_button-s _marginM">保存</button>
-        <button  :disabled="inactiveButton" @click="deleteSetList()"  class="_button-red">削除</button>
+        <button  :disabled="v$.setList.$invalid || inactiveButton" @click="editSetList()" :class="{'_invalid-button': v$.setList.$invalid}" class="_button-s">保存</button>
+        <div v-if="v$.setList.$invalid" class="_invalid-text"></div>
+        <button  :disabled="inactiveButton" @click="deleteSetList()"  class="_button-red _marginM-up">削除</button>
       </div>
 
     </div>

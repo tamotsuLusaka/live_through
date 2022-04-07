@@ -165,24 +165,7 @@ a{
   cursor: pointer;
 }
 
-._marginSS{
-  margin-bottom: 10px;
-}
-._marginSS-up{
-  margin-top: 10px;
-}
-._marginS{
-  margin-bottom: 20px;
-}
-._marginM{
-  margin-bottom: 30px;
-}
-._marginL{
-  margin-bottom: 40px;
-}
-._marginLL{
-  margin-bottom: 60px;
-}
+
 
 ._label{
   font-size: 1.3rem;
@@ -693,7 +676,16 @@ a{
   text-align: left;
   padding-top: 30px;
 }
-
+._invalid-text{
+  width: 100%;
+  margin: 10px auto 0;
+  width: 100%;
+  text-align: center;
+  font-size: 1.2rem;
+}
+._invalid-text::after{
+  content: "未入力がある場合はボタンを押せません。";
+}
 
 
 
@@ -1042,6 +1034,29 @@ a{
 }
 .t_mail{
   color: var(--blue);
+}
+
+
+._marginSS{
+  margin-bottom: 10px;
+}
+._marginSS-up{
+  margin-top: 10px;
+}
+._marginS{
+  margin-bottom: 20px;
+}
+._marginM{
+  margin-bottom: 30px;
+}
+._marginM-up{
+  margin-top: 30px;
+}
+._marginL{
+  margin-bottom: 40px;
+}
+._marginLL{
+  margin-bottom: 60px;
 }
 
 @media screen and (min-width:600px){

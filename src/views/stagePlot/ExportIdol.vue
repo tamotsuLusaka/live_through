@@ -64,10 +64,9 @@
           <div class="info-container">
             <div class="info-box">
               <p v-if="idol.isBroughtMic" class="info-t">ワイヤレスマイク：{{$store.getters['select/getLinePlot'](idol.mic.type)}}<span v-if="idol.mic.text !== null">-{{idol.mic.text}}</span></p>
-              <p v-if="!idol.isBroughtMic" class="info-t">ワイヤレスマイク：持込み無し（主催レンタル）</p>
+              <p v-if="!idol.isBroughtMic" class="info-t">ワイヤレスマイク：持込み無し（主催レンタル希望）</p>
               <p class="info-t">音源：<span v-if="idol.source.type === 'その他'">{{idol.source.other}}</span><span v-else>{{idol.source.type}}</span>-{{$store.getters['select/getChannelPlot'](idol.source.channel)}}-{{$store.getters['select/getTerminalPlot'](idol.source.terminal)}}</p>
               <p v-if="idol.isMonitor" class="info-t">IEM：<span v-if="idol.isBroughtMonitor">{{idol.source.other}}持込み{{$store.getters['select/getLinePlot'](idol.monitor.type)}}-{{$store.getters['select/getChannelPlot'](idol.monitor.channel)}}</span><span v-else>持込み無し</span></p>
-              <p v-else class="info-t">IEM：無し</p>
             </div>
           </div>
         </div>
@@ -336,7 +335,7 @@ export default {
   width: 90px;
 }
 .stage-member-person{
-  width: 100%;
+  width: 80%;
   margin-bottom: 0;
 }
 .stage-member-mic{

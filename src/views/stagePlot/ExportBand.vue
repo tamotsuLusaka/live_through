@@ -40,7 +40,7 @@
                     <p v-if="instrument.type === 'その他' " class="t-s bold">{{instrument.etc}}</p>
                     <p v-if="instrument.type !== 'コーラス' && instrument.vocal.part === 'コーラス'" class="box-text t-s bold">Cho</p>
                     <p class="t-s">{{instrument.member}}</p>
-                    <p v-if="instrument.isLineOutForAcousticGuitar" class="t-s">楽器アウト:<br>{{$store.getters['select/getAcousticGuitarPlot'](instrument.acousticGuitar.type)}}</p>
+                    <p v-if="instrument.isLineOutForAcousticGuitar" class="t-s">AGアウト:<br>{{$store.getters['select/getAcousticGuitarPlot'](instrument.acousticGuitar.type)}}</p>
                   </div>
                   <div class="box-left-bottom">
                     <div v-if="instrument.isSync" class="sync">
@@ -59,7 +59,7 @@
                   <div class="box-right-top">
                     <p v-if="instrument.isBroughtMic" class="t-s red">[持込]</p>
                     <p v-if="instrument.isBroughtMic" class="box-text-hide t-s red box-margin"><span v-if="instrument.mic.model === null || instrument.mic.model === ''">Mic</span>{{instrument.mic.model}}</p>
-                    <p v-if="instrument.isBroughtMicForInstrument" class="t-s red">楽器Mic:<span v-if="instrument.micForInstrument.type === '有線マイク'">有線</span><span v-else>W/L</span></p>
+                    <p v-if="instrument.isBroughtMicForInstrument" class="t-s red">楽器Mic:<span v-if="instrument.micForInstrument.type === '有線マイク'"></span><span v-else>W/L</span></p>
                     <p v-if="instrument.isBroughtMicForInstrument" class="box-text-hide t-s red box-margin">{{instrument.micForInstrument.model}}</p>
                     <p v-if="instrument.isBroughtMonitor" class="t-s red">IEM:<span v-if="instrument.monitor.type === '有線マイク'">有線</span><span v-else>W/L</span></p>
                     <p v-if="instrument.isBroughtMonitor" class="box-text-hide t-s red">{{$store.getters['select/getChannelPlot'](instrument.monitor.channel)}}</p>
@@ -77,11 +77,11 @@
             </div>
             <div class="box amp-box" v-if="instrument.isAmp" :style="{'top': `${100 / 9 * instrument.amp.position.y}%`, 'left': `${100 / 15 * instrument.amp.position.x}%`, 'width': `${100 / 15 * instrument.amp.position.xSpan}%`, 'height': `${100 / 9 * instrument.amp.position.ySpan}%`}">
               <p v-if="instrument.amp.type === 'rent'" class="amp-box-text t-s">Head&amp;Cabi<br>レンタル</p>
-              <p v-if="instrument.amp.type === 'rentCombo'" class="amp-box-text t-s">Combo<br>レンタル</p>
+              <p v-if="instrument.amp.type === 'rentCombo'" class="amp-box-text t-s">Combo Amp<br>レンタル</p>
               <p v-if="instrument.amp.type === 'head'" class="amp-box-text t-s"><span class="red">Head持込</span><br>Cabiレンタル</p>
               <p v-if="instrument.amp.type === 'cab'" class="amp-box-text t-s">Headレンタル<br><span class="red">Cabi持込</span></p>
               <p v-if="instrument.amp.type === 'head&cab'" class="amp-box-text t-s red">Head&amp;Cabi<br>持込</p>
-              <p v-if="instrument.amp.type === 'combo'" class="amp-box-text t-s red">Combo<br>持込</p>
+              <p v-if="instrument.amp.type === 'combo'" class="amp-box-text t-s red">Combo Amp<br>持込</p>
               <div class="amp-box-box">
                 <div class="amp-box-title">{{$store.getters['select/getInstrumentValue'](instrument.type)}}.AMP</div>
                 <div v-if="instrument.idBroughtDi" class="amp-box-di t-s red">[持込]DI</div>
@@ -101,7 +101,7 @@
                 </div>
                 <div class="drum-box-right">
                   <img v-if="instrument.isVocal" src="@/assets/images/stage-mic.png" class="drum-box-mic" alt="">
-                  <img src="@/assets/images/stage-monitor-drum.png" class="drum-box-monitor" alt="">
+                  <img v-if="instrument.speaker !== 0" src="@/assets/images/stage-monitor-drum.png" class="drum-box-monitor" alt="">
                 </div>
                 <div :class="{'drum-box-more-left': instrument.syncForDrum.site === 'left'}" class="drum-box-more">
                   <img v-if="instrument.isPower" src="@/assets/images/stage-tag-v.png" class="box-tag" alt="">
@@ -111,14 +111,14 @@
                     <img v-if="instrument.syncForDrum.type === 'その他'" src="@/assets/images/stage-tag-other.png" class="box-tag" alt="">
                     <p class="t-s">{{$store.getters['select/getChannelForSyncPlot'](instrument.syncForDrum.channel)}}:{{$store.getters['select/getTerminalPlot'](instrument.syncForDrum.terminal)}}</p>
                   </div>
-                  <p class="t-s red">[持込]</p>
+                  <p v-if="instrument.isBroughtMic" class="t-s red">[持込]</p>
                   <p v-if="instrument.isBroughtMic" class="box-text-hide t-s red box-margin"><span v-if="instrument.mic.model === null || instrument.mic.model === ''">Mic</span>{{instrument.mic.model}}</p>
                   <p v-if="instrument.isBroughtMonitor" class="t-s red">IEM:<span v-if="instrument.monitor.type === '有線'">有線</span><span v-else>W/L</span></p>
                   <p v-if="instrument.isBroughtMonitor" class="box-text-hide t-s red">{{$store.getters['select/getChannelPlot'](instrument.monitor.channel)}}</p>
                 </div>
               </div>
-              <div class="drum-box-bring">
-                <p class="t-s red">持込：{{instrument.drum.bring}}</p>
+              <div  class="drum-box-bring">
+                <p v-if="instrument.drum.bring !== null" class="t-m red">持込：{{instrument.drum.bring}}</p>
               </div>
             </div>
           </div>
@@ -136,11 +136,11 @@
                   <span v-if="instrument.type !== 'コーラス' && instrument.vocal.part === 'コーラス'" class="info-n">.Chorus</span>
                   <span>/{{instrument.member}}：</span>
                   <!-- DI -->
-                  <span v-if="instrument.type === 'ベース' || instrument.isLineOutForAcousticGuitar" class="info-t"><span v-if="instrument.idBroughtDi">DI </span></span>
+                  <!-- <span v-if="instrument.type === 'ベース' || instrument.isLineOutForAcousticGuitar" class="info-t"><span v-if="instrument.idBroughtDi">DI </span></span>
                   <span v-if=" instrument.type === 'キーボード' && instrument.rentKeyboard !== null" class="info-t">DI </span>
                   <span v-if="instrument.type === 'バイオリン' && !instrument.lineOutForViolin.isDi" class="info-t">DI </span>
                   <span v-if="instrument.lineOutLists.length !== 0" class="info-t"><span v-if="!diCheck(instrument.lineOutLists)">DI </span></span>
-                  <span v-if="instrument.bringKeyboardLists.length !== 0" class="info-t"><span v-if="!diCheck(instrument.bringKeyboardLists)">DI </span></span>
+                  <span v-if="instrument.bringKeyboardLists.length !== 0" class="info-t"><span v-if="!diCheck(instrument.bringKeyboardLists)">DI </span></span> -->
                   <!-- アンプ -->
                   <span v-if="instrument.amp.type === 'rent'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}</span>
                   <span v-if="instrument.amp.type === 'rentCombo'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}</span>
@@ -148,8 +148,11 @@
                   <span v-if="instrument.amp.type === 'cab'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}</span>
                   <!-- キーボード -->
                   <span v-if="instrument.rentKeyboard.number !== null">Keyboard×{{instrument.rentKeyboard.number}}</span>
+                  <span v-if="instrument.ampForKeyboard.type === 'レンタル'">Amp</span>
                   <!-- ドラム -->
                   <span v-if="instrument.type === 'ドラム'"><span v-for="item in instrument.drum.rent" :key="item"><span v-if="item.use">{{item.plot}}, </span></span></span>
+                  <!-- その他レンタル -->
+                  <span v-if="instrument.otherRent !== null">{{instrument.otherRent}}</span>
                 </div>
               </div>
             </div>
@@ -187,7 +190,10 @@
                   <!-- ドラム -->
                   <span v-if="instrument.type === 'ドラム' && instrument.drum.bring !== null" class="info-t">[DrSet] {{instrument.drum.bring}}</span>
                   <!-- パーカッション -->
-                  <span v-if="instrument.type === 'パーカッション'" class="info-t">[Percussion]<span v-for="item in instrument.percussion.bring" :key="item"><span v-if="item.use">{{item.plot}}, <span>{{instrument.percussion.other}}</span></span></span></span>
+                  <span v-if="instrument.type === 'パーカッション'" class="info-t">[Percussion]<span v-for="item in instrument.percussion.bring" :key="item"><span v-if="item.use">{{item.plot}},</span></span><span>{{instrument.percussion.other}}</span></span>
+                  <!-- バイオリン -->
+                  <span v-if="instrument.lineOutForViolin.terminal !== null">[Line out]{{$store.getters['select/getTerminalPlot'](instrument.lineOutForViolin.terminal)}}</span>
+                  <span v-if="instrument.lineOutForViolin.isDi">[DI]</span>
                   <!-- 同期 -->
                   <span v-if="instrument.isSync" class="info-t">[同期] {{instrument.sync.type}}-{{$store.getters['select/getChannelForSyncPlot'](instrument.sync.channel)}}-{{$store.getters['select/getTerminalPlot'](instrument.sync.terminal)}}</span>
                   <span v-if="instrument.isSyncForDrum" class="info-t">[同期] {{instrument.syncForDrum.type}}-{{$store.getters['select/getChannelForSyncPlot'](instrument.syncForDrum.channel)}}-{{$store.getters['select/getTerminalPlot'](instrument.syncForDrum.terminal)}}</span>

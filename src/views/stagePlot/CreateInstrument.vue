@@ -22,7 +22,7 @@
         <StageLayout v-if="isCreated" mode="display" :band="band" :instrument="instrument" class="_marginS"></StageLayout>
         <div @click="editPosition(false)" class="_link-mini-yellow">
           <img src="@/assets/images/icon-pin-blue.png" class="_link-mini-icon" alt="">
-          <p class="_link-mini-text">パート配置を設定</p>
+          <p class="_link-mini-text">パートの立ち位置を設定</p>
         </div>
       </div>
 
@@ -64,18 +64,32 @@
         </div>
         <div v-if="instrument.isBroughtMic" class="_multi-box" :class="{'_multi-box-error': v$.instrument.mic.brand.$error}">
           <div class="_multi-inner">
-            <input type="text" v-model="instrument.mic.brand" @blur="v$.instrument.mic.brand.$touch()" placeholder="メーカー名を10字以内で入力 任意" class="_multi-input-text">
+            <input type="text" v-model="instrument.mic.brand" @blur="v$.instrument.mic.brand.$touch()" placeholder="メーカー名を14字以内で入力 任意" class="_multi-input-text">
           </div>
         </div>
         <div v-if="instrument.isBroughtMic" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.instrument.mic.model.$error}">
           <div class="_multi-inner _multi-inner-end">
-            <input type="text" v-model="instrument.mic.model" @blur="v$.instrument.mic.model.$touch()" placeholder="型番を10字以内で入力 任意" class="_multi-input-text">
+            <input type="text" v-model="instrument.mic.model" @blur="v$.instrument.mic.model.$touch()" placeholder="型番を14字以内で入力 任意" class="_multi-input-text">
           </div>
         </div>
-        <p v-if="v$.instrument.mic.brand.$error || v$.instrument.mic.model.$error" class="_input-error-message">10文字以内で入力してください。</p>
+        <p v-if="v$.instrument.mic.brand.$error || v$.instrument.mic.model.$error" class="_input-error-message">14文字以内で入力してください。</p>
       </div>
 
-      <div v-if="instrument.type !== 'ドラム'">
+      <div v-if="instrument.type === 'ドラム'">
+        <div v-if="instrument.vocal.part !== 'ボーカル'" class="_container">
+          <p class="_label">モニタースピーカー</p>
+          <div class="_multi-box _multi-box-end">
+            <div class="_multi-inner _multi-inner-end">
+              <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
+              <select v-model="instrument.speaker"  class="_multi-select-black" >
+                <option :value="null" :style="{'color': '#131313'}" >モニターの数：1台</option>
+                <option :value="0" :style="{'color': '#131313'}" >モニター無し</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-else>
         <div v-if="instrument.vocal.part !== 'ボーカル'" class="_container">
           <p class="_label">モニタースピーカー</p>
           <div class="_multi-box _multi-box-end">
@@ -104,36 +118,36 @@
         </div>
         <div v-if="instrument.amp.type === 'head' || instrument.amp.type === 'head&cab'"  class="_multi-box" :class="{'_multi-box-error': v$.instrument.amp.brandOfHead.$error}">
           <div class="_multi-inner">
-            <input type="text" v-model="instrument.amp.brandOfHead" @blur="v$.instrument.amp.brandOfHead.$touch()" placeholder="ヘッドメーカー名を10字以内で入力 任意" class="_multi-input-text">
+            <input type="text" v-model="instrument.amp.brandOfHead" @blur="v$.instrument.amp.brandOfHead.$touch()" placeholder="ヘッドメーカー名を14字以内で入力 任意" class="_multi-input-text">
           </div>
         </div>
         <div v-if="instrument.amp.type === 'head' || instrument.amp.type === 'head&cab'"  class="_multi-box" :class="{'_multi-box-error': v$.instrument.amp.modelOfHead.$error, '_multi-box-end': instrument.amp.type === 'head'}">
           <div class="_multi-inner" :class="{'_multi-inner-end': instrument.amp.type === 'head'}">
-            <input type="text" v-model="instrument.amp.modelOfHead" @blur="v$.instrument.amp.modelOfHead.$touch()" placeholder="ヘッド型名を10字以内で入力 任意" class="_multi-input-text">
+            <input type="text" v-model="instrument.amp.modelOfHead" @blur="v$.instrument.amp.modelOfHead.$touch()" placeholder="ヘッド型名を14字以内で入力 任意" class="_multi-input-text">
           </div>
         </div>
         <div v-if="instrument.amp.type === 'cab' || instrument.amp.type === 'head&cab'" class="_multi-box" :class="{'_multi-box-error': v$.instrument.amp.brandOfCab.$error}">
           <div class="_multi-inner _multi-inner-end">
-            <input type="text" v-model="instrument.amp.brandOfCab" @blur="v$.instrument.amp.brandOfCab.$touch()" placeholder="キャビメーカー名を10字以内で入力 任意" class="_multi-input-text">
+            <input type="text" v-model="instrument.amp.brandOfCab" @blur="v$.instrument.amp.brandOfCab.$touch()" placeholder="キャビメーカー名を14字以内で入力 任意" class="_multi-input-text">
           </div>
         </div>
         <div v-if="instrument.amp.type === 'cab' || instrument.amp.type === 'head&cab'" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.instrument.amp.modelOfCab.$error}">
           <div class="_multi-inner _multi-inner-end">
-            <input type="text" v-model="instrument.amp.modelOfCab" @blur="v$.instrument.amp.modelOfCab.$touch()" placeholder="キャビ型名を10字以内で入力 任意" class="_multi-input-text">
+            <input type="text" v-model="instrument.amp.modelOfCab" @blur="v$.instrument.amp.modelOfCab.$touch()" placeholder="キャビ型名を14字以内で入力 任意" class="_multi-input-text">
           </div>
         </div>
         <div v-if="instrument.amp.type === 'combo'" class="_multi-box" :class="{'_multi-box-error': v$.instrument.amp.brandOfCombo.$error}">
           <div class="_multi-inner _multi-inner-end">
-            <input type="text" v-model="instrument.amp.brandOfCombo" @blur="v$.instrument.amp.brandOfCombo.$touch()" placeholder="コンボメーカー名を10字以内で入力 任意" class="_multi-input-text">
+            <input type="text" v-model="instrument.amp.brandOfCombo" @blur="v$.instrument.amp.brandOfCombo.$touch()" placeholder="コンボメーカー名を14字以内で入力 任意" class="_multi-input-text">
           </div>
         </div>
         <div v-if="instrument.amp.type === 'combo'" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.instrument.amp.brandOfCombo.$error}">
           <div class="_multi-inner _multi-inner-end">
-            <input type="text" v-model="instrument.amp.modelOfCombo" @blur="v$.instrument.amp.modelOfCombo.$touch()" placeholder="コンボ型名を10字以内で入力 任意" class="_multi-input-text">
+            <input type="text" v-model="instrument.amp.modelOfCombo" @blur="v$.instrument.amp.modelOfCombo.$touch()" placeholder="コンボ型名を14字以内で入力 任意" class="_multi-input-text">
           </div>
         </div>
         <div class="_marginS">
-          <p v-if="v$.instrument.amp.brandOfHead.$error || v$.instrument.amp.brandOfCab.$error || v$.instrument.amp.brandOfCombo.$error || v$.instrument.amp.modelOfHead.$error || v$.instrument.amp.modelOfCab.$error || v$.instrument.amp.modelOfCombo.$error" class="_input-error-message">10文字以内で入力してください。</p>
+          <p v-if="v$.instrument.amp.brandOfHead.$error || v$.instrument.amp.brandOfCab.$error || v$.instrument.amp.brandOfCombo.$error || v$.instrument.amp.modelOfHead.$error || v$.instrument.amp.modelOfCab.$error || v$.instrument.amp.modelOfCombo.$error" class="_input-error-message">14文字以内で入力してください。</p>
         </div>
         <div @click="editPosition(true)" class="_link-mini-yellow _marginS">
           <img src="@/assets/images/icon-pin-blue.png" class="_link-mini-icon" alt="">
@@ -168,12 +182,12 @@
         </div>
         <div v-if="instrument.idBroughtDi" class="_multi-box" :class="{'_multi-box-error': v$.instrument.di.brand.$error}">
           <div class="_multi-inner">
-            <input type="text" v-model="instrument.di.brand" @blur="v$.instrument.di.brand.$touch()" placeholder="DIメーカー名を10字以内で入力 任意" class="_multi-input-text">
+            <input type="text" v-model="instrument.di.brand" @blur="v$.instrument.di.brand.$touch()" placeholder="DIメーカー名を14字以内で入力 任意" class="_multi-input-text">
           </div>
         </div>
         <div v-if="instrument.idBroughtDi" class="_multi-box" :class="{'_multi-box-error': v$.instrument.di.model.$error}">
           <div class="_multi-inner">
-            <input type="text" v-model="instrument.di.model" @blur="v$.instrument.di.model.$touch()" placeholder="DI型番を10字以内で入力 任意" class="_multi-input-text">
+            <input type="text" v-model="instrument.di.model" @blur="v$.instrument.di.model.$touch()" placeholder="DI型番を14字以内で入力 任意" class="_multi-input-text">
           </div>
         </div>
         <div v-if="instrument.isLineOutForAcousticGuitar" class="_multi-box _multi-box-end">
@@ -181,7 +195,7 @@
             <textarea v-model="instrument.acousticGuitar.text" @blur="v$.instrument.acousticGuitar.text.$touch()" placeholder="備考を30文字以内で入力 任意" :class="{'_input-error': v$.instrument.acousticGuitar.text.$error}" class="_multi-input-textarea"></textarea>
           </div>
         </div>
-        <p v-if="v$.instrument.di.brand.$error || v$.instrument.di.model.$error" class="_input-error-message">10文字以内で入力してください。</p>
+        <p v-if="v$.instrument.di.brand.$error || v$.instrument.di.model.$error" class="_input-error-message">14文字以内で入力してください。</p>
         <p v-if="v$.instrument.acousticGuitar.text.$error" class="_input-error-message">30文字以内で入力してください。</p>
       </div>
 
@@ -411,15 +425,15 @@
         </div>
         <div v-if="instrument.isBroughtMicForInstrument" class="_multi-box" :class="{'_multi-box-error': v$.instrument.micForInstrument.brand.$error}">
           <div class="_multi-inner">
-            <input type="text" v-model="instrument.micForInstrument.brand" @blur="v$.instrument.micForInstrument.brand.$touch()" placeholder="メーカー名を10字以内で入力 任意" class="_multi-input-text">
+            <input type="text" v-model="instrument.micForInstrument.brand" @blur="v$.instrument.micForInstrument.brand.$touch()" placeholder="メーカー名を14字以内で入力 任意" class="_multi-input-text">
           </div>
         </div>
         <div v-if="instrument.isBroughtMicForInstrument" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.instrument.micForInstrument.model.$error}">
           <div class="_multi-inner _multi-inner-end">
-            <input type="text" v-model="instrument.micForInstrument.model" @blur="v$.instrument.micForInstrument.model.$touch()" placeholder="型番を10字以内で入力 任意" class="_multi-input-text">
+            <input type="text" v-model="instrument.micForInstrument.model" @blur="v$.instrument.micForInstrument.model.$touch()" placeholder="型番を14字以内で入力 任意" class="_multi-input-text">
           </div>
         </div>
-        <p v-if="v$.instrument.micForInstrument.brand.$error || v$.instrument.micForInstrument.model.$error" class="_input-error-message">10文字以内で入力してください。</p>
+        <p v-if="v$.instrument.micForInstrument.brand.$error || v$.instrument.micForInstrument.model.$error" class="_input-error-message">14文字以内で入力してください。</p>
       </div>
 
       <div v-if="instrument.type === 'DJ' || instrument.type === 'その他'" class="_container">
@@ -475,7 +489,7 @@
         <div class="_multi-box _multi-box-start">
           <div class="_multi-inner">
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
-            <select v-model="instrument.lineOutForViolin.terminal" @blur="v$.instrument.lineOutForViolin.terminal.$touch()" required :class="{'_input-select-exist': instrument.lineOutForViolin.terminal !== null}" class="_multi-select" >
+            <select v-model="instrument.lineOutForViolin.terminal" :class="{'_input-select-exist': instrument.lineOutForViolin.terminal !== null}" class="_multi-select" >
               <option :value="null" disabled >アウト端子を選択</option>
               <option v-for="select in $store.getters['select/terminalMicro']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >{{select.text}}</option>
             </select>
@@ -543,8 +557,8 @@
             </select>
           </div>
         </div>
-        <div v-if="instrument.isBroughtMonitor" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.instrument.monitor.channel.$error}">
-          <div class="_multi-inner _multi-inner-end">
+        <div v-if="instrument.isBroughtMonitor" class="_multi-box" :class="{'_multi-box-error': v$.instrument.monitor.channel.$error}">
+          <div class="_multi-inner">
             <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
             <select v-model="instrument.monitor.channel" @blur="v$.instrument.monitor.channel.$touch()" required :class="{'_input-select-exist': instrument.monitor.channel !== null}" class="_multi-select" >
               <option :value="null" disabled >チャンネル数を選択</option>
@@ -552,6 +566,21 @@
             </select>
           </div>
         </div>
+        <div v-if="instrument.isBroughtMonitor" class="_multi-box _multi-box-end" :class="{'_multi-box-error': v$.instrument.monitor.channel.$error}">
+          <div class="_multi-inner _multi-inner-end">
+            <img  src="@/assets/images/icon-arrow-b.png" alt="" class="_multi-icon _arrow">
+            <select v-model="instrument.monitor.terminal" @blur="v$.instrument.monitor.terminal.$touch()" required :class="{'_input-select-exist': instrument.monitor.terminal !== null}" class="_multi-select" >
+              <option :value="null" disabled >端子を選択</option>
+              <option v-for="select in $store.getters['select/terminalMicro']" :key="select.text" :value="select.text" :style="{'color': '#131313'}" >{{select.text}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="_container">
+        <label for="textForLighting" class="_label">その他レンタル希望</label>
+        <textarea v-model="instrument.otherRent" @blur="v$.instrument.otherRent.$touch()" placeholder="20文字以内で入力 任意" :class="{'_input-error': v$.instrument.otherRent.$error}" class="_input-textarea"></textarea>
+        <p v-if="v$.instrument.otherRent.$error" class="_input-error-message">20文字以内で入力してください。</p>
       </div>
 
       <div v-if="tag !== 'BRASS'" class="_container">
@@ -566,11 +595,14 @@
 
       <div v-if="this.mode === 'create'" class="_button-container">
         <button  :disabled="v$.instrument.$invalid || inactiveButton" @click="createInstrument()" :class="{'_invalid-button': v$.instrument.$invalid}" class="_button-s">登録</button>
+        <div v-if="v$.instrument.$invalid" class="_invalid-text"></div>
       </div>
       <div v-if="this.mode === 'edit'" class="_button-container">
-        <button  :disabled="v$.instrument.$invalid || inactiveButton" @click="editInstrument()" :class="{'_invalid-button': v$.instrument.$invalid}" class="_button-s _marginM">保存</button>
-        <button  :disabled="inactiveButton" @click="deleteInstrument()"  class="_button-red">削除</button>
+        <button  :disabled="v$.instrument.$invalid || inactiveButton" @click="editInstrument()" :class="{'_invalid-button': v$.instrument.$invalid}" class="_button-s">保存</button>
+        <div v-if="v$.instrument.$invalid" class="_invalid-text"></div>
+        <button  :disabled="inactiveButton" @click="deleteInstrument()"  class="_button-red  _marginM-up">削除</button>
       </div>
+      
     </div>
     <Footer></Footer>
     <Alert :isShown="isAlertShown" :message="alertMessage" @closeAlert="closeAlert()"></Alert>
@@ -910,10 +942,10 @@ export default {
             isChecked: contains(this.instrument.isBroughtMic)
           },
           brand:{
-            maxLength: maxLength(10)
+            maxLength: maxLength(14)
           },
           model:{
-            maxLength: maxLength(10)
+            maxLength: maxLength(14)
           }
         },
         amp:{
@@ -925,30 +957,30 @@ export default {
             y:{ requiredIf: requiredIf(this.instrument.isAmp)  },
           },
           brandOfHead:{
-            maxLength: maxLength(10)
+            maxLength: maxLength(14)
           },
           modelOfHead:{
-            maxLength: maxLength(10)
+            maxLength: maxLength(14)
           },
           brandOfCab:{
-            maxLength: maxLength(10)
+            maxLength: maxLength(14)
           },
           modelOfCab:{
-            maxLength: maxLength(10)
+            maxLength: maxLength(14)
           },
           brandOfCombo:{
-            maxLength: maxLength(10)
+            maxLength: maxLength(14)
           },
           modelOfCombo:{
-            maxLength: maxLength(10)
+            maxLength: maxLength(14)
           },
         },
         di:{
           brand:{
-            maxLength: maxLength(10)
+            maxLength: maxLength(14)
           },
           model:{
-            maxLength: maxLength(10)
+            maxLength: maxLength(14)
           }
         },
         drum:{
@@ -987,17 +1019,17 @@ export default {
             isChecked: contains(this.instrument.isBroughtMicForInstrument)
           },
           brand:{
-            maxLength: maxLength(10)
+            maxLength: maxLength(14)
           },
           model:{
-            maxLength: maxLength(10)
+            maxLength: maxLength(14)
           }
         },
-        lineOutForViolin:{
-          terminal:{
-            isChecked: contains(this.instrument.type === 'バイオリン'),
-          }
-        },
+        // lineOutForViolin:{
+        //   terminal:{
+        //     isChecked: contains(this.instrument.type === 'バイオリン'),
+        //   }
+        // },
 
         sync:{
           type:{
@@ -1031,10 +1063,13 @@ export default {
           channel:{
             isChecked: contains(this.instrument.isBroughtMonitor),
           },
+          terminal:{
+            isChecked: contains(this.instrument.isBroughtMonitor),
+          },
         },
-        // text:{
-        //   maxLength: maxLength(50)
-        // },
+        otherRent:{
+          maxLength: maxLength(20)
+        },
         position: {
           x:{ required },
           y:{ required },

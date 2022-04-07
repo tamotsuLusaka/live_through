@@ -78,6 +78,17 @@
         </div>
       </div>
     </div>
+    <div class="re-button">
+      <div class="re-button-content">
+        <div @click="goEdit()" class="_link-mini-line-blue _marginS">
+          <p class="_link-mini-text">ステージプロットの編集</p>
+        </div>
+        <div @click="goExport()" class="_link-mini-blue _marginS">
+          <img src="@/assets/images/icon-pdf-white.png" class="_link-mini-icon " alt="">
+          <p class="_link-mini-text">PDFで書き出し</p>
+        </div>
+      </div>
+    </div>
     <Footer></Footer>
   </div>
 </template>
@@ -191,9 +202,18 @@ export default {
   color: var(--white);
   margin-bottom: 30px;
 }
-
 .text-sub{
   font-size: 1.3rem;
+}
+
+.re-button{
+  width: 100%;
+  background-color: var(--white);
+}
+.re-button-content{
+  width: 90%;
+  padding:60px 0 60px;
+  margin: 0 auto;
 }
 @media screen and (min-width:600px){
   .show-top-content{
@@ -204,6 +224,10 @@ export default {
     max-width: 600px;
     height:auto;
     min-height: calc(100vh - 778px);
+  }
+  .re-button-content{
+    max-width: 600px;
+    height:auto;
   }
 }
 

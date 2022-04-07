@@ -74,10 +74,12 @@
       
       <div v-if="this.mode === 'create'" class="_button-container">
         <button  :disabled="v$.music.$invalid || inactiveButton" @click="createMusic()" :class="{'_invalid-button': v$.music.$invalid}" class="_button-s">登録</button>
+        <div v-if="v$.music.$invalid" class="_invalid-text"></div>
       </div>
       <div v-if="this.mode === 'edit'" class="_button-container">
-        <button  :disabled="v$.music.$invalid || inactiveButton" @click="editMusic()" :class="{'_invalid-button': v$.music.$invalid}" class="_button-s _marginM">登録</button>
-        <button  :disabled="inactiveButton" @click="deleteMusic()"  class="_button-red">削除</button>
+        <button  :disabled="v$.music.$invalid || inactiveButton" @click="editMusic()" :class="{'_invalid-button': v$.music.$invalid}" class="_button-s">登録</button>
+        <div v-if="v$.music.$invalid" class="_invalid-text"></div>
+        <button  :disabled="inactiveButton" @click="deleteMusic()"  class="_button-red _marginM-up">削除</button>
       </div>
     </div>
     <Footer></Footer>

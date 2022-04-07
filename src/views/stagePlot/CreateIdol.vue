@@ -121,8 +121,9 @@
       </div>
 
       <div class="_button-container">
-        <button  :disabled="v$.idol.$invalid || inactiveButton" @click="editIdol()" :class="{'_invalid-button': v$.idol.$invalid}" class="_button-s _marginM">保存</button>
-        <button  :disabled="inactiveButton" @click="deleteIdol()"  class="_button-red">削除</button>
+        <button  :disabled="v$.idol.$invalid || inactiveButton" @click="editIdol()" :class="{'_invalid-button': v$.idol.$invalid}" class="_button-s">保存</button>
+        <div v-if="v$.idol.$invalid" class="_invalid-text"></div>
+        <button  :disabled="inactiveButton" @click="deleteIdol()"  class="_button-red _marginM-up">削除</button>
       </div>
     </div>
     <Footer></Footer>

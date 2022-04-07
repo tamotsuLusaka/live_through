@@ -26,18 +26,18 @@
           </router-link>
         </div>
 
-        <div class="sub">
+        <!-- <div class="sub">
           <div class="_link-mini-line-white">
             <img src="@/assets/images/icon-video-white.png" class="_link-mini-icon " alt="">
             <p class="_link-mini-text">LIVE Through の使い方</p>
           </div>
-        </div>
+        </div> -->
         <div class="info">
-          <div v-if="!isShownFlow" @click="showFlow()" class="_link-mini-line-white _marginS">
+          <div v-if="!isShownSetListFlow" @click="showSetListFlow()" class="_link-mini-line-white _marginS">
             <img src="@/assets/images/icon-book-white.png" class="_link-mini-icon" alt="">
             <p class="_link-mini-text">セットリスト作成の流れ</p>
           </div>
-          <div v-if="isShownFlow" @click="showFlow()" class="_flow">
+          <div v-if="isShownSetListFlow" @click="showSetListFlow()" class="_flow">
             <div class="_flow-container">
               <p class="_flow-main-title">セットリスト作成の流れ</p>
               <p class="_flow-main-text">毎ライブの際に登録された楽曲を並び変えるだけでセットリストが簡単に作成出来ます。各楽曲の要望等や曲情報を毎回記入する面倒な手間が省けます。</p>
@@ -54,6 +54,66 @@
               <div class="_flow-box">
                 <p class="_flow-title">PDF(もしくは JPEG)書き出し</p>
                 <p class="_flow-text">作成した曲順等を確認して問題なければ書き出しで完成。ご使用端末に保存。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="_info">
+          <div v-if="!isShownStagePlotFlow" @click="showStagePlotFlow()" class="_link-mini-line-white _marginS">
+            <img src="@/assets/images/icon-book-white.png" class="_link-mini-icon" alt="">
+            <p class="_link-mini-text">ステージプロット作成の流れ</p>
+          </div>
+          <div v-if="isShownStagePlotFlow" @click="showStagePlotFlow()" class="_flow">
+            <div class="_flow-container">
+              <p class="_flow-main-title">ステージプロット作成の流れ</p>
+              <p class="_flow-main-text">各項目に沿って選択・入力するだけで、エンジニアに必要な情報を含めたプロットが簡単に作成出来ます。<br>3つまで保存可能。編成や配置等の変更がある場合に容易に更新、普段と違ったパターンのプロット作成も出来ます。</p>
+              <p class="_flow-sub-title">バンドステージ</p>
+              <div class="_flow-box">
+                <p class="_flow-title">ステージプロットの新規作成</p>
+                <p class="_flow-text">バンドステージ(バンド・アコースティック等の楽器を使った編成)を選択</p>
+              </div>
+              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
+              <div class="_flow-box">
+                <p class="_flow-title">メンバーを追加</p>
+                <p class="_flow-text">在籍するメンバーを1人ずつ登録していきます。</p>
+              </div>
+              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
+              <div class="_flow-box">
+                <p class="_flow-title">メンバーのパート選択</p>
+                <p class="_flow-text">配置や機材の各項目を選択・入力。</p>
+              </div>
+              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
+              <div class="_flow-box">
+                <p class="_flow-text">『メンバーを追加』を繰り返し全メンバーを登録。</p>
+              </div>
+              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
+              <div class="_flow-box _marginL">
+                <p class="_flow-title">PDF(もしくは JPEG)書き出し</p>
+                <p class="_flow-text">作成したステージプロット詳細を確認して問題なければ書き出しで完成。ご使用端末に保存。</p>
+              </div>
+
+              <p class="_flow-sub-title">アイドルステージ</p>
+              <div class="_flow-box">
+                <p class="_flow-title">ステージプロットの新規作成</p>
+                <p class="_flow-text">アイドルステージ(アイドル等の楽器を使わずオケで歌うグループ)を選択</p>
+              </div>
+              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
+              <div class="_flow-box">
+                <p class="_flow-title">メンバーを追加</p>
+                <p class="_flow-text">在籍するメンバーを1人ずつ登録していきます。</p>
+              </div>
+              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
+              <div class="_flow-box">
+                <p class="_flow-text">『メンバーを追加』を繰り返し全メンバーを登録。</p>
+              </div>
+              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
+              <div class="_flow-box">
+                <p class="_flow-text"> マイクや音源の詳細を選択・入力。</p>
+              </div>
+              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
+              <div class="_flow-box">
+                <p class="_flow-title">PDF(もしくは JPEG)書き出し</p>
+                <p class="_flow-text">作成したステージプロット詳細を確認して問題なければ書き出しで完成。ご使用端末に保存。</p>
               </div>
             </div>
           </div>
@@ -77,11 +137,9 @@
           <div class="about-right">
             <h1 class="about-title">LIVE Throughとは</h1>
             <p>
-              LIVE Through(以下 ライブスルー)とはアーティストがライブ活動を行うにあたって必要な資料(セットリスト・ステージプロット)をホームページ上で簡単に作成する事が出来る無料のWEBサイトです。<br>
-              基本的にライブハウスや各種イベントに出演される際、事前にステージプロット(ステージのセッティング図)の提出を求められたり、当日に曲のセットリスト(ライブの曲順表)をご用意しているはずです。
-              ライブスタッフ（以下 エンジニア）へ情報が伝わる事により円滑にライブを行われる為の必要な資料です。<br>
-              しかし、アーティストにとって「エンジニアにどんな情報を求められている？」、「どの様に作成及び記載すれば良いかわからない」と思っている方も多数いらっしゃると思います。そんな問題を解決する為に作られたWEBサイトがライブスルーです。<br>
-              コロナ過ということもありライブ活動が自粛されていたり、ライブ活動を新たに始める人も少なくなっているのではないでしょうか？ライブスルーをきっかけに、ライブ活動が簡単・身近になり、全国各地で更なる感動が増えればと願っております。
+              LIVE Through(読み ライブスルー)とはアーティストがライブ活動を行うにあたって必要な資料(セットリスト・ステージプロット)をホームページ上で簡単に作成する事が出来る無料のWEBサイトです。<br>
+              基本的にライブハウスや各種イベントに出演される際、事前にステージプロット(ステージのセッティング図)の提出を求められたり、ライブ当日のセットリスト(曲順表)をご用意しているはずです。ライブスタッフ（以下 エンジニア）へ情報が伝わる事により円滑にライブを行われる為の必要な資料です。<br>
+              しかし、アーティストには「エンジニアにどんな情報を求められている？」「どの様に作成及び記載すれば良いかわからない」「資料を作る環境がない」という方も多数いらっしゃると思います。そんな問題を解決する為に作られたWEBサイトがライブスルーです。
             </p>
           </div>
         </div>
@@ -90,16 +148,40 @@
       <div class="use-content">
         <div class="use">
           <p class="use-title">【ライブスルーで出来る事】</p>
-          <ul class="use-list">
-            <li class="line">順を追って各項目を選択・記入をするだけで、どなたでも簡単にセットリスト・ステージプロットを作成（PDF出力）。</li>
-            <li class="line">あらかじめ項目が決まっているので、エンジニアに求められている内容を資料に記載する事が出来る。</li>
-            <li class="line">セットリストは曲を登録して、ライブによって並び変えるだけ。</li>
-            <li class="line">作成後からでもに保存データによって訂正や編集が容易。</li>
-            <li class="line">PDFデータとして出力されるので、関係者へデータ送信、もしくは自宅及びコンビニ等のプリンターで印刷して提出。（※出力されだPDFデータはサイト上では保存されません。PC・スマホ等のデバイスにて保存して下さい。）</li>
-            <li class="line">WEBサイト上のアプリなのでPC・スマホのブラウザからどの場所からでも使える。（※インターネットに繋がっている場合に限る）</li>
-            <li class="line">資料作りの煩わしさを無くしエンジニアへ正確に情報を伝えれる事により、ライブ当日に無駄な時間を割く事無く充実したリハーサルを行え、結果良いパフォーマンスに繋がる。</li>
-            <li class="no-line">完全無料。</li>
-          </ul>
+          <div class="use-container">
+            <div class="use-box">
+              <p class="use-topic">簡単作成</p>
+              <p class="use-text">専門ソフト不要。ホームページ上で順を追って各項目を選択・記入していくだけで、どなたでも簡単にセットリスト・ステージプロットを作成。</p>
+            </div>
+            <div class="use-box">
+              <p class="use-topic">スマホ＆PC対応</p>
+              <p class="use-text">WEBサイト上のアプリなのでPC・スマホのブラウザからどの場所からでも使える。（※1 インターネットに繋がっている場合に限る ※2 推奨ブラウザSafari, Chrome, Edge, Firefox）</p>
+            </div>
+            <div class="use-box">
+              <p class="use-topic">曲を並び変え</p>
+              <p class="use-text">セットリストは自身の曲情報を登録して、ライブの曲順に曲を並びていくだけ。ドラッグ＆ドロップで簡単に並び替えも可能。</p>
+            </div>
+            <div class="use-box">
+              <p class="use-topic">保存＆編集</p>
+              <p class="use-text">データ保存が可能。作成後からでも訂正や編集が容易。</p>
+            </div>
+            <div class="use-box">
+              <p class="use-topic">PDF出力</p>
+              <p class="use-text">PDFファイルとして出力。関係者へデータ送信、もしくはプリンターで印刷して提出。（※出力されたPDFはご使用のPC・スマホ端末にて保存して下さい。）</p>
+            </div>
+            <div class="use-box">
+              <p class="use-topic">的確な情報</p>
+              <p class="use-text">あらかじめ項目が決まっているので、エンジニアに求められている情報を的確に資料に記載する事が出来る。</p>
+            </div>
+            <div class="use-box">
+              <p class="use-topic">パフォーマンス向上</p>
+              <p class="use-text">資料作りの煩わしさを無くしエンジニアへ正確に情報を伝えれる事により、ライブ当日に無駄な時間を割く事無く充実したリハーサルを行え、結果良いパフォーマンスに繋がる。</p>
+            </div>
+            <div class="use-box">
+              <p class="use-topic">完全無料</p>
+              <p class="use-text"></p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -139,8 +221,11 @@ export default {
   },
   methods:{
     showSetListFlow(){
-      this.isShownFlow = !this.isShownFlow
-    }
+      this.isShownSetListFlow = !this.isShownSetListFlow
+    },
+    showStagePlotFlow(){
+      this.isShownStagePlotFlow = !this.isShownStagePlotFlow
+    },
   },
   computed:{
   },
@@ -237,20 +322,31 @@ export default {
 }
 .use-title{
   font-size: 2.0rem;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   text-align: center;
+  font-weight: 700;
 }
-.use-list{
-  list-style: none;
-  margin: 0 auto;
+.use-container{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
-.use-list li{
-  padding: 10px 0;
+.use-box{
+  width: calc(100% - 32px);
+  background-color: var(--white);
+  margin: 0 0 20px 0;
+  border-radius: 10px;
+  padding: 16px;
+}
+.use-topic{
+  font-size: 1.7rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 10px;
+  color: var(--blue);
+}
+.use-text{
   text-align: justify;
-  
-}
-.line{
-  border-bottom: 1px solid var(--gray-low);
 }
 
 @media screen and (min-width:600px){
@@ -304,15 +400,13 @@ export default {
   }
   .use-title{
     font-size: 2.0rem;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     text-align: center;
   }
-  .use-list{
-    list-style: disc;
-    margin: 0 auto;
-  }
-  .use-list li{
-    padding: 15px 0;
+  .use-box{
+    width: 19%;
+    margin: 0 0 30px 0;
+    padding: 2%;
   }
 }
 </style>

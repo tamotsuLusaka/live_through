@@ -64,7 +64,6 @@
           <p class="_link-mini-text">PDFで書き出し</p>
         </div>
       </div>
-
     </div>
     <Footer></Footer>
     <Alert :isShown="isAlertShownForTruckNumber" :message="alertMessageForTruckNumber" @closeAlert="closeAlert()"></Alert>

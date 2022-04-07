@@ -4,6 +4,7 @@
     <SubHeader  :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
     <div class="_content">
       <label for="name" class="_label">パートの選択</label><Helper :helperObject="helper.part"></Helper>
+      <p class="sub _marginSS">※「ギターボーカル」等、楽器を使用するボーカルは楽器のパートを選択して下さい。</p>
       <div v-for="(instrument, index) in instruments" :key="index" class="_multi-box" :class="{'_multi-box-start': index === 0, '_multi-box-end': instruments.length -1 === index}" >
         <router-link :to="{name: 'CreateInstrument', params:{id: $route.params.id}, query:{instrument: instrument.text}}" class="_multi-inner" :class="{'_multi-inner-end': instruments.length -1 === index}">
           <p class="_multi-text">{{instrument.view}}</p>
@@ -73,5 +74,8 @@ export default {
 </script>
 
 <style scoped>
+.sub{
+  font-size: 1.1rem;
+}
 
 </style>

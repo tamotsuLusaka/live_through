@@ -147,8 +147,8 @@ export default{
       {id: "rent", text: "ヘッド&キャビ【レンタル】", plotRent: "Amp Head&Cabi", plotBring: "", xSpan: 2, ySpan: 2},
       {id: "head", text: "ヘッド【持込み】・キャビ【レンタル】", plotRent: "Amp Cabi", plotBring: "[Amp Head]",  xSpan: 2, ySpan: 2},
       {id: "head&cab", text: "ヘッド&キャビ【持込み】", plotRent: "", plotBring: "[Amp Head&Cabi]",  xSpan: 2, ySpan: 2},
-      {id: "rentCombo", text: "コンボアンプ【レンタル】", plotRent: "Amp Combo", plotBring: "", xSpan: 2, ySpan: 2},
-      {id: "combo", text: "コンボアンプ【持込み】", plotRent: "", plotBring: "[Amp Combo]",  xSpan: 2, ySpan: 2}
+      {id: "rentCombo", text: "コンボアンプ【レンタル】", plotRent: "Combo Amp", plotBring: "", xSpan: 2, ySpan: 2},
+      {id: "combo", text: "コンボアンプ【持込み】", plotRent: "", plotBring: "[Combo Amp]",  xSpan: 2, ySpan: 2}
     ],
     sync:[
       {text: "PC"},
@@ -332,6 +332,16 @@ export default{
       state.amp.forEach((object)=>{
         if(object.id === type){
           name = object.plotBring
+        }
+      })
+      return name
+    },
+    // 持込みアンプのplotを呼び出す用
+    getSiteText: (state) => (type) =>{
+      let name = ""
+      state.site.forEach((object)=>{
+        if(object.id === type){
+          name = object.text
         }
       })
       return name

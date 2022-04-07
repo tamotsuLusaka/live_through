@@ -5,7 +5,7 @@
       <div class="show-top-content">
         <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
         <div class="show-logo">
-          <img src="@/assets/images/icon-mic-blue.png" alt="" class="show-icon">
+          <img src="@/assets/images/icon-stage-blue.png" alt="" class="show-icon">
           <p>{{band.name}}</p>
         </div>
         <div @click="goEdit()" class="_link-mini-line-blue _marginS">
@@ -29,8 +29,9 @@
           <div class="_container">
             <div class="_label-white">{{$store.getters['select/getInstrumentValue'](instrument.type)}}. {{instrument.type}}</div>
             <div class="_multi-box _multi-box-start">
-              <div class="_multi-inner">
-                <p class="_multi-text">{{instrument.member}}</p>
+              <div class="_flex-multi-inner">
+                <p class="_multi-sub_title-blue">メンバー名</p>
+                <p class="text">{{instrument.member}}</p>
               </div>
             </div>
             <!-- ボーカル -->
@@ -57,19 +58,13 @@
               </div>
             </div>
             <!-- スピーカー -->
-            <div v-if="instrument.type !== 'ドラム'" class="_multi-box">
+            <div class="_multi-box">
               <div class="_flex-multi-inner">
                 <p class="_multi-sub_title-blue">モニタースピーカー</p>
                 <p v-if="instrument.vocal.part === 'ボーカル'" class="text">2台</p>
                 <p v-else-if="instrument.speaker === null" class="text">1台</p>
                 <p v-else-if="instrument.speaker === 2" class="text">2台</p>
                 <p v-else-if="instrument.speaker === 0" class="text">無し</p>
-              </div>
-            </div>
-            <div v-if="instrument.isVocal &&  !instrument.isBroughtMic" class="_multi-box">
-              <div class="_flex-multi-inner">
-                <p class="_multi-sub_title-blue">マイク</p>
-                <p class="text">持込み無し</p>
               </div>
             </div>
             <!-- アンプ -->
@@ -108,7 +103,7 @@
                 </div>
               </div>
             </div>
-            <div v-if="instrument.type === 'ドラム'" class="_multi-box">
+            <div v-if="instrument.type === 'ドラム' && instrument.drum.bring !== null" class="_multi-box">
               <div class="_flex-multi-inner">
                 <p class="_multi-sub_title-blue">持込み機材</p>
                 <p class="text">{{instrument.drum.bring}}</p>
@@ -119,23 +114,23 @@
                 <p class="_multi-sub_title-blue">同期</p>
                 <p class="text">{{instrument.syncForDrum.type}}</p>
                 <p class="text">チャンネル：{{instrument.syncForDrum.channel}}</p>
-                <p class="text">アウト端子：{{instrument.syncForDrum.terminal}}</p>
-                <p class="text">配置：{{instrument.syncForDrum.site}}</p>
-              </div>
-            </div>
-            <div v-if="instrument.type === 'ドラム' && !instrument.isSyncForDrum" class="_multi-box">
-              <div class="_flex-multi-inner">
-                <p class="_multi-sub_title-blue">同期</p>
-                <p class="text">無し</p>
+                <p class="text">端子：{{instrument.syncForDrum.terminal}}</p>
+                <p class="text">配置：{{$store.getters['select/getSiteText'](instrument.syncForDrum.site)}}</p>
               </div>
             </div>
             <!-- パーカッション -->
             <div v-if="instrument.type === 'パーカッション'" class="_multi-box">
               <div class="_flex-multi-inner">
-                <p class="_multi-sub_title-blue">会場レンタル機材</p>
+                <p class="_multi-sub_title-blue">パーカッション持ち込み</p>
                 <div v-for="item in instrument.percussion.bring" :key="item">
                   <p v-if="item.use" class="text">{{item.text}}</p>
                 </div>
+              </div>
+            </div>
+            <div v-if="instrument.type === 'パーカッション' && instrument.percussion.other !== null" class="_multi-box">
+              <div class="_flex-multi-inner">
+                <p class="_multi-sub_title-blue">その他持ち込み</p>
+                <p class="text">{{instrument.percussion.other}}</p>
               </div>
             </div>
             <!-- キーボード -->
@@ -146,23 +141,27 @@
                   <p v-else class="text">無し</p>
               </div>
             </div>
-            <div v-if="instrument.type === 'キーボード'" class="_multi-box">
+            <div v-if="instrument.type === 'キーボード' && instrument.bringKeyboardLists.length !== 0" class="_multi-box">
               <div class="_flex-multi-inner">
                 <p class="_multi-sub_title-blue">キーボード（持込み）</p>
-                <div v-if="instrument.bringKeyboardLists.length !== 0">
-                  <div v-for="(item, index) in instrument.bringKeyboardLists" :key="item">
-                    <p class="text">{{item.name}}</p>
-                    <p class="text">チャンネル：{{item.channel}}</p>
-                    <p class="text" :class="{'_marginS': index !== instrument.bringKeyboardLists.length - 1}">アウト端子：{{item.terminal}}</p>
-                  </div>
+                <div v-for="(item, index) in instrument.bringKeyboardLists" :key="item">
+                  <p class="text">{{item.name}}</p>
+                  <p class="text">チャンネル：{{item.channel}}</p>
+                  <p class="text" :class="{'_marginS': index !== instrument.bringKeyboardLists.length - 1}">アウト端子：{{item.terminal}}</p>
                 </div>
+              </div>
+            </div>
+            <div v-if="instrument.isAmpForKeyboard" class="_multi-box">
+              <div class="_flex-multi-inner">
+                <p class="_multi-sub_title-blue">アンプ</p>
+                  <p class="text">{{instrument.ampForKeyboard.type}}</p>
               </div>
             </div>
             <!-- バイオリン -->
             <div v-if="instrument.type === 'バイオリン'" class="_multi-box">
               <div class="_flex-multi-inner">
                 <p class="_multi-sub_title-blue">PAへのラインアウト</p>
-                <p class="text">アウト端子：{{instrument.lineOutForViolin.terminal}}</p>
+                <p class="text">端子：{{instrument.lineOutForViolin.terminal}}</p>
                 <p v-if="instrument.lineOutForViolin.isDi" class="text">DI持込み有り</p>
                 <p v-else class="text">DI持込み無し</p>
               </div>
@@ -200,7 +199,7 @@
                 <p class="_multi-sub_title-blue">同期</p>
                 <p class="text">{{instrument.sync.type}}</p>
                 <p class="text">チャンネル：{{instrument.sync.channel}}</p>
-                <p class="text">アウト端子：{{instrument.sync.terminal}}</p>
+                <p class="text">端子：{{instrument.sync.terminal}}</p>
               </div>
             </div>
             <!-- イヤモニ -->
@@ -210,24 +209,24 @@
                 <p class="text">持込み有り</p>
                 <p class="text">{{instrument.monitor.type}}</p>
                 <p class="text">チャンネル：{{instrument.monitor.channel}}</p>
-                <p class="text">アウト端子：{{instrument.monitor.terminal}}</p>
+                <p class="text">端子：{{instrument.monitor.terminal}}</p>
+              </div>
+            </div>
+            <!-- その他レンタル -->
+            <div v-if="instrument.otherRent !== null" class="_multi-box">
+              <div class="_flex-multi-inner ">
+                <p class="_multi-sub_title-blue">その他レンタル希望</p>
+                <p>{{instrument.otherRent}}</p>
               </div>
             </div>
             <!-- 電源 -->
             <div class="_multi-box _multi-box-end">
               <div class="_flex-multi-inner _multi-inner-end">
                 <p class="_multi-sub_title-blue">足元電源</p>
-                <p v-if="instrument.isPower" class="text">有り</p>
-                <p v-else class="text">無し</p>
+                <p v-if="instrument.isPower" class="text">必要</p>
+                <p v-else class="text">不要</p>
               </div>
             </div>
-            <!-- 備考 -->
-            <!-- <div class="_multi-box _multi-box-end">
-              <div class="_flex-multi-inner _multi-inner-end">
-                <p class="_multi-sub_title-blue">備考</p>
-                <p>{{instrument.text}}</p>
-              </div>
-            </div> -->
           </div>
         </div>
     
@@ -238,6 +237,17 @@
               <div class="_textarea">{{band.text}}</div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="re-button">
+      <div class="re-button-content">
+        <div @click="goEdit()" class="_link-mini-line-blue _marginS">
+          <p class="_link-mini-text">ステージプロットの編集</p>
+        </div>
+        <div @click="goExport()" class="_link-mini-blue _marginS">
+          <img src="@/assets/images/icon-pdf-white.png" class="_link-mini-icon " alt="">
+          <p class="_link-mini-text">PDFで書き出し</p>
         </div>
       </div>
     </div>
@@ -372,6 +382,15 @@ export default {
 .text-sub{
   font-size: 1.3rem;
 }
+.re-button{
+  width: 100%;
+  background-color: var(--white);
+}
+.re-button-content{
+  width: 90%;
+  padding:60px 0 60px;
+  margin: 0 auto;
+}
 @media screen and (min-width:600px){
   .show-top-content{
     max-width: 600px;
@@ -381,6 +400,10 @@ export default {
     max-width: 600px;
     height:auto;
     min-height: calc(100vh - 778px);
+  }
+  .re-button-content{
+    max-width: 600px;
+    height:auto;
   }
 }
 

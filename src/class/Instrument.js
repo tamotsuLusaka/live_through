@@ -6,7 +6,7 @@ export default class Instrument{
   position = {x: null, y: null, xSpan: 1, ySpan: 1}
   isVocal = false
   vocal = {part: null} //part: "ボーカル", "コーラス", "MC", monitor モニターの数にはバリデーションかけずに選ばなければ初期値の1を入れている。ドラム専用を作ることを回避するため。コーラス選ばなければ数は変更できない。書き出しの時にコーラス以外はこの数字を反映させない。
-  speaker = null // nullは一つ 2 or 0が入る
+  speaker = null // nullは一つのこと。初期値にするために。 2 or 0が入る
   isBroughtMic = false
   mic = {type: null, brand: null, model: null} // type: (line)
   isAmp = false
@@ -45,9 +45,9 @@ export default class Instrument{
   syncForDrum = {type: null, channel: null, terminal: null, site: null} //type: (sync), channel: (twoChannel), terminal: (terminal), site: (site), 
   // isMonitor = false
   isBroughtMonitor = false
-  monitor = {type: null, channel: null}//type: (line), channel: (twoChannel)
+  monitor = {type: null, channel: null, terminal: null}//type: (line), channel: (twoChannel), terminal: (terminalMicro)
   isPower = false
-  // text = null
+  otherRent = null
 
 
   constructor(instrument){
@@ -90,7 +90,7 @@ export default class Instrument{
     this.isBroughtMonitor = instrument.isBroughtMonitor
     this.monitor = instrument.monitor
     this.isPower = instrument.isPower
-    // this.text = instrument.text
+    this.otherRent = instrument.otherRent
   }
 
 }
