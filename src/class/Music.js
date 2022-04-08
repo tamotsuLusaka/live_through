@@ -10,6 +10,7 @@ export default class Music{
   userId = null
   createdAt = null
   updatedAt = null
+  addition = null
 
   constructor(music){
     if(music == null){return}
@@ -23,6 +24,7 @@ export default class Music{
     this.userId = music.userId
     this.createdAt = music.createdAt
     this.updatedAt = music.updatedAt
+    this.addition = music.addition
   }
 
 }

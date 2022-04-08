@@ -12,7 +12,7 @@
     "@vuelidate/core": "^2.0.0-alpha.33",
     "@vuelidate/validators": "^2.0.0-alpha.26",
     "core-js": "^3.6.5",
-    "firebase": "^9.6.1",
+    "firebase": "^9.6.10",
     "google-fonts-webpack-plugin": "^0.4.4",
     "html-to-image": "^1.9.0",
     "html2canvas": "^1.4.1",

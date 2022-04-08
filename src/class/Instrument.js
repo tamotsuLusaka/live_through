@@ -48,6 +48,7 @@ export default class Instrument{
   monitor = {type: null, channel: null, terminal: null}//type: (line), channel: (twoChannel), terminal: (terminalMicro)
   isPower = false
   otherRent = null
+  addition = null
 
 
   constructor(instrument){
@@ -91,6 +92,7 @@ export default class Instrument{
     this.monitor = instrument.monitor
     this.isPower = instrument.isPower
     this.otherRent = instrument.otherRent
+    this.addition = instrument.addition
   }
 
 }

@@ -8,6 +8,7 @@ export default class Band{
   userId = null
   createdAt = null
   updatedAt = null
+  addition = null
 
   constructor(band){
     if(band == null){return}
@@ -19,6 +20,8 @@ export default class Band{
     this.userId = band.userId
     this.createdAt = band.createdAt
     this.updatedAt = band.updatedAt
+    this.addition = band.addition
+
   }
 
 }

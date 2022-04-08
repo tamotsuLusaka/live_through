@@ -13,6 +13,7 @@ export default class Idol{
   userId = null
   createdAt = null
   updatedAt = null
+  addition = null
 
   constructor(idol){
     if(idol == null){return}
@@ -29,7 +30,7 @@ export default class Idol{
     this.userId = idol.userId
     this.createdAt = idol.createdAt
     this.updatedAt = idol.updatedAt
-
+    this.addition = idol.addition
   }
 
 }

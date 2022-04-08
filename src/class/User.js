@@ -8,6 +8,7 @@ export default class User{
   isActive = true
   createdAt = null
   updatedAt = null
+  addition = null
 
   constructor(user){
     if(user == null){return}
@@ -19,6 +20,7 @@ export default class User{
     this.isActive = user.isActive
     this.createdAt = user.createdAt
     this.updatedAt = user.updatedAt
+    this.addition = user.addition
   }
 
 }

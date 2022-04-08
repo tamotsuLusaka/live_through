@@ -18,6 +18,7 @@ export default class SetList{
   userId = null
   createdAt = null
   updatedAt = null
+  addition = null
 
   constructor(setList){
     if(setList == null){return}
@@ -39,6 +40,7 @@ export default class SetList{
     this.userId = setList.userId
     this.createdAt = setList.createdAt
     this.updatedAt = setList.updatedAt
+    this.addition = setList.addition
   }
 
 }
