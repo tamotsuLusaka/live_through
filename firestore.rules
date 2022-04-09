@@ -1,8 +1,33 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if true;
+  	
+    function isMe(){
+    	return resource.data.userId == request.auth.uid;
     }
+    function isMyWriting(){
+    	return request.resource.data.userId == request.auth.uid;
+    }
+    
+    match /user/{user} {
+      allow read, write: if user == request.auth.uid;
+    }
+    match /setList/{setList} {
+      allow read: if isMe();
+      allow write: if isMyWriting();  
+    }
+    match /music/{music} {
+      allow read: if isMe();
+      allow write: if isMyWriting();   
+    }
+    match /band/{band} {
+      allow read: if isMe();
+      allow write: if isMyWriting();   
+    }
+    match /idol/{idol} {
+      allow read: if isMe();
+      allow write: if isMyWriting();   
+    }
+
   }
 }

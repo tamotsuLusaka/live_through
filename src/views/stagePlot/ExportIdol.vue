@@ -336,7 +336,8 @@ export default {
 }
 .stage-member-person{
   width: 80%;
-  margin-bottom: 0;
+  margin: 0 auto 10px;
+  display: block;
 }
 .stage-member-mic{
   width: 20%;

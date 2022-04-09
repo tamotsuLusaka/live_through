@@ -424,6 +424,7 @@ export default {
       const doc = new jsPDF({format: 'a4'})
       const width = doc.internal.pageSize.width
       let fileName = ""
+      let dayOfLive = String(this.exportPreparation.date.year) + String(this.exportPreparation.date.month) + String(this.exportPreparation.date.day)
       let imgData = null
       let imgData2 = null
       // 画像表示を初期化
@@ -435,7 +436,7 @@ export default {
       this.isView2 = false
 
       if(this.exportPreparation.type === "normal"){
-        fileName = "set_list" + this._generateDay() + ".pdf"
+        fileName = this.userName + "_set_list_" + dayOfLive + ".pdf"
         if(this.sheetType === "single"){
           const source = document.getElementById('pdf-single')
           await html2canvas(source).then(capture => {
@@ -456,7 +457,12 @@ export default {
           doc.addImage(imgData2, 'JPEG', 10, 10, width * 0.9, 0)
         }
       }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
-        fileName = "set_list_stage" + this._generateDay() + ".pdf"
+        if(this.exportPreparation.type === "stage"){
+          fileName = this.userName +  "_set_list_stage_" + dayOfLive + ".pdf"
+        }else{
+          fileName = this.userName +  "_set_list_stage_black_" + dayOfLive + ".pdf"
+        }
+        
         if(this.sheetType === "single"){
           const source = document.getElementById('pdf-stage')
           await html2canvas(source).then(capture => {

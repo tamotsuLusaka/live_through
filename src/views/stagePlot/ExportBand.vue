@@ -61,7 +61,7 @@
                     <p v-if="instrument.isBroughtMic" class="box-text-hide t-s red box-margin"><span v-if="instrument.mic.model === null || instrument.mic.model === ''">Mic</span>{{instrument.mic.model}}</p>
                     <p v-if="instrument.isBroughtMicForInstrument" class="t-s red">楽器Mic:<span v-if="instrument.micForInstrument.type === '有線マイク'"></span><span v-else>W/L</span></p>
                     <p v-if="instrument.isBroughtMicForInstrument" class="box-text-hide t-s red box-margin">{{instrument.micForInstrument.model}}</p>
-                    <p v-if="instrument.isBroughtMonitor" class="t-s red">IEM:<span v-if="instrument.monitor.type === '有線マイク'">有線</span><span v-else>W/L</span></p>
+                    <p v-if="instrument.isBroughtMonitor" class="t-s red">IEM:<span v-if="instrument.monitor.type === '有線'">有線</span><span v-else>W/L</span></p>
                     <p v-if="instrument.isBroughtMonitor" class="box-text-hide t-s red">{{$store.getters['select/getChannelPlot'](instrument.monitor.channel)}}</p>
                   </div>
                   <div class="box-right-bottom">
@@ -142,13 +142,13 @@
                   <span v-if="instrument.lineOutLists.length !== 0" class="info-t"><span v-if="!diCheck(instrument.lineOutLists)">DI </span></span>
                   <span v-if="instrument.bringKeyboardLists.length !== 0" class="info-t"><span v-if="!diCheck(instrument.bringKeyboardLists)">DI </span></span> -->
                   <!-- アンプ -->
-                  <span v-if="instrument.amp.type === 'rent'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}</span>
-                  <span v-if="instrument.amp.type === 'rentCombo'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}</span>
-                  <span v-if="instrument.amp.type === 'head'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}</span>
-                  <span v-if="instrument.amp.type === 'cab'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}</span>
+                  <span v-if="instrument.amp.type === 'rent'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}, </span>
+                  <span v-if="instrument.amp.type === 'rentCombo'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}, </span>
+                  <span v-if="instrument.amp.type === 'head'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}, </span>
+                  <span v-if="instrument.amp.type === 'cab'" class="info-t">{{$store.getters['select/getAmpPlotRent'](instrument.amp.type)}}, </span>
                   <!-- キーボード -->
-                  <span v-if="instrument.rentKeyboard.number !== null">Keyboard×{{instrument.rentKeyboard.number}}</span>
-                  <span v-if="instrument.ampForKeyboard.type === 'レンタル'">Amp</span>
+                  <span v-if="instrument.rentKeyboard.number !== null">Keyboard×{{instrument.rentKeyboard.number}}, </span>
+                  <span v-if="instrument.ampForKeyboard.type === 'レンタル'">Amp, </span>
                   <!-- ドラム -->
                   <span v-if="instrument.type === 'ドラム'"><span v-for="item in instrument.drum.rent" :key="item"><span v-if="item.use">{{item.plot}}, </span></span></span>
                   <!-- その他レンタル -->
@@ -172,7 +172,7 @@
                   <!-- 楽器マイク -->
                   <span v-if="instrument.isBroughtMicForInstrument" class="info-t">[楽器Mic] <span v-if="instrument.micForInstrument.type !== '有線マイク'">{{$store.getters['select/getLinePlot'](instrument.micForInstrument.type)}}-</span>{{instrument.micForInstrument.brand}}<span v-if="instrument.micForInstrument.brand && instrument.micForInstrument.model">/</span>{{instrument.micForInstrument.model}}</span>
                   <!-- アコギ -->
-                  <span v-if="instrument.isLineOutForAcousticGuitar" class="info-t">[Out] {{$store.getters['select/getAcousticGuitarPlot'](instrument.acousticGuitar.type)}}-{{instrument.acousticGuitar.text}}</span>
+                  <span v-if="instrument.isLineOutForAcousticGuitar" class="info-t">[AG Output] {{$store.getters['select/getAcousticGuitarPlot'](instrument.acousticGuitar.type)}}-{{instrument.acousticGuitar.text}}</span>
                   <!-- DI -->
                   <span v-if="instrument.type === 'ベース' || instrument.isLineOutForAcousticGuitar" class="info-t"><span v-if="instrument.idBroughtDi">[DI] {{instrument.di.brand}}<span v-if="instrument.di.brand && instrument.di.model">/</span>{{instrument.di.model}}</span></span>
                   <span v-if=" instrument.type === 'キーボード' && instrument.bringKeyboardLists.length !== 0" class="info-t"><span v-for="item in instrument.bringKeyboardLists" :key="item">[Keyboard]{{item.name}}-{{$store.getters['select/getChannelPlot'](item.channel)}}-{{$store.getters['select/getTerminalPlot'](item.terminal)}}<span v-if="item.isDi">-DI</span></span></span>
@@ -198,7 +198,7 @@
                   <span v-if="instrument.isSync" class="info-t">[同期] {{instrument.sync.type}}-{{$store.getters['select/getChannelForSyncPlot'](instrument.sync.channel)}}-{{$store.getters['select/getTerminalPlot'](instrument.sync.terminal)}}</span>
                   <span v-if="instrument.isSyncForDrum" class="info-t">[同期] {{instrument.syncForDrum.type}}-{{$store.getters['select/getChannelForSyncPlot'](instrument.syncForDrum.channel)}}-{{$store.getters['select/getTerminalPlot'](instrument.syncForDrum.terminal)}}</span>
                   <!-- イヤモニ -->
-                  <span v-if="instrument.isBroughtMonitor" class="info-t">[IEM] {{$store.getters['select/getLineForMonitorPlot'](instrument.monitor.type)}}-{{$store.getters['select/getChannelPlot'](instrument.monitor.channel)}}</span>
+                  <span v-if="instrument.isBroughtMonitor" class="info-t">[IEM] {{$store.getters['select/getLineForMonitorPlot'](instrument.monitor.type)}}-{{$store.getters['select/getChannelPlot'](instrument.monitor.channel)}}<span v-if="instrument.monitor.terminal !== null">-{{$store.getters['select/getTerminalPlot'](instrument.monitor.terminal)}}</span></span>
                 </div>
               </div>
             </div>
@@ -321,7 +321,7 @@ export default {
       this.isView = false
       this.isView2 = false
 
-      fileName = "stage_plot" + this._generateDay() + ".pdf"
+      fileName = this.userName + "_stage_plot_" + this._generateDay() + ".pdf"
       if(this.sheetType === "single"){
         const source = document.getElementById('band-pdf-single')
         await html2canvas(source, {scale: 2}).then(capture => {
