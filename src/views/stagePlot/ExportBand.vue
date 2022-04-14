@@ -209,19 +209,9 @@
             <p>備考：{{band.text}}</p>
         </div>
         <img src="@/assets/images/logo.png" class="pdf-logo" alt="">
-
       </div>
 
-  
-      <!-- 2ページ構成 -->
-      <!-- <div id="band-pdf-double-1" class="pdf">
-
-      </div>
-
-      <div id="band-pdf-double-2" class="pdf">
-
-      </div> -->
-
+      <Ad></Ad>
     </div>
     <Footer></Footer>
   </div>
@@ -233,6 +223,7 @@ import Mixin from '@/mixin/mixin.js'
 import SubHeader from '@/components/SubHeader.vue'
 import Spinner from '@/components/Spinner.vue'
 import Footer from '@/components/Footer.vue'
+import Ad from '@/components/Ad.vue'
 
 import Band from '@/class/Band.js'
 
@@ -245,7 +236,8 @@ export default {
   components: {
     Spinner,
     SubHeader,
-    Footer
+    Footer,
+    Ad
   },
   mixins:[
     Mixin
@@ -321,7 +313,7 @@ export default {
       this.isView = false
       this.isView2 = false
 
-      fileName = this.userName + "_stage_plot_" + this._generateDay() + ".pdf"
+      fileName = this.userName + "_stageplot_" + this._generateDay() + ".pdf"
       if(this.sheetType === "single"){
         const source = document.getElementById('band-pdf-single')
         await html2canvas(source, {scale: 2}).then(capture => {

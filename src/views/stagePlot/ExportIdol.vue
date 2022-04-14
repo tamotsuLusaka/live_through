@@ -63,7 +63,7 @@
         <div class="info">
           <div class="info-container">
             <div class="info-box">
-              <p v-if="idol.isBroughtMic" class="info-t">ワイヤレスマイク：{{$store.getters['select/getLinePlot'](idol.mic.type)}}<span v-if="idol.mic.text !== null">-{{idol.mic.text}}</span></p>
+              <p v-if="idol.isBroughtMic" class="info-t">[持込]ワイヤレスマイク：{{$store.getters['select/getLinePlot'](idol.mic.type)}}<span v-if="idol.mic.text !== null">-{{idol.mic.text}}</span></p>
               <p v-if="!idol.isBroughtMic" class="info-t">ワイヤレスマイク：持込み無し（主催レンタル希望）</p>
               <p class="info-t">音源：<span v-if="idol.source.type === 'その他'">{{idol.source.other}}</span><span v-else>{{idol.source.type}}</span>-{{$store.getters['select/getChannelPlot'](idol.source.channel)}}-{{$store.getters['select/getTerminalPlot'](idol.source.terminal)}}</p>
               <p v-if="idol.isMonitor" class="info-t">IEM：<span v-if="idol.isBroughtMonitor">{{idol.source.other}}持込み{{$store.getters['select/getLinePlot'](idol.monitor.type)}}-{{$store.getters['select/getChannelPlot'](idol.monitor.channel)}}</span><span v-else>持込み無し</span></p>
@@ -74,11 +74,10 @@
         <div class="note">
           <p>備考：{{idol.text}}</p>
         </div>
-
         <img src="@/assets/images/logo.png" class="pdf-logo" alt="">
 
       </div>
-
+      <Ad></Ad>
     </div>
     <Footer></Footer>
   </div>
@@ -90,6 +89,7 @@ import Mixin from '@/mixin/mixin.js'
 import SubHeader from '@/components/SubHeader.vue'
 import Spinner from '@/components/Spinner.vue'
 import Footer from '@/components/Footer.vue'
+import Ad from '@/components/Ad.vue'
 
 import Idol from '@/class/Idol.js'
 
@@ -103,7 +103,8 @@ export default {
   components: {
     Spinner,
     SubHeader,
-    Footer
+    Footer,
+    Ad
   },
   mixins:[
     Mixin
@@ -183,10 +184,10 @@ export default {
       renderSpace.src = null
       this.isView = false
 
-      fileName = "stage_plot" + this._generateDay() + ".pdf"
+      fileName = this.userName + "_stageplot_" + this._generateDay() + ".pdf"
 
       const source = document.getElementById('pdf')
-      await html2canvas(source).then(capture => {
+      await html2canvas(source, {scale: 2}).then(capture => {
         imgData = capture.toDataURL('image/jpeg')
         doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
       })

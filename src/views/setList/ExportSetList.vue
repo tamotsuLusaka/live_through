@@ -260,7 +260,7 @@
         <img v-if="isTurnOver" src="@/assets/images/logo-white.png" alt="" class="PDF-stage-logo">
         <img v-else src="@/assets/images/logo.png" alt="" class="PDF-stage-logo">
       </div>
-
+      <Ad></Ad>
     </div>
     <Footer></Footer>
   </div>
@@ -271,10 +271,10 @@
 import Mixin from '@/mixin/mixin.js'
 import SubHeader from '@/components/SubHeader.vue'
 import Spinner from '@/components/Spinner.vue'
-// import Se from '@/components/setList/SeOnPDF.vue'
 import List from '@/components/setList/ListOnPDF.vue'
 import Footer from '@/components/Footer.vue'
 import Helper from '@/components/Helper.vue'
+import Ad from '@/components/Ad.vue'
 
 import SetList from '@/class/SetList.js'
 
@@ -290,10 +290,10 @@ export default {
   components: {
     Spinner,
     SubHeader,
-    // Se,
     List,
     Footer,
     Helper,
+    Ad
   },
   mixins:[
     Mixin
@@ -436,20 +436,20 @@ export default {
       this.isView2 = false
 
       if(this.exportPreparation.type === "normal"){
-        fileName = this.userName + "_set_list_" + dayOfLive + ".pdf"
+        fileName = this.userName + "_setlist_" + dayOfLive + ".pdf"
         if(this.sheetType === "single"){
           const source = document.getElementById('pdf-single')
-          await html2canvas(source).then(capture => {
+          await html2canvas(source, {scale: 2}).then(capture => {
             imgData = capture.toDataURL('image/jpeg')
             doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
           })
         }else if(this.sheetType === "double"){
           const source1 = document.getElementById('pdf-double-1')
           const source2 = document.getElementById('pdf-double-2')
-          await html2canvas(source1).then(capture => {
+          await html2canvas(source1, {scale: 2}).then(capture => {
             imgData = capture.toDataURL('image/jpeg')
           })
-          await html2canvas(source2).then(capture => {
+          await html2canvas(source2, {scale: 2}).then(capture => {
             imgData2 = capture.toDataURL('image/jpeg')
           })
           doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
@@ -458,24 +458,24 @@ export default {
         }
       }else if(this.exportPreparation.type === "stage" || this.exportPreparation.type === "stageTurnOver"){
         if(this.exportPreparation.type === "stage"){
-          fileName = this.userName +  "_set_list_stage_" + dayOfLive + ".pdf"
+          fileName = this.userName +  "_setlist_stage_" + dayOfLive + ".pdf"
         }else{
-          fileName = this.userName +  "_set_list_stage_black_" + dayOfLive + ".pdf"
+          fileName = this.userName +  "_setlist_stage_black_" + dayOfLive + ".pdf"
         }
         
         if(this.sheetType === "single"){
           const source = document.getElementById('pdf-stage')
-          await html2canvas(source).then(capture => {
+          await html2canvas(source, {scale: 2}).then(capture => {
             imgData = capture.toDataURL('image/jpeg')
             doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
           })
         }else if(this.sheetType === "double"){
           const source1 = document.getElementById('pdf-stage-1')
           const source2 = document.getElementById('pdf-stage-2')
-          await html2canvas(source1).then(capture => {
+          await html2canvas(source1, {scale: 2}).then(capture => {
             imgData = capture.toDataURL('image/jpeg')
           })
-          await html2canvas(source2).then(capture => {
+          await html2canvas(source2, {scale: 2}).then(capture => {
             imgData2 = capture.toDataURL('image/jpeg')
           })
           doc.addImage(imgData, 'JPEG', 10, 10, width * 0.9, 0)
@@ -503,16 +503,16 @@ export default {
         if(this.sheetType === "single"){
           this.isView2 = false
           const source = document.getElementById('pdf-single')
-          await html2canvas(source).then(capture => {
+          await html2canvas(source, {scale: 2}).then(capture => {
             imgData = capture.toDataURL('image/jpeg')
           })
         }else if(this.sheetType === "double"){
           const source1 = document.getElementById('pdf-double-1')
           const source2 = document.getElementById('pdf-double-2')
-          await html2canvas(source1).then(capture => {
+          await html2canvas(source1, {scale: 2}).then(capture => {
             imgData = capture.toDataURL('image/jpeg')
           })
-          await html2canvas(source2).then(capture => {
+          await html2canvas(source2, {scale: 2}).then(capture => {
             imgData2 = capture.toDataURL('image/jpeg')
           })
         }
@@ -520,16 +520,16 @@ export default {
         if(this.sheetType === "single"){
           this.isView2 = false
           const source = document.getElementById('pdf-stage')
-          await html2canvas(source).then(capture => {
+          await html2canvas(source, {scale: 2}).then(capture => {
             imgData = capture.toDataURL('image/jpeg')
           })
         }else if(this.sheetType === "double"){
           const source1 = document.getElementById('pdf-stage-1')
           const source2 = document.getElementById('pdf-stage-2')
-          await html2canvas(source1).then(capture => {
+          await html2canvas(source1, {scale: 2}).then(capture => {
             imgData = capture.toDataURL('image/jpeg')
           })
-          await html2canvas(source2).then(capture => {
+          await html2canvas(source2, {scale: 2}).then(capture => {
             imgData2 = capture.toDataURL('image/jpeg')
           })
         }

@@ -54,6 +54,7 @@
             </div>
           </div>
         </div>
+        <Ad></Ad>
       </div>
       <Footer></Footer>
       <Alert :isShown="isAlertShown" :message="alertMessage" @closeAlert="closeAlert()"></Alert>
@@ -68,6 +69,7 @@ import SubHeader from '@/components/SubHeader.vue'
 import Footer from '@/components/Footer.vue'
 import Helper from '@/components/Helper.vue'
 import Alert from '@/components/Alert.vue'
+import Ad from '@/components/Ad.vue'
 
 import db from '@/firebase/modules/db.js'
 
@@ -78,6 +80,7 @@ export default {
     Footer,
     Helper,
     Alert,
+    Ad,
   },
   mixins:[
     Mixin

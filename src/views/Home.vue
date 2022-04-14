@@ -4,7 +4,6 @@
       <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
       <div class="_content-s">
         <p class="name">{{this.$store.getters['auth/userName']}}</p>
-
         <div class="main">
           <router-link :to="{name: 'SetList'}" class="_link _marginL">
             <div class="_link-container">
@@ -25,13 +24,6 @@
             </div>
           </router-link>
         </div>
-
-        <!-- <div class="sub">
-          <div class="_link-mini-line-white">
-            <img src="@/assets/images/icon-video-white.png" class="_link-mini-icon " alt="">
-            <p class="_link-mini-text">LIVE Through の使い方</p>
-          </div>
-        </div> -->
         <div class="info">
           <div v-if="!isShownSetListFlow" @click="showSetListFlow()" class="_link-mini-line-white _marginS">
             <img src="@/assets/images/icon-book-white.png" class="_link-mini-icon" alt="">
@@ -118,7 +110,7 @@
             </div>
           </div>
         </div>
-
+        <Ad></Ad>
       </div>
     </div>
     <div v-else class="before" >
@@ -137,13 +129,12 @@
           <div class="about-right">
             <h1 class="about-title">LIVE Throughとは</h1>
             <p>
-              LIVE Through(読み ライブスルー)とはアーティストがライブ活動を行うにあたって必要な資料(セットリスト・ステージプロット)をホームページ上で簡単に作成する事が出来る無料のWEBサイトです。<br>
+              LIVE Through(読み ライブスルー)とはアーティストがライブ活動を行うにあたって必要な資料(セットリスト・ステージプロット)をホームページ上で簡単に作成する事が出来る無料のWEBアプリです。<br>
               基本的にライブハウスや各種イベントに出演される際、事前にステージプロット(ステージのセッティング図)の提出を求められたり、ライブ当日のセットリスト(曲順表)をご用意しているはずです。ライブスタッフ（以下 エンジニア）へ情報が伝わる事により円滑にライブを行われる為の必要な資料です。<br>
-              しかし、アーティストには「エンジニアにどんな情報を求められている？」「どの様に作成及び記載すれば良いかわからない」「資料を作る環境がない」という方も多数いらっしゃると思います。そんな問題を解決する為に作られたWEBサイトがライブスルーです。
+              しかし、アーティストには「エンジニアにどんな情報を求められている？」「どの様に作成及び記載すれば良いかわからない」「資料を作る環境がない」という方も多数いらっしゃると思います。そんな問題を解決する為に作られたWEBアプリがライブスルーです。
             </p>
           </div>
         </div>
-
       </div>
       <div class="use-content">
         <div class="use">
@@ -183,12 +174,19 @@
             </div>
           </div>
         </div>
+        <div class="sample">
+          <p class="sample-title">作成サンプル</p>
+          <div class="sample-container">
+            <a href="https://firebasestorage.googleapis.com/v0/b/live-through-42f07.appspot.com/o/SAMPLE_setlist_202211.pdf?alt=media&token=6c7cec5f-5f1a-4dd8-84fc-d84ffc11cc9a" class="sample-button" target="_blank" rel="noopener noreferrer">セットリスト</a>
+            <a href="https://firebasestorage.googleapis.com/v0/b/live-through-42f07.appspot.com/o/SAMPLE_stageplot_2022410_1.pdf?alt=media&token=fbfe8081-45d8-4473-aaec-b8c3149101fc" class="sample-button" target="_blank" rel="noopener noreferrer">ステージプロット（弾語り）</a>
+            <a href="https://firebasestorage.googleapis.com/v0/b/live-through-42f07.appspot.com/o/SAMPLE_stageplot_2022410_2.pdf?alt=media&token=11a7fe32-279b-4a79-b2e1-f033622e31d8" class="sample-button" target="_blank" rel="noopener noreferrer">ステージプロット（バンド）</a>
+            <a href="https://firebasestorage.googleapis.com/v0/b/live-through-42f07.appspot.com/o/SAMPLE_stageplot_2022410_3.pdf?alt=media&token=fca22068-06c1-46de-9e67-eec6375aedf7" class="sample-button" target="_blank" rel="noopener noreferrer">ステージプロット（アイドル）</a>
+          </div>
+        </div>
+        <Ad class="home-ad"></Ad>
       </div>
-
     </div>
     <Footer></Footer>
-
-
   </div>
 </template>
 
@@ -197,12 +195,14 @@ import Mixin from '@/mixin/mixin.js'
 
 import SubHeader from '@/components/SubHeader.vue'
 import Footer from '@/components/Footer.vue'
+import Ad from '@/components/Ad.vue'
 
 export default {
   name: 'Home',
   components: {
     SubHeader,
-    Footer
+    Footer,
+    Ad
   },
   mixins:[
     Mixin
@@ -313,12 +313,13 @@ export default {
 
 .use-content{
   background-color: var(--bg);
+  padding: 60px 0 30px;
 }
 .use{
   width: 90%;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 60px 0;
+  padding: 0 0 40px;
 }
 .use-title{
   font-size: 2.0rem;
@@ -349,6 +350,45 @@ export default {
   text-align: justify;
 }
 
+.sample{
+  margin: 0 auto;
+  background-color: var(--white);
+  border-radius: 10px;
+  width: 90%;
+  max-width: 1000px;
+  padding: 16px 0;
+}
+.sample-title{
+  font-size: 1.7rem;
+  text-align:center;
+  margin:10px 0 20px;
+  font-weight: 700;
+}
+.sample-container{
+  display: block;
+  width: 90%;
+  margin:0 auto 10px;
+}
+.sample-button{
+  display: block;
+  color: var(--blue);
+  background-color: var(--white);
+  border: 3px solid var(--blue);
+  /* padding: 10px; */
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1.3rem;
+  text-align: center;
+  margin-bottom: 20px;
+  height: 40px;
+  line-height: 40px;
+}
+.home-ad{
+  margin: 60px auto 0;
+  width: 90%;
+  max-width: 1000px;
+}
+
 @media screen and (min-width:600px){
   .sign{
     display: flex;
@@ -359,7 +399,9 @@ export default {
     -webkit-transform: translate(-50%, 0);
     transform: translate(-50%, 0);
   }
-
+  .about-content{
+    padding: 120px 0 ;
+  }
   .about{
     display: flex;
     justify-content: space-between;
@@ -391,12 +433,13 @@ export default {
   }
 
   .use-content{
+    padding: 120px 0 30px;
   }
   .use{
     width: 90%;
     max-width: 1000px;
     margin: 0 auto;
-    padding: 60px 0;
+    padding: 0 0 30px;
   }
   .use-title{
     font-size: 2.0rem;
@@ -407,6 +450,21 @@ export default {
     width: 19%;
     margin: 0 0 30px 0;
     padding: 2%;
+  }
+  .sample{
+    width: 90%;
+  }
+  .sample-container{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: calc(100% - 32px);
+    margin: 0 auto;
+    padding-bottom: 10px;
+  }
+  .sample-button{
+    width: calc(50% - 10px);
+    margin-bottom: 10px;
   }
 }
 </style>
