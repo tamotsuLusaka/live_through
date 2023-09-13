@@ -86,13 +86,13 @@ export default {
       .catch((error)=>{
         this.inactiveButton = false
         if(error.code === "auth/wrong-password"){
-          this.errorMessage = "パスワードが間違っています。"
+          this.errorMessage = "メールアドレスまたはパスワードが間違っています。"
         }else if(error.code === "auth/user-not-found"){
-          this.errorMessage = "アカウントが存在しません。"
+          this.errorMessage = "メールアドレスまたはパスワードが間違っています。"
         }else if(error.code === "auth/user-disabled"){
           this.errorMessage = "アカウントが無効です。"
         }else if(error.code === "auth/invalid-email"){
-          this.errorMessage = "メールアドレスが間違っています。"
+          this.errorMessage = "メールアドレスまたはパスワードが間違っています。"
         }else if(error.code === "auth/too-many-requests"){
           this.errorMessage = "間違ったパスワードが複数回入力されたのでログインがブロックされました。"
         }else{

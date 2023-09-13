@@ -1,5 +1,5 @@
 <template>
-  <div class="base">
+  <div class="_base-h">
     <div v-if="this.$store.getters['auth/isSignedIn']" class="after">
       <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
       <div class="_content-s">
@@ -25,112 +25,41 @@
           </router-link>
         </div>
         <div class="info">
-          <div v-if="!isShownSetListFlow" @click="showSetListFlow()" class="_link-mini-line-white _marginS">
+          <router-link :to="{name: 'ManualForSetList'}" class="_link-mini-line-white _marginS">
             <img src="@/assets/images/icon-book-white.png" class="_link-mini-icon" alt="">
             <p class="_link-mini-text">セットリスト作成の流れ</p>
-          </div>
-          <div v-if="isShownSetListFlow" @click="showSetListFlow()" class="_flow">
-            <div class="_flow-container">
-              <p class="_flow-main-title">セットリスト作成の流れ</p>
-              <p class="_flow-main-text">毎ライブの際に登録された楽曲を並び変えるだけでセットリストが簡単に作成出来ます。各楽曲の要望等や曲情報を毎回記入する面倒な手間が省けます。</p>
-              <div class="_flow-box">
-                <p class="_flow-title">楽曲の登録</p>
-                <p class="_flow-text">各曲情報を選択・入力。</p>
-              </div>
-              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
-              <div class="_flow-box">
-                <p class="_flow-title">セットリストの作成・編集</p>
-                <p class="_flow-text">登録した楽曲を SE や MC も含め、ライブ当日の順番に並べる。</p>
-              </div>
-              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
-              <div class="_flow-box">
-                <p class="_flow-title">PDF(もしくは JPEG)書き出し</p>
-                <p class="_flow-text">作成した曲順等を確認して問題なければ書き出しで完成。ご使用端末に保存。</p>
-              </div>
-            </div>
-          </div>
+          </router-link>
         </div>
         <div class="_info">
-          <div v-if="!isShownStagePlotFlow" @click="showStagePlotFlow()" class="_link-mini-line-white _marginS">
+          <router-link :to="{name: 'ManualForStagePlot'}" class="_link-mini-line-white _marginS">
             <img src="@/assets/images/icon-book-white.png" class="_link-mini-icon" alt="">
             <p class="_link-mini-text">ステージプロット作成の流れ</p>
-          </div>
-          <div v-if="isShownStagePlotFlow" @click="showStagePlotFlow()" class="_flow">
-            <div class="_flow-container">
-              <p class="_flow-main-title">ステージプロット作成の流れ</p>
-              <p class="_flow-main-text">各項目に沿って選択・入力するだけで、エンジニアに必要な情報を含めたプロットが簡単に作成出来ます。<br>3つまで保存可能。編成や配置等の変更がある場合に容易に更新、普段と違ったパターンのプロット作成も出来ます。</p>
-              <p class="_flow-sub-title">バンドステージ</p>
-              <div class="_flow-box">
-                <p class="_flow-title">ステージプロットの新規作成</p>
-                <p class="_flow-text">バンドステージ(バンド・アコースティック等の楽器を使った編成)を選択</p>
-              </div>
-              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
-              <div class="_flow-box">
-                <p class="_flow-title">メンバーを追加</p>
-                <p class="_flow-text">在籍するメンバーを1人ずつ登録していきます。</p>
-              </div>
-              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
-              <div class="_flow-box">
-                <p class="_flow-title">メンバーのパート選択</p>
-                <p class="_flow-text">配置や機材の各項目を選択・入力。</p>
-              </div>
-              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
-              <div class="_flow-box">
-                <p class="_flow-text">『メンバーを追加』を繰り返し全メンバーを登録。</p>
-              </div>
-              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
-              <div class="_flow-box _marginL">
-                <p class="_flow-title">PDF(もしくは JPEG)書き出し</p>
-                <p class="_flow-text">作成したステージプロット詳細を確認して問題なければ書き出しで完成。ご使用端末に保存。</p>
-              </div>
-
-              <p class="_flow-sub-title">アイドルステージ</p>
-              <div class="_flow-box">
-                <p class="_flow-title">ステージプロットの新規作成</p>
-                <p class="_flow-text">アイドルステージ(アイドル等の楽器を使わずオケで歌うグループ)を選択</p>
-              </div>
-              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
-              <div class="_flow-box">
-                <p class="_flow-title">メンバーを追加</p>
-                <p class="_flow-text">在籍するメンバーを1人ずつ登録していきます。</p>
-              </div>
-              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
-              <div class="_flow-box">
-                <p class="_flow-text">『メンバーを追加』を繰り返し全メンバーを登録。</p>
-              </div>
-              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
-              <div class="_flow-box">
-                <p class="_flow-text"> マイクや音源の詳細を選択・入力。</p>
-              </div>
-              <img src="@/assets/images/triangle.png" alt="" class="_flow-arrow">
-              <div class="_flow-box">
-                <p class="_flow-title">PDF(もしくは JPEG)書き出し</p>
-                <p class="_flow-text">作成したステージプロット詳細を確認して問題なければ書き出しで完成。ご使用端末に保存。</p>
-              </div>
-            </div>
-          </div>
+          </router-link>
         </div>
-        <Ad></Ad>
+        <Ad class="home-ad"></Ad>
       </div>
     </div>
     <div v-else class="before" >
-      <div class="top" :style="{ 'background-image': 'url(' + topBackgroundImage +')'}">
+      <div class="top" :style="{ 'background-image': 'url(' + topBackgroundImage +')', 'height': $store.getters['data/innerHeight'] + 'px'}">
         <img src="@/assets/images/logo-c.png" alt="ロゴ" class="logo">
         <div class="sign">
-          <router-link :to="{name: 'SignUp'}" class="_button-s _marginM">アカウント作成</router-link>
+          <router-link :to="{name: 'SignUp'}" class="_button-s _marginS">アカウント作成</router-link>
           <router-link :to="{name: 'SignIn'}" class="_button-a">ログイン</router-link>
         </div>
       </div>
       <div class="about-content">
         <div class="about">
           <div class="about-left">
-            <img src="@/assets/images/icon-set-blue.png" class="about-image">
+            <img src="@/assets/images/logo-i-white.png" class="about-image">
           </div>
           <div class="about-right">
-            <h1 class="about-title">LIVE Throughとは</h1>
-            <p>
-              LIVE Through(読み ライブスルー)とはアーティストがライブ活動を行うにあたって必要な資料(セットリスト・ステージプロット)をホームページ上で簡単に作成する事が出来る無料のWEBアプリです。<br>
-              基本的にライブハウスや各種イベントに出演される際、事前にステージプロット(ステージのセッティング図)の提出を求められたり、ライブ当日のセットリスト(曲順表)をご用意しているはずです。ライブスタッフ（以下 エンジニア）へ情報が伝わる事により円滑にライブを行われる為の必要な資料です。<br>
+            <div class="about-title">
+              <h1 class="about-title-main">LIVE Through</h1>
+              <p class="about-title-sub">ライブスルーとは</p>
+            </div>
+            <p class="about-text">
+              ライブスルーはアーティストがライブ活動を行うにあたって必要な資料【セットリスト】【ステージプロット】をホームページ上で簡単に作成する事が出来る無料のWEBアプリです。<br>
+              ライブハウスや各種イベントに出演される際、事前にステージプロット(ステージのセッティング図)の提出を求められたり、ライブ当日のセットリスト(曲順表)をご用意しているはずです。ライブスタッフ（以下 エンジニア）へ情報が伝わる事により円滑にライブを行われる為の必要な資料です。<br>
               しかし、アーティストには「エンジニアにどんな情報を求められている？」「どの様に作成及び記載すれば良いかわからない」「資料を作る環境がない」という方も多数いらっしゃると思います。そんな問題を解決する為に作られたWEBアプリがライブスルーです。
             </p>
           </div>
@@ -141,36 +70,34 @@
           <p class="use-title">【ライブスルーで出来る事】</p>
           <div class="use-container">
             <div class="use-box">
+              <img src="@/assets/images/icon-understand-blue.png" class="use-image" alt="">
               <p class="use-topic">簡単作成</p>
-              <p class="use-text">専門ソフト不要。ホームページ上で順を追って各項目を選択・記入していくだけで、どなたでも簡単にセットリスト・ステージプロットを作成。</p>
+              <p class="use-text">専門ソフト不要。ホームページ上で順を追って各項目を選択・記入していくだけで、どなたでも簡単にセットリスト・ステージプロットを作成することができます。</p>
             </div>
             <div class="use-box">
-              <p class="use-topic">スマホ＆PC対応</p>
-              <p class="use-text">WEBサイト上のアプリなのでPC・スマホのブラウザからどの場所からでも使える。（※1 インターネットに繋がっている場合に限る ※2 推奨ブラウザSafari, Chrome, Edge, Firefox）</p>
+              <img src="@/assets/images/icon-device-blue.png" class="use-image" alt="">
+              <p class="use-topic">スマホ&PC対応</p>
+              <p class="use-text">WEBサイト上のアプリなのでスマホ・PCのブラウザからどの場所からでも使えます。<br><span class="small">※推奨ブラウザSafari, Chrome, Edge, Firefox。</span></p>
             </div>
             <div class="use-box">
-              <p class="use-topic">曲を並び変え</p>
-              <p class="use-text">セットリストは自身の曲情報を登録して、ライブの曲順に曲を並びていくだけ。ドラッグ＆ドロップで簡単に並び替えも可能。</p>
-            </div>
-            <div class="use-box">
+              <img src="@/assets/images/icon-cloud-blue.png" class="use-image" alt="">
               <p class="use-topic">保存＆編集</p>
-              <p class="use-text">データ保存が可能。作成後からでも訂正や編集が容易。</p>
+              <p class="use-text">アカウントを作成してデータ保存が可能。ログインすればどの端末からでも訂正や編集ができます。</p>
             </div>
             <div class="use-box">
+              <img src="@/assets/images/icon-pdf2-blue.png" class="use-image" alt="">
               <p class="use-topic">PDF出力</p>
-              <p class="use-text">PDFファイルとして出力。関係者へデータ送信、もしくはプリンターで印刷して提出。（※出力されたPDFはご使用のPC・スマホ端末にて保存して下さい。）</p>
+              <p class="use-text">PDFファイルとして出力。関係者へデータ送信、もしくはプリンターで印刷して提出できます。<br><span class="small">※出力されたPDFはご使用のPC・スマホ端末にて保存して下さい。</span></p>
             </div>
             <div class="use-box">
+              <img src="@/assets/images/icon-memo-blue.png" class="use-image" alt="">
               <p class="use-topic">的確な情報</p>
-              <p class="use-text">あらかじめ項目が決まっているので、エンジニアに求められている情報を的確に資料に記載する事が出来る。</p>
+              <p class="use-text">あらかじめ項目が決まっているので、エンジニアに求められている情報を的確に資料に記載する事ができます。</p>
             </div>
             <div class="use-box">
-              <p class="use-topic">パフォーマンス向上</p>
-              <p class="use-text">資料作りの煩わしさを無くしエンジニアへ正確に情報を伝えれる事により、ライブ当日に無駄な時間を割く事無く充実したリハーサルを行え、結果良いパフォーマンスに繋がる。</p>
-            </div>
-            <div class="use-box">
+              <img src="@/assets/images/icon-free-blue.png" class="use-image" alt="">
               <p class="use-topic">完全無料</p>
-              <p class="use-text"></p>
+              <p class="use-text">ライブスルーはどなたでも無料でご利用いただけます。</p>
             </div>
           </div>
         </div>
@@ -197,12 +124,13 @@ import SubHeader from '@/components/SubHeader.vue'
 import Footer from '@/components/Footer.vue'
 import Ad from '@/components/Ad.vue'
 
+
 export default {
   name: 'Home',
   components: {
     SubHeader,
     Footer,
-    Ad
+    Ad,
   },
   mixins:[
     Mixin
@@ -215,17 +143,10 @@ export default {
       isPcTitle: false,
       topBackgroundImage: require("@/assets/images/top-image.jpg"),
 
-      isShownSetListFlow: false,
-      isShownStagePlotFlow: false,
     }
   },
   methods:{
-    showSetListFlow(){
-      this.isShownSetListFlow = !this.isShownSetListFlow
-    },
-    showStagePlotFlow(){
-      this.isShownStagePlotFlow = !this.isShownStagePlotFlow
-    },
+
   },
   computed:{
   },
@@ -241,10 +162,7 @@ export default {
 </script>
 
 <style scoped>
-.base{
-  background-color: var(--blue);
-  min-height: 100vh;
-}
+
 .after{
   
 }
@@ -254,13 +172,12 @@ export default {
   margin-bottom: 30px;
 }
 .main{
-  margin-bottom: 80px;
+  margin-bottom: 60px;
 }
 
 /* 未ログイン */
 .top{
   width: 100%;
-  height: 100vh;
   background-position: center;
   background-size: cover;
   position: relative;
@@ -269,22 +186,23 @@ export default {
   width: 70%;
   position: absolute;
   left: 50%;
-  top:40%;
+  top:48%;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
 .sign{
   width: 100%;
   position: absolute;
-  bottom: 50px;
+  bottom: 90px;
 }
 
 .before{
   background-color: var(--white);
+  padding-bottom: 50px;
 }
 .about-content{
   padding:60px 0 ;
-
+  background: linear-gradient(180deg, rgb(0, 127, 199), rgb(2, 73, 115));
 }
 .about{
   width: 90%;
@@ -292,22 +210,36 @@ export default {
   margin: 0 auto;
 }
 .about-left{
-  display: none;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.about-image{
+  width: 100px;
 }
 .about-title{
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: var(--blue);
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   text-align: center;
 }
+.about-title-main{
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--white);
+  
+}
+.about-title-sub{
 
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--white);
+  
+}
 .about-right{
   width: 100%;
 }
-.about p{
+.about-text{
   /* background-color: var(--white); */
-  line-height: 1.6;
+  color: var(--white);
+  line-height: 1.8;
   text-align: justify;
 }
 
@@ -326,6 +258,7 @@ export default {
   margin-bottom: 40px;
   text-align: center;
   font-weight: 700;
+  color: var(--blue);
 }
 .use-container{
   display: flex;
@@ -338,6 +271,10 @@ export default {
   margin: 0 0 20px 0;
   border-radius: 10px;
   padding: 16px;
+  text-align: center;
+}
+.use-image{
+  width: 20%;
 }
 .use-topic{
   font-size: 1.7rem;
@@ -348,6 +285,8 @@ export default {
 }
 .use-text{
   text-align: justify;
+  line-height: 1.7;
+  display: block;
 }
 
 .sample{
@@ -363,6 +302,7 @@ export default {
   text-align:center;
   margin:10px 0 20px;
   font-weight: 700;
+  
 }
 .sample-container{
   display: block;
@@ -383,13 +323,15 @@ export default {
   height: 40px;
   line-height: 40px;
 }
-.home-ad{
-  margin: 60px auto 0;
-  width: 90%;
-  max-width: 1000px;
+.small{
+  font-size: 1.3rem;
+  line-height: 1.0;
 }
 
 @media screen and (min-width:600px){
+  .logo{
+    width: 40%;
+  }
   .sign{
     display: flex;
     justify-content: space-between;
@@ -415,8 +357,8 @@ export default {
     position: relative;
   }
   .about-image{
-    opacity: 0.3;
-    width: 80%;
+    opacity: 1;
+    width: 60%;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -425,11 +367,12 @@ export default {
   }
   .about-title{
     font-size: 2.4rem;
-
-    margin-bottom: 30px;
   }
   .about-right{
     width: 60%;
+  }
+  .before{
+    padding-bottom: 0;
   }
 
   .use-content{
@@ -447,9 +390,13 @@ export default {
     text-align: center;
   }
   .use-box{
-    width: 19%;
+    width: calc(33% - 15px);
     margin: 0 0 30px 0;
     padding: 2%;
+    box-sizing: border-box;
+  }
+  .use-image{
+    width: 30%;
   }
   .sample{
     width: 90%;
@@ -465,6 +412,12 @@ export default {
   .sample-button{
     width: calc(50% - 10px);
     margin-bottom: 10px;
+  }
+
+  .home-ad{
+    margin: 60px auto 0;
+    width: 90%;
+    max-width: 1000px;
   }
 }
 </style>

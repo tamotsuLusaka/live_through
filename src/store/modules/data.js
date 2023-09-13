@@ -7,7 +7,9 @@ export default{
     instrument: null,
     exportBand: null,
     idol: null,
-    exportIdol:null
+    exportIdol:null,
+
+    innerHeight:null,
   },
   getters:{
     myMusicLists: state => state.myMusicLists,
@@ -17,6 +19,7 @@ export default{
     exportBand: state => state.exportBand,
     idol: state => state.idol,
     exportIdol: state => state.exportIdol,
+    innerHeight: state => state.innerHeight,
   },
   mutations:{
     setMyMusicLists(state, payload){
@@ -39,6 +42,9 @@ export default{
     },
     setExportIdol(state, payload){
       state.exportIdol = payload
+    },
+    setInnerHeight(state, payload){
+      state.innerHeight = payload
     },
   },
   actions:{

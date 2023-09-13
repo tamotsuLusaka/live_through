@@ -3,20 +3,23 @@
 /* コンテナーの上部に22pxのマージン */
 
 :root{
-  --black:#363636;
+  --black:#080708;
   --gray-low:#4a4a4a;
   --gray-hi:#848484;
   --placeholder:#acacac;
   --white: #ffffff;
   --bg:#e9eef2;
   --white-line:#ededed;
-  --yellow:#ded728;
+  --yellow:#FDCA40;
   --yellow-hi: #eceab6;
   --red:#a20000;
   --red-bg:#f9c7ca;
   --blue:#0069a2;
   --blue-hi:#67afd6;
-  --blue-low:#0e3584;
+  --blue-low:#053756;
+  --blue-gray:#98C1D9;
+  --orange:#F28123;
+
 }
 
 /* Toggleのカスタム */
@@ -69,19 +72,25 @@ a{
   margin: 0 auto;
 }
 
+._base-h{
+  background: linear-gradient(180deg, rgb(0, 127, 199), rgb(2, 73, 115));
+  min-height: 100vh;
+}
+
 /* 青背景用 */
 ._base-s{
   width: 100%;
   margin: 0 auto;
-  background-color: var(--bg);
-  background-color: var(--blue);
+  /* background-color: var(--bg);
+  background-color: var(--blue); */
+  background: linear-gradient(180deg, rgb(0, 127, 199), rgb(2, 73, 115));
   min-height: 100vh;
   padding: 0;
 }
 ._content-s{
   width: 90%;
   min-height: calc(100% - 50px);
-  padding:90px 0 0;
+  padding:90px 0 60px;
   margin: 0 auto;
 }
 
@@ -112,6 +121,7 @@ a{
 ._button-s{
   height: 42px;
   background-color: var(--blue);
+  background: linear-gradient(180deg, rgb(0, 127, 199), rgb(2, 73, 115));
   color: var(--white);
   font-weight: 700;
   line-height: 42px;
@@ -616,8 +626,8 @@ a{
   width: 100%;
   height: 50px;
   border-radius: 4px;
-  background-color: var(--yellow-hi);
-  color: var(--blue);
+  background-color: var(--yellow);
+  color: var(--black);
   cursor: pointer;
 }
 ._link-mini-line-blue{
@@ -691,32 +701,82 @@ a{
 
 /* show用 */
 ._show-top{
-  width: 100%;
-  background-color: var(--white);
+  margin-bottom: 40px;
 }
-._show-top-content{
+
+._show-title{
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 30px;
+}
+
+._show-content{
   width: 90%;
-  padding:110px 0 60px;
+  max-width: 600px;
+  padding:110px 0 80px;
   margin: 0 auto;
 }
+
 ._show-logo{
   text-align: center;
   margin-bottom: 40px;
 }
 ._show-icon{
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   margin-bottom: 10px;
 }
 ._show-name{
   font-size: 1.6rem;
 }
-._show-bottom-content{
-  width: 90%;
-  padding:60px 0 60px;
-  margin: 0 auto;
+._show-description{
+  color: var(--white);
 }
 
+._show-footer{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: var(--white);
+  width: 100vw;
+  z-index:1001;
+	box-shadow: 0 3px 20px rgba(0, 0, 0, 0.5); /*これを付け足し*/
+}
+._show-footer-container{
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 10px 0;
+}
+._show-footer-edit{
+  display: block;
+  text-align: center;
+  width: 30%;
+  height: 50px;
+  border-radius: 4px;
+  background-color: var(--yellow);
+  color: var(--black);
+  cursor: pointer;
+  position: relative;
+}
+._show-footer-export{
+
+  display: block;
+  text-align: center;
+  position: relative;
+  width: calc(70% - 10px);
+  height: 50px;
+  border-radius: 4px;
+  background-color: var(--blue);
+  color: var(--white);
+  cursor: pointer;
+  position: relative;
+}
 
 
 /* フロー説明 */
@@ -772,7 +832,33 @@ a{
 
 
 
-
+/* 書き出しページ共通 */
+._export-content{
+  width: 90%;
+  min-height: calc(100% - 50px);
+  padding:90px 0 60px;
+  margin: 0 auto 20px;
+}
+._export-logo{
+  display: block;
+  margin: 60px auto 40px;
+  width: 70%;
+}
+._export-description{
+  display: block;
+  padding: 10px;
+  background-color: var(--white);
+  border-radius: 5px;
+  margin-bottom: 30px;
+}
+._export-description-main{
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+._export-description-text{
+  font-size: 1.3rem;
+  margin-bottom: 5px;
+}
 
 
 /* セットリストPDF用 コンポーネントでも使っているのでここに記述*/
@@ -1059,6 +1145,10 @@ a{
   margin-bottom: 60px;
 }
 
+._red{
+  color: var(--red);
+}
+
 @media screen and (min-width:600px){
 
   /* スマホのみ有効 */
@@ -1124,10 +1214,19 @@ a{
     text-align: center;
   }
 
-  ._show-top-content{
-    max-width: 800px
+  ._show-content{
+    padding:110px 0 100px;
   }
-  ._show-bottom-content{
-    max-width: 800px
+
+  ._export-content{
+    padding:50px 0 0;
+    max-width: 600px;
+    height:auto;
+    margin-bottom: 100px;
+    min-height: calc(100vh - 250px);
+  }
+  ._export-logo{
+    margin: 120px auto 40px;
+    width: 200px;
   }
 }

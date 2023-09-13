@@ -31,20 +31,22 @@
     </div>
     <p v-if="mq.current === 'lg' && isPcTitle" class="pc-sub-header-title">{{ pageTitle }}</p>
 
-    <div v-if="isSignedIn" class="menu" :class="{'appear': isShown}">
+    <div v-if="isSignedIn" class="menu" :style="{'height': $store.getters['data/innerHeight'] + 'px'}" :class="{'appear': isShown}">
       <img src="@/assets/images/cross.png" @click="close()" class="menu-close" alt="">
       <div class="menu-container">
         <div class="menu-top">
           <img @click="link('Home')" src="@/assets/images/logo.png" class="menu-logo" alt="ロゴ">
-          <ul>
+          <ul class="menu-lists">
             <li @click="link('SetList')" class="menu-link"><img src="@/assets/images/icon-mic-blue.png" class="menu-icon" alt=""><span>セットリスト</span></li>
             <li @click="link('StagePlot')" class="menu-link"><img src="@/assets/images/icon-stage-blue.png" class="menu-icon" alt=""><span>ステージプロット</span></li>
             <li @click="link('Setting')" class="menu-link"><img src="@/assets/images/icon-setting-blue.png" class="menu-icon" alt=""><span>設定</span></li>
           </ul>
+          <p @click="link('Rule')"  class="menu-sub">利用規約</p >
+          <p @click="link('Policy')"  class="menu-sub">プライバシーポリシー</p>
         </div>
         <div class="menu-bottom">
-          <router-link :to="{name: 'Rule'}"  class="menu-sub">利用規約</router-link >
-          <router-link :to="{name: 'Policy'}"  class="menu-sub">プライバシーポリシー</router-link >
+          <a href="https://twitter.com/LIVE_Through_" target="_blank" rel="noopener noreferrer"><img src="@/assets/images/twitter-blue.png" alt="" class="sns-icon"></a>
+
           <div class="right">Copyright LIVE THROUGH All Rights Reserved.</div>
         </div>
       </div>
@@ -115,6 +117,7 @@ export default {
     border-bottom:1px solid var(--gray-hi);
     box-sizing: border-box;
     align-items: center;
+    transition: 0.5s;
   }
   .sp-sub-header-arrow{
     position: absolute;
@@ -197,12 +200,15 @@ export default {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
     z-index: 50;
     background-color: var(--white);
     transition: 0.3s;
     -webkit-transform: translate(105%, 0);
     transform: translate(105%, 0);
+    border-left: 15px solid var(--blue);
+    border-image: linear-gradient(180deg, rgb(0, 127, 199), rgb(2, 73, 115));
+    border-image-slice: 1;
+    box-sizing: border-box;
   }
   .menu-close{
     position: absolute;
@@ -214,15 +220,19 @@ export default {
 
   .menu-container{
     width: 80%;
-    height: 100vh;
+    height: 100%;
     margin: 0 auto;
     text-align: left;
     position: relative;
+    
   }
   .menu-top{
     position: absolute;
     top: 80px;
     left: 0;
+  }
+  .menu-lists{
+    margin-bottom: 30px;
   }
   .menu-bottom{
     position: absolute;
@@ -230,7 +240,7 @@ export default {
     left: 0;
   }
   .menu-logo{
-    width: 70%;
+    width: 80%;
     margin-bottom: 40px;
 
   }
@@ -257,8 +267,12 @@ export default {
   }
 
   .right{
-    margin-top: 20px;
-    font-size: 1.2rem;
+    margin-top: 10px;
+    font-size: 1.0rem;
+  }
+  .sns-icon{
+    width: 40px;
+    height: 40px;
   }
   .appear{
     -webkit-transform: translate(0, 0);

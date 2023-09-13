@@ -2,9 +2,13 @@
   <div class="_base">
     <Spinner v-if="inactiveButton"></Spinner>
     <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
-    <div class="content">
-      <img src="@/assets/images/logo-c.png" alt="" class="logo">
-      <p class="_description _marginS">ライブ日の入力と出力フォーマットを選択し【PDF書き出し】でセットリストが完成します。<br>※作成されたPDFはサイト上に保存されません。ご使用端末に保存して下さい。</p>
+    <div class="_export-content">
+      <img src="@/assets/images/logo-c.png" alt="" class="_export-logo">
+      <div class="_export-description">
+        <p class="_export-description-main">ライブ日の入力と出力フォーマットを選択し【PDF書き出し】でセットリストが完成します。</p>
+        <p class="_export-description-text">※作成されたPDFはサイト上に保存されません。ご使用端末に保存して下さい。</p>
+        <p class="_export-description-text">※PDF書き出し保存がうまくいかない場合は下記【画像を表示】でJPEG画像が表示されます。表示された画像を保存して下さい。</p>
+      </div>
       <div class="_container">
         <p class="_label">ライブ日</p><Helper :helperObject="helper.day"></Helper>
         <div class="_multi-box _multi-box-start">
@@ -49,10 +53,9 @@
         </div>
       </div>
       <div class="_button-container">
-        <button :disabled="v$.exportPreparation.$invalid || inactiveButton" @click="exportPDF()" :class="{'_invalid-button': v$.exportPreparation.$invalid}" class="_button-s _marginM">PDF書き出し</button>
+        <button :disabled="v$.exportPreparation.$invalid || inactiveButton" @click="exportPDF()" :class="{'_invalid-button': v$.exportPreparation.$invalid}" class="_button-s _marginS">PDF書き出し</button>
         <button :disabled="v$.exportPreparation.$invalid || inactiveButton" @click="viewImage()" :class="{'_invalid-button': v$.exportPreparation.$invalid}" class="_button-a">画像を表示</button>
       </div>
-      <p class="_description _marginS">※PDF書き出し保存がうまくいかない場合は下記【画像を表示】でJPEG画像が表示されます。表示された画像を保存して下さい。</p>
 
       <!-- <a id="download" target="_blank">ダウンロードスイッチ</a> -->
       <div class="render-container">

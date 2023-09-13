@@ -6,8 +6,8 @@
       <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
       <div class="_container">
         <label for="name" class="_label">アーティスト名</label>
-        <input type="text" v-model="user.name" @blur="v$.user.name.$touch()" id="name" placeholder="18字以内で入力" :class="{'_input-error': v$.user.name.$error}" class="_input-text">
-        <p v-if="v$.user.name.$error" class="_input-error-message">18文字以内で入力してください。</p>
+        <input type="text" v-model="user.name" @blur="v$.user.name.$touch()" id="name" placeholder="28字以内で入力" :class="{'_input-error': v$.user.name.$error}" class="_input-text">
+        <p v-if="v$.user.name.$error" class="_input-error-message">28文字以内で入力してください。</p>
       </div>
       <div class="_container">
         <label for="email" class="_label">メールアドレス</label>
@@ -159,7 +159,7 @@ export default {
       user:{
         name:{
           required,
-          maxLength: maxLength(18)
+          maxLength: maxLength(28)
         },
         email:{
           required,

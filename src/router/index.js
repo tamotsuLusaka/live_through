@@ -26,6 +26,8 @@ import Setting from '@/views/setting/Setting.vue'
 import EditUser from '@/views/setting/EditUser.vue'
 import Policy from '@/views/Policy.vue'
 import Rule from '@/views/Rule.vue'
+import ManualForSetList from '@/views/ManualForSetList.vue'
+import ManualForStagePlot from '@/views/ManualForStagePlot.vue'
 import Manager from '@/views/Manager.vue'
 
 const routes = [
@@ -216,6 +218,18 @@ const routes = [
     props: true
   },
   {
+    path: '/setlist-manual',
+    name: 'ManualForSetList',
+    component: ManualForSetList,
+    props: true
+  },
+  {
+    path: '/stageplot-manual',
+    name: 'ManualForStagePlot',
+    component: ManualForStagePlot,
+    props: true
+  },
+  {
     path: '/manager',
     name: 'Manager',
     component: Manager,
@@ -228,9 +242,15 @@ const router = createRouter({
   routes,
 
   //リンク後にスクロールをトップに戻す
-  scrollBehavior () {
-    return document.getElementById('app').scrollIntoView();
-  }
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return {
+        top: 0
+      }
+    }
+  },
 })
 
 export default router

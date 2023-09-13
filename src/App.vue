@@ -19,14 +19,22 @@ export default{
     }
   },
   methods: {
+    _resize(){
+      this.$store.commit('data/setInnerHeight', window.innerHeight)
+    },
   },
   beforeCreate(){
     auth.onSignedIn()
     
   },
   created(){
-
-
+    this.$store.commit('data/setInnerHeight', window.innerHeight)
+  },
+  mounted(){
+    window.addEventListener('resize', this._resize)
+  },
+  beforeDestory(){
+    window.removeEventListener('resize', this._resize)
   },
   computed:{
 
@@ -37,8 +45,6 @@ export default{
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
 *{
-  /* font-family: 'Noto Sans JP', sans-serif, 'PingFang SC'; */
-  /* font-family:'ヒラギノ角ゴ ProN W6' ; */
   font-family: 'Noto Sans JP', 'ヒラギノ角ゴ ProN W3', 'メイリオ' sans-serif;
 }
 

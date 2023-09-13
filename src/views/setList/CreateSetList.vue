@@ -394,7 +394,7 @@ export default {
 
     if(this.$route.params.id){
       this.mode = "edit"
-      this.pageTitle = "セットリスの編集"
+      this.pageTitle = "セットリストの編集"
       
       db.getSetList(this.$route.params.id)
       .then((doc)=>{

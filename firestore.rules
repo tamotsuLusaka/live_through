@@ -14,19 +14,27 @@ service cloud.firestore {
     }
     match /setList/{setList} {
       allow read: if isMe();
-      allow write: if isMyWriting();  
+      allow create: if isMyWriting();
+      allow update: if isMyWriting();
+      allow delete: if isMe();
     }
     match /music/{music} {
       allow read: if isMe();
-      allow write: if isMyWriting();   
+      allow create: if isMyWriting();
+      allow update: if isMyWriting();
+      allow delete: if isMe();
     }
     match /band/{band} {
       allow read: if isMe();
-      allow write: if isMyWriting();   
+      allow create: if isMyWriting();
+      allow update: if isMyWriting();
+      allow delete: if isMe();  
     }
     match /idol/{idol} {
       allow read: if isMe();
-      allow write: if isMyWriting();   
+      allow create: if isMyWriting();
+      allow update: if isMyWriting();
+      allow delete: if isMe();  
     }
 
   }

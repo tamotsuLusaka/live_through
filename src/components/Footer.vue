@@ -5,6 +5,9 @@
       ｜<router-link :to="{name: 'Rule'}" class="link">利用規約</router-link>｜<router-link :to="{name: 'Policy'}" class="link">プライバシーポリシー</router-link>｜
     </div>
     <div class="right">Copyright LIVE Through All Rights Reserved.</div>
+    <div class="sns">
+      <a href="https://twitter.com/LIVE_Through_" target="_blank" rel="noopener noreferrer"><img src="@/assets/images/twitter-white.png" alt="" class="icon"></a>
+    </div>
   </div>
   
 </template>
@@ -61,5 +64,14 @@ export default {
   bottom: 20px;
   color: var(--white);
   font-size: 1.0rem;
+}
+.sns{
+  position: absolute;
+  right: 30px;
+  bottom: 35px;
+}
+.icon{
+  width: 36px;
+  height: 36px;
 }
 </style>

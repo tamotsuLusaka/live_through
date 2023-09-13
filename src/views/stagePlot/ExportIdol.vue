@@ -2,18 +2,21 @@
   <div class="_base">
     <Spinner v-if="inactiveButton"></Spinner>
     <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
-    <div class="content">
-      <img src="@/assets/images/logo-c.png" alt="" class="logo">
+    <div class="_export-content">
+      <img src="@/assets/images/logo-c.png" alt="" class="_export-logo">
       <div class="_button-container">
-        <button :disabled=" inactiveButton" @click="exportPDF()"  class="_button-s _marginM">PDF書き出し</button>
+        <button :disabled=" inactiveButton" @click="exportPDF()"  class="_button-s _marginS">PDF書き出し</button>
         <button :disabled="inactiveButton" @click="viewImage()"  class="_button-a">画像を表示</button>
       </div>
-      <p class="_description _marginS">【PDF書き出し】でステージプロットが完成します。<br>※作成されたPDFはサイト上に保存されません。ご使用端末に保存して下さい。</p>
-      <p class="_description _marginS">※PDF書き出し保存がうまくいかない場合は下記【画像を表示】でJPEG画像が表示されます。表示された画像を保存して下さい。</p>
 
       <!-- <a id="download" target="_blank">ダウンロードスイッチ</a> -->
       <div class="render-container">
         <img  v-show="isView" id="renderSpace" class="render-space" :src="renderImage">
+      </div>
+      
+      <div class="_export-description">
+        <p class="_export-description-text">※作成されたPDFはサイト上に保存されません。ご使用端末に保存して下さい。</p>
+        <p class="_export-description-text">※PDF書き出し保存がうまくいかない場合は下記【画像を表示】でJPEG画像が表示されます。表示された画像を保存して下さい。</p>
       </div>
 
       <!-- 1ページ構成 -->
@@ -225,11 +228,7 @@ export default {
 </script>
 
 <style scoped>
-.logo{
-  display: block;
-  margin: 100px auto;
-  width: 70%;
-}
+
 .t-ss{
   font-size: 10px;
 }
@@ -247,12 +246,7 @@ export default {
 .red{
   color: var(--red);
 }
-.content{
-  width: 90%;
-  min-height: calc(100% - 50px);
-  padding:90px 0 0;
-  margin: 0 auto;
-}
+
 
 .pdf{
   position: fixed;
@@ -393,13 +387,7 @@ export default {
 }
 
 @media screen and (min-width:600px){
-  .content{
-    padding:50px 0 0;
-    max-width: 600px;
-    height:auto;
-    margin-bottom: 100px;
-    min-height: calc(100vh - 250px);
-  }
+
 
 }
 

@@ -1,26 +1,16 @@
 <template>
   <div class="_base-s">
     <SubHeader :pageType="pageType" :pageTitle="pageTitle" :isBack="isBack" :isPcTitle="isPcTitle"></SubHeader>
-    <div class="show-top">
-      <div class="show-top-content">
-        <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
-        <div class="show-logo">
-          <img src="@/assets/images/icon-people-blue.png" alt="" class="show-icon">
-          <p>{{idol.name}}</p>
+    <div class="_show">
+      <div class="_show-content">
+        <div class="_show-top">
+          <p v-if="errorMessage !== ''" class="_error-message">{{errorMessage}}</p>
+          <div class="_show-logo">
+            <img src="@/assets/images/icon-people-white.png" alt="" class="_show-icon">
+            <p class="_show-title">{{idol.name}}</p>
+          </div>
+          <p class="_show-description">全体的な要望等があれば【編集】から【備考】に入力して下さい。</p>
         </div>
-        <div @click="goEdit()" class="_link-mini-line-blue _marginS">
-          <p class="_link-mini-text">ステージプロットの編集</p>
-        </div>
-        <div @click="goExport()" class="_link-mini-blue _marginS">
-          <img src="@/assets/images/icon-pdf-white.png" class="_link-mini-icon " alt="">
-          <p class="_link-mini-text">PDFで書き出し</p>
-        </div>
-        <p class="_description">下記に【プロット詳細】を確認して訂正がある場合は【ステージプロットを編集】問題なければ【PDFで書き出し】。<br>全体的な要望等があれば一番下の【その他、要望】に入力して下さい。</p>
-      </div>
-    </div>
-    <div class="show-bottom">
-      <div class="show-bottom-content">
-        <p class="show-title">プロット詳細<Helper :helperObject="helper.note"></Helper></p>
         <div class="_container">
           <label class="_label-white">メンバー</label>
           <div v-for="(member, index) in idol.lists" :key="member">
@@ -78,26 +68,23 @@
         </div>
       </div>
     </div>
-    <div class="re-button">
-      <div class="re-button-content">
-        <div @click="goEdit()" class="_link-mini-line-blue _marginS">
-          <p class="_link-mini-text">ステージプロットの編集</p>
-        </div>
-        <div @click="goExport()" class="_link-mini-blue _marginS">
-          <img src="@/assets/images/icon-pdf-white.png" class="_link-mini-icon " alt="">
+    <div class="_show-footer">
+      <div class="_show-footer-container">
+        <div @click="goExport()" class="_show-footer-export">
+          <img src="@/assets/images/icon-pdf-white.png" class="_link-mini-icon" alt="">
           <p class="_link-mini-text">PDFで書き出し</p>
+        </div>
+        <div @click="goEdit()" class="_show-footer-edit">
+          <p class="_link-mini-text">編集</p>
         </div>
       </div>
     </div>
-    <Footer></Footer>
   </div>
 </template>
 
 <script>
 import Mixin from '@/mixin/mixin.js'
 import SubHeader from '@/components/SubHeader.vue'
-import Footer from '@/components/Footer.vue'
-import Helper from '@/components/Helper.vue'
 
 import Idol from '@/class/Idol.js'
 
@@ -107,8 +94,6 @@ export default {
   name: 'SetList',
   components: {
     SubHeader,
-    Footer,
-    Helper,
   },
   mixins:[
     Mixin
